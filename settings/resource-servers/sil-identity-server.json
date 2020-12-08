@@ -1,6 +1,6 @@
 {
   "name": "silid-server",
-  "identifier": "https://id.languagetechnology.org/",
+  "identifier": "https://id-dev.languagetechnology.org/",
   "allow_offline_access": false,
   "enforce_policies": true,
   "scopes": [

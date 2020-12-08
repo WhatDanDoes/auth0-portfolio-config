@@ -7,7 +7,7 @@
     "use_scope_descriptions_for_consent": true
   },
   "friendly_name": "SIL Language Technology",
-  "picture_url": "https://id.languagetechnology.org/images/sil-logo.svg",
+  "picture_url": "https://id-dev.languagetechnology.org/images/sil-logo.svg",
   "support_email": "ltops@sil.org",
   "support_url": "",
   "universal_login": {
