@@ -1,6 +1,5 @@
 {
   "flags": {
-    "enable_custom_domain_in_emails": true,
     "disable_clickjack_protection_headers": true,
     "use_scope_descriptions_for_consent": true
   },
