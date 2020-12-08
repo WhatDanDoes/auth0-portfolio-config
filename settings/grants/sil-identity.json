@@ -1,0 +1,5 @@
+{
+  "client_id": "SIL Identity",
+  "audience": "https://##AUTH0_DOMAIN##/api/v2/",
+  "scope": []
+}
