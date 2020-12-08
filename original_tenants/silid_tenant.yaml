@@ -1,0 +1,493 @@
+clientGrants:
+  - client_id: auth0-deploy-cli-extension
+    audience: 'https://silid.auth0.com/api/v2/'
+    scope:
+      - 'read:client_grants'
+      - 'create:client_grants'
+      - 'delete:client_grants'
+      - 'update:client_grants'
+      - 'read:clients'
+      - 'update:clients'
+      - 'delete:clients'
+      - 'create:clients'
+      - 'read:client_keys'
+      - 'update:client_keys'
+      - 'delete:client_keys'
+      - 'create:client_keys'
+      - 'read:connections'
+      - 'update:connections'
+      - 'delete:connections'
+      - 'create:connections'
+      - 'read:resource_servers'
+      - 'update:resource_servers'
+      - 'delete:resource_servers'
+      - 'create:resource_servers'
+      - 'read:rules'
+      - 'update:rules'
+      - 'delete:rules'
+      - 'create:rules'
+      - 'read:rules_configs'
+      - 'update:rules_configs'
+      - 'delete:rules_configs'
+      - 'read:email_provider'
+      - 'update:email_provider'
+      - 'delete:email_provider'
+      - 'create:email_provider'
+      - 'read:tenant_settings'
+      - 'update:tenant_settings'
+      - 'read:grants'
+      - 'delete:grants'
+      - 'read:guardian_factors'
+      - 'update:guardian_factors'
+      - 'read:mfa_policies'
+      - 'update:mfa_policies'
+      - 'read:email_templates'
+      - 'create:email_templates'
+      - 'update:email_templates'
+      - 'read:roles'
+      - 'update:roles'
+      - 'delete:roles'
+      - 'create:roles'
+      - 'read:prompts'
+      - 'update:prompts'
+      - 'read:branding'
+      - 'update:branding'
+      - 'read:hooks'
+      - 'update:hooks'
+      - 'delete:hooks'
+      - 'create:hooks'
+  - client_id: auth0-github-deploy
+    audience: 'https://silid.auth0.com/api/v2/'
+    scope:
+      - 'read:client_grants'
+      - 'create:client_grants'
+      - 'delete:client_grants'
+      - 'update:client_grants'
+      - 'read:clients'
+      - 'update:clients'
+      - 'delete:clients'
+      - 'create:clients'
+      - 'read:client_keys'
+      - 'update:client_keys'
+      - 'delete:client_keys'
+      - 'create:client_keys'
+      - 'read:connections'
+      - 'update:connections'
+      - 'delete:connections'
+      - 'create:connections'
+      - 'read:resource_servers'
+      - 'update:resource_servers'
+      - 'delete:resource_servers'
+      - 'create:resource_servers'
+      - 'read:rules'
+      - 'update:rules'
+      - 'delete:rules'
+      - 'create:rules'
+      - 'read:rules_configs'
+      - 'update:rules_configs'
+      - 'delete:rules_configs'
+      - 'read:email_provider'
+      - 'update:email_provider'
+      - 'delete:email_provider'
+      - 'create:email_provider'
+      - 'read:tenant_settings'
+      - 'update:tenant_settings'
+      - 'read:grants'
+      - 'delete:grants'
+      - 'read:guardian_factors'
+      - 'update:guardian_factors'
+      - 'read:mfa_policies'
+      - 'update:mfa_policies'
+      - 'read:email_templates'
+      - 'create:email_templates'
+      - 'update:email_templates'
+      - 'read:roles'
+      - 'update:roles'
+      - 'delete:roles'
+      - 'create:roles'
+      - 'read:hooks'
+      - 'update:hooks'
+      - 'delete:hooks'
+      - 'create:hooks'
+rules: []
+hooks:
+  - name: test
+    script: ./hooks/test.js
+    dependencies: {}
+    enabled: true
+    secrets: {}
+    triggerId: credentials-exchange
+pages: []
+resourceServers:
+  - name: silid-server
+    identifier: 'https://id.languagetechnology.org/'
+    allow_offline_access: false
+    enforce_policies: true
+    scopes:
+      - value: 'read:organizations'
+        description: Read your organizations
+      - value: 'create:organizations'
+        description: Create an organization
+      - value: 'update:organizations'
+        description: Update an organization
+      - value: 'delete:organizations'
+        description: Delete your organizations
+      - value: 'read:teams'
+        description: Read your teams
+      - value: 'create:teams'
+        description: Create a team
+      - value: 'update:teams'
+        description: Update a team
+      - value: 'delete:teams'
+        description: Delete your teams
+      - value: 'create:agents'
+        description: Create an agent
+      - value: 'read:agents'
+        description: Read agents
+      - value: 'update:agents'
+        description: Update an agent
+      - value: 'delete:agents'
+        description: Delete agents
+      - value: 'add:organization-member'
+        description: Add a member to your organization
+      - value: 'delete:organization-member'
+        description: Delete an organization member
+      - value: 'delete:team-member'
+        description: Delete a member from your team
+      - value: 'create:team-member'
+        description: Add a member to your team
+    signing_alg: RS256
+    skip_consent_for_verifiable_first_party_clients: true
+    token_dialect: access_token_authz
+    token_lifetime: 86400
+    token_lifetime_for_web: 7200
+clients:
+  - name: SIL Identity
+    allowed_clients: []
+    allowed_logout_urls:
+      - 'http://localhost:3001'
+      - 'https://id.whatdandoes.info'
+      - 'https://id.languagetechnology.org'
+      - 'https://id-dev.languagetechnology.org'
+      - 'https://id.languagetechnology.org/cheerio'
+      - 'https://id-dev.languagetechnology.org/cheerio'
+      - 'https://id.whatdandoes.info/cheerio'
+    app_type: non_interactive
+    callbacks:
+      - 'https://id.languagetechnology.org/callback'
+      - 'https://id-dev.languagetechnology.org/callback'
+      - 'http://localhost:3001/callback'
+      - 'https://id.whatdandoes.info/callback'
+    client_aliases: []
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - authorization_code
+      - implicit
+      - refresh_token
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    logo_uri: 'https://silid-dev.languagetechnology.org/favicons/apple-icon-152x152.png'
+    native_social_login:
+      apple:
+        enabled: false
+      facebook:
+        enabled: false
+    oidc_conformant: true
+    refresh_token:
+      rotation_type: non-rotating
+      expiration_type: non-expiring
+    sso_disabled: false
+    token_endpoint_auth_method: client_secret_post
+  - name: auth0-deploy-cli-extension
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - authorization_code
+      - implicit
+      - refresh_token
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    oidc_conformant: true
+    refresh_token:
+      rotation_type: non-rotating
+      expiration_type: non-expiring
+    sso_disabled: false
+    token_endpoint_auth_method: client_secret_post
+  - name: auth0-github-deploy
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - authorization_code
+      - implicit
+      - refresh_token
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    oidc_conformant: true
+    refresh_token:
+      rotation_type: non-rotating
+      expiration_type: non-expiring
+    sso_disabled: false
+    token_endpoint_auth_method: client_secret_post
+  - name: wycliffe.photos
+    allowed_clients: []
+    allowed_logout_urls:
+      - 'https://wycliffe.photos'
+    app_type: regular_web
+    callbacks:
+      - 'https://wycliffe.photos/callback'
+      - 'http://localhost:3001/callback'
+    client_aliases: []
+    cross_origin_auth: false
+    custom_login_page_on: true
+    description: >-
+      wycliffe.photos is a traditional web application augmented by a native
+      Android camera app.
+    grant_types:
+      - authorization_code
+      - implicit
+      - refresh_token
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    logo_uri: 'https://wycliffe.photos/favicon/apple-icon-152x152.png'
+    native_social_login:
+      apple:
+        enabled: false
+      facebook:
+        enabled: false
+    oidc_conformant: true
+    sso_disabled: false
+    token_endpoint_auth_method: client_secret_post
+databases:
+  - name: Initial-Connection
+    strategy: auth0
+    enabled_clients: []
+    is_domain_connection: false
+    options:
+      mfa:
+        active: true
+        return_enroll_settings: true
+      validation:
+        username:
+          max: 15
+          min: 1
+      disable_signup: false
+      passwordPolicy: good
+      strategy_version: 2
+      requires_username: false
+      brute_force_protection: true
+    realms:
+      - Initial-Connection
+  - name: Username-Password-Authentication
+    strategy: auth0
+    enabled_clients:
+      - auth0-deploy-cli-extension
+      - auth0-github-deploy
+      - SIL Identity
+      - wycliffe.photos
+    is_domain_connection: false
+    options:
+      mfa:
+        active: true
+        return_enroll_settings: true
+      passwordPolicy: good
+      strategy_version: 2
+      brute_force_protection: true
+    realms:
+      - Username-Password-Authentication
+connections:
+  - name: google-oauth2
+    strategy: google-oauth2
+    enabled_clients:
+      - auth0-deploy-cli-extension
+      - auth0-github-deploy
+      - SIL Identity
+      - wycliffe.photos
+    is_domain_connection: false
+    options:
+      email: true
+      gmail: false
+      orkut: false
+      scope:
+        - email
+        - profile
+      sites: false
+      tasks: false
+      blogger: false
+      profile: true
+      youtube: false
+      calendar: false
+      contacts: false
+      analytics: false
+      client_id: ''
+      moderator: false
+      coordinate: false
+      picasa_web: false
+      google_plus: false
+      google_books: false
+      google_drive: false
+      spreadsheets: false
+      client_secret: ''
+      document_list: false
+      latitude_best: false
+      latitude_city: false
+      url_shortener: false
+      webmaster_tools: false
+      chrome_web_store: false
+      allowed_audiences: ''
+      adsense_management: false
+      google_drive_files: false
+      coordinate_readonly: false
+      google_cloud_storage: false
+      content_api_for_shopping: false
+      google_affiliate_network: false
+      set_user_root_attributes: on_first_login
+tenant:
+  allowed_logout_urls:
+    - 'https://id.languagetechnology.org/cheerio'
+    - 'https://id.whatdandoes.info/cheerio'
+  enabled_locales:
+    - en
+  flags:
+    new_universal_login_experience_enabled: true
+    universal_login: true
+    disable_clickjack_protection_headers: false
+    include_email_in_reset_pwd_redirect: true
+    include_email_in_verify_email_redirect: true
+  picture_url: 'https://silid.languagetechnology.org/images/sil-logo.svg'
+  universal_login:
+    colors:
+      page_background: '#000000'
+      primary: '#005c99'
+emailProvider: {}
+emailTemplates:
+  - template: verify_email
+    body: ./emailTemplates/verify_email.html
+    enabled: true
+    from: ''
+    resultUrl: '{{ application.callback_domain }}/logout'
+    subject: ''
+    syntax: liquid
+    urlLifetimeInSeconds: 432000
+rulesConfigs: []
+guardianFactors:
+  - name: duo
+    enabled: false
+  - name: email
+    enabled: false
+  - name: otp
+    enabled: false
+  - name: push-notification
+    enabled: false
+  - name: sms
+    enabled: false
+  - name: webauthn-roaming
+    enabled: false
+guardianFactorProviders: []
+guardianFactorTemplates: []
+guardianPolicies:
+  policies: []
+guardianPhoneFactorSelectedProvider:
+  provider: auth0
+guardianPhoneFactorMessageTypes:
+  message_types: []
+roles:
+  - name: organizer
+    description: Manage organizations and team memberships therein
+    permissions:
+      - permission_name: 'add:organization-member'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'create:organizations'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'delete:organization-member'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'delete:organizations'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'read:organizations'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'update:organizations'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+  - name: sudo
+    description: All-access pass to Identity resources
+    permissions:
+      - permission_name: 'add:organization-member'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'create:agents'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'create:organizations'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'create:team-member'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'create:teams'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'delete:agents'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'delete:organization-member'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'delete:organizations'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'delete:team-member'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'delete:teams'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'read:agents'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'read:organizations'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'read:teams'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'update:agents'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'update:organizations'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'update:teams'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+  - name: viewer
+    description: 'Basic agent, organization, and team viewing permissions'
+    permissions:
+      - permission_name: 'create:team-member'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'create:teams'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'delete:team-member'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'delete:teams'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'read:agents'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'read:organizations'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'read:teams'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'update:agents'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+      - permission_name: 'update:teams'
+        resource_server_identifier: 'https://id.languagetechnology.org/'
+branding:
+  colors:
+    page_background: '#000000'
+    primary: '#005c99'
+  logo_url: 'https://silid.languagetechnology.org/images/sil-logo.svg'
+prompts:
+  universal_login_experience: new
+migrations: {}

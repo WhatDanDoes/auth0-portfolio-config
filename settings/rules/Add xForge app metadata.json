@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "script": "./Add xForge app metadata.js",
+  "name": "Add xForge app metadata",
+  "order": 40,
+  "stage": "login_success"
+}

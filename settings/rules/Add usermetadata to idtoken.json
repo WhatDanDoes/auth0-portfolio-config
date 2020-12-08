@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "script": "./Add usermetadata to idtoken.js",
+  "name": "Add usermetadata to idtoken",
+  "order": 20,
+  "stage": "login_success"
+}

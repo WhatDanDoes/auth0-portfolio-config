@@ -1,0 +1,22 @@
+{
+  "options": {
+    "mfa": {
+      "active": true,
+      "return_enroll_settings": true
+    },
+    "passwordPolicy": "good",
+    "brute_force_protection": true,
+    "strategy_version": 2
+  },
+  "strategy": "auth0",
+  "name": "Username-Password-Authentication",
+  "is_domain_connection": false,
+  "realms": ["Username-Password-Authentication"],
+  "enabled_clients": [
+    "Default App",
+    "Scriptoria",
+    "Scripture Forge",
+    "SIL Transcriber",
+    "SIL Transcriber Desktop Extension"
+  ]
+}

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Sign In with Auth0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style type="text/css">
+      .auth0-lock.auth0-lock div.auth0-lock-content-wrapper {
+        overflow: visible; /* prevent scrollbar that causes UX issues on mobile */
+      }
+    </style>
+  </head>
+  <body>
+    <!--[if IE 8]>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/ie8/0.2.5/ie8.js"></script>
+    <![endif]-->
+
+    <!--[if lte IE 9]>
+      <script src="https://cdn.auth0.com/js/base64.js"></script>
+      <script src="https://cdn.auth0.com/js/es5-shim.min.js"></script>
+    <![endif]-->
+
+    <script src="https://cdn.auth0.com/js/lock/11.19.0/lock.min.js"></script>
+    <script>
+      // Decode utf8 characters properly
+      var config = JSON.parse(
+        decodeURIComponent(escape(window.atob("@@config@@")))
+      );
+      config.extraParams = config.extraParams || {};
+      var prompt = config.prompt;
+      var loginHint = config.extraParams.login_hint;
+      var language = config.extraParams.language || "en";
+      var colors = config.colors || {};
+      var connections = [
+        "Paratext-Transcriber",
+        "paratext",
+        "google-oauth2",
+        "facebook",
+        "Username-Password-Authentication"
+      ];
+
+      var isSignupSelected = loginHint === "signUp";
+      var languageDictionary;
+
+      // * indicates a language that isn't production ready yet
+      // ordered by most populace
+      var availableLanguageOptions = [
+        { value: "en", label: "English (US)" },
+        { value: "en-GB", label: "English (UK)" },
+        { value: "zh-CN", label: "简体中文" },
+        { value: "es", label: "Español" },
+        { value: "ru", label: "Русский" },
+        { value: "pt-BR", label: "Português" },
+        { value: "id", label: "Bahasa Indonesia" },
+        { value: "az", label: "Azərbaycanca" },
+        { value: "lo", label: "ພາສາລາວ *" },
+        { value: "kyu", label: "ꤊꤢ꤬ꤛꤢ꤭ꤜꤟꤤ꤬ (W. Kayah Li)" },
+        // { value: "fr", label: "français *" },
+        // { value: "ko", label: "한국어 *" },
+      ];
+      var requestedLanguageOptions;
+      if (language.length > 3 && language.includes("tag")) {
+        var languageConfig = JSON.parse(language);
+        language = languageConfig.tag || "en";
+        requestedLanguageOptions = languageConfig.options;
+      }
+      var languageOptions = [];
+      if (requestedLanguageOptions) {
+        // get intersection of available and requested options
+        requestedLanguageOptions.forEach(function(item) {
+          var foundOptions = availableLanguageOptions.filter(function(option) {
+            return option.value === item.value;
+          });
+          var foundOption = foundOptions.length > 0 ? foundOptions[0] : false;
+          if (foundOption) {
+            if (item.label) {
+              foundOption.label = item.label;
+            }
+            languageOptions.push(foundOption);
+          }
+        });
+      }
+
+      if (config.dict && config.dict.signin && config.dict.signin.title) {
+        languageDictionary = { title: config.dict.signin.title };
+      } else if (typeof config.dict === "string") {
+        language = config.dict;
+      }
+
+      // Available Lock configuration options: https://auth0.com/docs/libraries/lock/v11/configuration
+      var options = {
+        auth: {
+          redirectUrl: config.callbackURL,
+          responseType:
+            (config.internalOptions || {}).response_type ||
+            (config.callbackOnLocationHash ? "token" : "code"),
+          params: config.internalOptions
+        },
+        configurationBaseUrl: config.clientConfigurationBaseUrl,
+        languageBaseUrl: config.languageBaseUrl || "https://auth0.languagetechnology.org",
+        // not in v11 docs
+        overrides: {
+          __tenant: config.auth0Tenant,
+          __token_issuer: config.authorizationServer.issuer
+        },
+        allowedConnections: connections,
+        rememberLastLogin: !prompt,
+        language: language,
+        languageDictionary: languageDictionary,
+        theme: {
+          logo:
+            "https://software.sil.org/wp/wp-content/uploads/2017/01/2014_sil_logo_80w_96h.png",
+          primaryColor: colors.primary ? colors.primary : "#ea5323",
+          authButtons: {
+            paratext: {
+              primaryColor: "#648047",
+              icon: "https://registry.paratext.org/static/logo.png"
+            },
+            "Paratext-Transcriber": {
+              displayName: "Paratext",
+              primaryColor: "#647418",
+              icon:
+                "https://paratext.org/wp-content/uploads/2019/10/p9logo312o-150x150.png"
+            }
+          }
+        },
+        prefill:
+          loginHint && loginHint !== "signUp"
+            ? { email: loginHint, username: loginHint }
+            : null,
+        additionalSignUpFields: [
+          {
+            type: "hidden",
+            name: "interface_language",
+            value: language
+          }
+        ],
+        closable: false,
+        defaultADUsernameFromEmailPrefix: false,
+      };
+
+      if (colors.page_background) {
+        var css =
+          ".auth0-lock.auth0-lock .auth0-lock-overlay { background: " +
+          colors.page_background +
+          " }";
+        var style = document.createElement("style");
+        style.appendChild(document.createTextNode(css));
+        document.body.appendChild(style);
+      }
+
+      showLock(language);
+
+      /**
+       * @param {string} preferredLang
+       */
+      function showLock(preferredLang) {
+        removePreviousLock();
+        options.language = getAuth0Language(preferredLang);
+        options.additionalSignUpFields[0].value = preferredLang;
+        options.auth.params.language = preferredLang;
+        options.initialScreen = isSignupSelected ? "signUp" : undefined;
+        var lock = new Auth0Lock(config.clientID, config.auth0Domain, options);
+        lock.show();
+
+        if (languageOptions.length > 0) {
+          watchTabChange(1000);
+          createLanguagePicker(preferredLang);
+        }
+      }
+
+      function removePreviousLock() {
+        var widget = document.querySelector(".auth0-lock-widget");
+        if (widget != null) {
+          widget.parentNode.removeChild(widget);
+        }
+      }
+
+      /**
+       * @param {string} lang
+       */
+      function getAuth0Language(lang) {
+        if (lang.startsWith("en-")) {
+          return "en";
+        } else if (lang.toLowerCase() === "zh-cn") {
+          return "zh";
+        }
+        return lang;
+      }
+
+      /**
+       * @param {number} watchDelayMs in milliseconds
+       */
+      function watchTabChange(watchDelayMs) {
+        setTimeout(function() {
+          var navigationTabs = document.querySelector(".auth0-lock-tabs");
+          var loginTab = navigationTabs.childNodes[0];
+          var signupTab = navigationTabs.childNodes[1];
+          if (loginTab.querySelector("a") != null) {
+            loginTab.onclick = function() {
+              isSignupSelected = false;
+              watchTabChange(0);
+            };
+          }
+          if (signupTab.querySelector("a") != null) {
+            signupTab.onclick = function() {
+              isSignupSelected = true;
+              watchTabChange(0);
+            };
+          }
+        }, watchDelayMs);
+      }
+
+      /**
+       * @param {string} lang
+       */
+      function createLanguagePicker(lang) {
+        var languageSelect = document.createElement("select");
+        languageSelect.classList.add("auth0-lock-input", "auth0-lock-input-location");
+        var optionElement;
+        languageOptions.forEach(function(option) {
+          optionElement = document.createElement("option");
+          optionElement.value = option.value;
+          optionElement.innerText = option.label;
+          languageSelect.appendChild(optionElement);
+        });
+        languageSelect.value = lang;
+        languageSelect.style.cursor = "pointer";
+        languageSelect.onchange = function(e) {
+          showLock(e.target.value);
+        };
+
+        var translateSvgPathHtml = '<path fill="#000000" d="M12.87,15.07L10.33,12.56L10.36,12.53C12.1,10.59 13.34,8.36 14.07,6H17V4H10V2H8V4H1V6H12.17C11.5,7.92 10.44,9.75 9,11.35C8.07,10.32 7.3,9.19 6.69,8H4.69C5.42,9.63 6.42,11.17 7.67,12.56L2.58,17.58L4,19L9,14L12.11,17.11L12.87,15.07M18.5,10H16.5L12,22H14L15.12,19H19.87L21,22H23L18.5,10M15.88,17L17.5,12.67L19.12,17H15.88Z" />';
+        var translateSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        translateSvg.style.width = "14px";
+        translateSvg.style.height = "14px";
+        translateSvg.style.position = "absolute";
+        translateSvg.style.top = "13px";
+        translateSvg.style.left = "12px";
+        translateSvg.innerHTML = translateSvgPathHtml;
+        translateSvg.setAttribute("viewBox", "0 0 24 24");
+        translateSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        translateSvg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+        translateSvg.classList.add("auth0-lock-icon", "auth0-lock-icon-box");
+        var iconSpan = document.createElement("span");
+        iconSpan.appendChild(translateSvg);
+
+        var inputWrap = document.createElement("div");
+        inputWrap.classList.add("auth0-lock-input-wrap", "auth0-lock-input-wrap-with-icon");
+        inputWrap.appendChild(iconSpan);
+        inputWrap.appendChild(languageSelect);
+
+        var inputBlock = document.createElement("div");
+        inputBlock.classList.add("auth0-lock-input-block", "auth0-lock-input-location");
+        inputBlock.style.margin = "10px";
+        inputBlock.appendChild(inputWrap);
+
+        var header = document.querySelector(".auth0-lock-header");
+        // insert after
+        header.parentNode.insertBefore(inputBlock, header.nextSibling);
+      }
+    </script>
+  </body>
+</html>

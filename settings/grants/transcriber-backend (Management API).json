@@ -1,0 +1,13 @@
+{
+  "client_id": "transcriber-backend",
+  "audience": "https://##AUTH0_DOMAIN##/api/v2/",
+  "scope": [
+    "read:client_grants",
+    "read:users",
+    "update:users",
+    "read:users_app_metadata",
+    "update:users_app_metadata",
+    "create:users_app_metadata",
+    "read:user_idp_tokens"
+  ]
+}

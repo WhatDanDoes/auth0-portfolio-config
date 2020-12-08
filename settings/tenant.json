@@ -1,0 +1,12 @@
+{
+  "flags": {
+    "enable_custom_domain_in_emails": true,
+    "disable_clickjack_protection_headers": true,
+    "use_scope_descriptions_for_consent": true
+  },
+  "friendly_name": "SIL Language Technology",
+  "picture_url": "https://www.sil.org/sites/default/files/sil-logo-blue-2017_1.png",
+  "support_email": "ltops@sil.org",
+  "support_url": "",
+  "enabled_locales": ["en"]
+}

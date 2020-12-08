@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "script": "./Sync user profile with xForge backend.js",
+  "name": "Sync user profile with xForge backend",
+  "order": 50,
+  "stage": "login_success"
+}

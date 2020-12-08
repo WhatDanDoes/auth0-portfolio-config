@@ -1,0 +1,5 @@
+{
+  "client_id": "Scripture Forge API (Test Application)",
+  "audience": "https://scriptureforge.org/",
+  "scope": ["sf_data"]
+}

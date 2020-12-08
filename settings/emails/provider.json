@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "credentials": {
+    "accessKeyId": "##SES_ACCESS_KEY_ID##",
+    "secretAccessKey": "##SES_SECRET_ACCESS_KEY##",
+    "region": "us-east-1"
+  },
+  "name": "ses",
+  "default_from_address": "##EMAIL_DEFAULT_FROM_ADDRESS##"
+}
