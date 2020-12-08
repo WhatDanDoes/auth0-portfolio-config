@@ -1,0 +1,6 @@
+{
+  "SF_CLIENT_SUBDOMAIN": "qa.",
+  "TRANSCRIBER_CLIENT_SUBDOMAIN_SUFFIX": "-qa",
+  "TRANSCRIBER_CLIENT_SUBDOMAIN": "qa.",
+  "AUTH0_DOMAIN": "silid-migration.auth0.com"
+}
