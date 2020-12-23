@@ -1,6 +1,6 @@
 {
-  "name": "silid-server",
-  "identifier": "https://id-dev.languagetechnology.org/",
+  "name": "sil-identity",
+  "identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/",
   "allow_offline_access": false,
   "enforce_policies": true,
   "scopes": [
