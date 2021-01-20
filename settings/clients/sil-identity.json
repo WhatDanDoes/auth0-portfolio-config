@@ -2,17 +2,12 @@
   "name": "SIL Identity",
   "allowed_clients": [],
   "allowed_logout_urls": [
-    "http://localhost:3001",
-    "https://id.whatdandoes.info",
     "https://##SILID_APP_HOSTNAME##.languagetechnology.org",
-    "https://##SILID_APP_HOSTNAME##.languagetechnology.org/cheerio",
-    "https://id.whatdandoes.info/cheerio"
+    "https://##SILID_APP_HOSTNAME##.languagetechnology.org/cheerio"
   ],
   "app_type": "non_interactive",
   "callbacks": [
-    "https://##SILID_APP_HOSTNAME##.languagetechnology.org/callback",
-    "http://localhost:3001/callback",
-    "https://id.whatdandoes.info/callback"
+    "https://##SILID_APP_HOSTNAME##.languagetechnology.org/callback"
   ],
   "client_aliases": [],
   "cross_origin_auth": false,
@@ -31,14 +26,6 @@
     "secret_encoded": false
   },
   "logo_uri": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/favicons/apple-icon-152x152.png",
-  "native_social_login": {
-    "apple": {
-      "enabled": false
-    },
-    "facebook": {
-      "enabled": false
-    }
-  },
   "oidc_conformant": true,
   "refresh_token": {
     "rotation_type": "non-rotating",
