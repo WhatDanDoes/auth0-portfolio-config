@@ -1,5 +1,5 @@
 {
-  "enabled": @@NEW_USER_SLACK_RULE_ENABLED@@,
+  "enabled": "@@NEW_USER_SLACK_RULE_ENABLED@@",
   "script": "./New User Slack Notification.js",
   "name": "New User Slack Notification",
   "order": 60,
