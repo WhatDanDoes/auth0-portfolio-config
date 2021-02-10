@@ -1,4 +1,9 @@
 {
+  "allowed_logout_urls": [
+    "https://##SILID_APP_HOSTNAME##.languagetechnology.org/cheerio",
+    "https://id.whatdandoes.info/cheerio",
+    "http://localhost:3001/cheerio"
+  ],
   "enabled_locales": [ "en" ],
   "flags": {
     "new_universal_login_experience_enabled": true,
