@@ -2,7 +2,7 @@
   "syntax": "liquid",
   "body": "./blocked_account.html",
   "from": "",
-  "subject": "{% if user.user_metadata.interface_language == 'az' %} Hesab IP-dən bağlanıb {% elsif user.user_metadata.interface_language == 'es' %} Cuenta bloqueada desde IP {% elsif user.user_metadata.interface_language == 'id' %} Akun diblokir dari IP {% elsif user.user_metadata.interface_language == 'kyu' %} Account ꤛꤢꤩ꤭ ꤢꤨ꤭ꤗꤟꤢꤩ꤬ꤙꤤ ꤊꤛꤢ꤭ ꤜꤢꤨ꤭ ꤘꤣ IP ꤔꤌꤣ꤬ꤟꤢꤪ {% elsif user.user_metadata.interface_language == 'pt-BR' %} Conta bloqueada do IP {% else %} Account blocked from IP {% endif %}",
+  "subject": "{% if user.user_metadata.interface_language == 'az' %} Hesab IP-dən bağlanıb {% elsif user.user_metadata.interface_language == 'es' %} Cuenta bloqueada desde IP {% elsif user.user_metadata.interface_language == 'fr' %} Compte bloqué à partir de l'adresse IP {% elsif user.user_metadata.interface_language == 'id' %} Akun diblokir dari IP {% elsif user.user_metadata.interface_language == 'kyu' %} Account ꤛꤢꤩ꤭ ꤢꤨ꤭ꤗꤟꤢꤩ꤬ꤙꤤ ꤊꤛꤢ꤭ ꤜꤢꤨ꤭ ꤘꤣ IP ꤔꤌꤣ꤬ꤟꤢꤪ {% elsif user.user_metadata.interface_language == 'pt-BR' %} Conta bloqueada do IP {% else %} Account blocked from IP {% endif %}",
   "urlLifetimeInSeconds": 432000,
   "template": "blocked_account",
   "enabled": true

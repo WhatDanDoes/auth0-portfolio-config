@@ -1,0 +1,20 @@
+{
+  "options": {
+    "scripts": {
+      "fetchUserProfile": "function(accessToken, ctx, cb) {\n  request.get('https://registry##PARATEXT_TRANSCRIBER_REGISTRY_SUBDOMAIN_SUFFIX##.paratext.org/api8/userinfo', {\n      headers: {\n        'Authorization': 'Bearer ' + accessToken\n      }\n    },\n    function(err, r, body) {\n      if (err) {\n        return cb(err);\n      }\n      try {\n        var profile = JSON.parse(body);\n        profile.user_id = profile.sub;\n        profile.name = profile.username;\n        delete profile.sub;\n        delete profile.pt_approved;\n        delete profile.primary_org_id;\n        cb(null, profile);\n      } catch (e) {\n        cb(e);\n      }\n    }\n  );\n}"
+    },
+    "client_id": "YDrJgjf8Mhd5H5xsa",
+    "client_secret": "##PARATEXT_TRANSCRIBER_CLIENT_SECRET##",
+    "authorizationURL": "https://registry##PARATEXT_TRANSCRIBER_REGISTRY_SUBDOMAIN_SUFFIX##.paratext.org/auth",
+    "tokenURL": "https://registry##PARATEXT_TRANSCRIBER_REGISTRY_SUBDOMAIN_SUFFIX##.paratext.org/api8/token",
+    "scope": "openid, email, projects:read, data_access, offline_access, projects.members:read, projects.members:write"
+  },
+  "strategy": "oauth2",
+  "name": "Paratext-Transcriber",
+  "is_domain_connection": false,
+  "enabled_clients": [
+    "SIL Transcriber",
+    "SIL Transcriber Desktop",
+    "transcriber-backend"
+  ]
+}

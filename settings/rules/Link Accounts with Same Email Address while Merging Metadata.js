@@ -32,6 +32,9 @@ function (user, context, callback) {
       if (err) {
         console.log('Error getting access token for API v2.', err);
         return cb("Error getting access token: " + err);
+      } else if (body.error) {
+        console.log('HTTP error response getting access token for API v2.');
+        return cb("Error getting access token: " + body.error.error_description);
       }
       global[cacheKey] = {
         accessToken: body.access_token,
@@ -49,7 +52,7 @@ function (user, context, callback) {
     configuration.AUTH0_CLIENT_SECRET,
     (err, accessToken) => {
       if (err) {
-        callback(err);
+        return callback(err);
       }
     
       request({
@@ -71,29 +74,39 @@ function (user, context, callback) {
         let data = JSON.parse(body);
         // Ignore non-verified users and current user, if present
         data = data.filter(u => u.email_verified && (u.user_id !== user.user_id));
-        if (data.length > 1) {
-          return callback(new Error('[!] Rule: Multiple user profiles already exist - cannot select base profile to link with'));
-        }
         if (data.length === 0) {
           console.log('[-] Skipping link rule');
           return callback(null, user, context);
         }
-    
-        const originalUser = data[0];
-        const provider = user.identities[0].provider;
-        const providerUserId = user.identities[0].user_id;
+        let primaryUser, secondaryUser;
+        if (user.app_metadata) {
+          console.log('[-] Merging other profile into the current profile')
+          primaryUser = user;
+          secondaryUser = data[0];
+        } else {
+          console.log('[-] Merging newly created profile into the original profile');
+          if (data.length > 1) {
+            console.log('[-] Multiple user profiles detected - using most recently modified profile as the primary profile');
+            data.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+          }
+          primaryUser = data[0];
+          secondaryUser = user;
+        }
+        const provider = secondaryUser.identities[0].provider;
+        const providerUserId = secondaryUser.identities[0].user_id;
+
         const mergeCustomizer = (objectValue, sourceValue) => {
           if (_.isArray(objectValue)) {
             return sourceValue.concat(objectValue);
           }
         };
-        const mergedUserMetadata = _.merge({}, user.user_metadata, originalUser.user_metadata, mergeCustomizer);
-        const mergedAppMetadata = _.merge({}, user.app_metadata, originalUser.app_metadata, mergeCustomizer);
-        auth0.users.updateAppMetadata(originalUser.user_id, mergedAppMetadata)
-          .then(auth0.users.updateUserMetadata(originalUser.user_id, mergedUserMetadata))
+        const mergedUserMetadata = _.merge({}, secondaryUser.user_metadata, primaryUser.user_metadata, mergeCustomizer);
+        const mergedAppMetadata = _.merge({}, secondaryUser.app_metadata, primaryUser.app_metadata, mergeCustomizer);
+        auth0.users.updateAppMetadata(primaryUser.user_id, mergedAppMetadata)
+          .then(auth0.users.updateUserMetadata(primaryUser.user_id, mergedUserMetadata))
           .then(() => {
             request.post({
-              url: auth0.baseUrl + '/users/' + originalUser.user_id + '/identities',
+              url: auth0.baseUrl + '/users/' + primaryUser.user_id + '/identities',
               headers: {
                 Authorization: 'Bearer ' + auth0.accessToken
               },
@@ -102,10 +115,10 @@ function (user, context, callback) {
               if (response && response.statusCode >= 400) {
                 return callback(new Error('Error linking account: ' + response.statusMessage));
               }
-              context.primaryUser = originalUser.user_id;
+              context.primaryUser = primaryUser.user_id;
               // the new user has been linked to the original user and no longer exists, so pass original user to the
               // next rule
-              callback(null, originalUser, context);
+              callback(null, primaryUser, context);
             });
           })
           .catch(err => callback(err));
