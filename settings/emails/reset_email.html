@@ -173,7 +173,7 @@
                     {% elsif user.user_metadata.interface_language == 'es' %}
                       ¡Ha enviado una solicitud de cambio de contraseña!
                     {% elsif user.user_metadata.interface_language == 'fr' %}
-                      You have submitted a password change request!
+                      Vous avez soumis une demande de changement de mot de passe !
                     {% elsif user.user_metadata.interface_language == 'id' %}
                       Anda telah mengirimkan permintaan perubahan kata sandi!
                     {% elsif user.user_metadata.interface_language == 'ko' %}
@@ -245,7 +245,7 @@
                       {% elsif user.user_metadata.interface_language == 'es' %}
                         Si fue usted, confirme el cambio de contraseña
                       {% elsif user.user_metadata.interface_language == 'fr' %}
-                        If it was you, confirm the password change
+                        Si c'était vous, confirmez le changement de mot de passe
                       {% elsif user.user_metadata.interface_language == 'id' %}
                         Jika itu Anda, konfirmasikan perubahan kata sandi
                       {% elsif user.user_metadata.interface_language == 'ko' %}
@@ -414,17 +414,17 @@
                     >
                       <tr>
                         <td
-                          align="center" bgcolor="#EB5424" role="presentation" style="border:none;border-radius:3px;cursor:auto;height:35px;padding:10px 25px;background:#EB5424;" valign="middle"
+                          align="center" bgcolor="#EB5424" role="presentation" style="border:none;border-radius:3px;cursor:auto;height:35px;padding:10px 2px;background:#EB5424;" valign="middle"
                         >
                           <a
-                            href="{{ url }}" style="background:#EB5424;color:white;font-family:'Avenir Next', Avenir, sans-serif;font-size:14px;font-weight:500;line-height:120%;Margin:0;text-decoration:none;text-transform:none;" target="_blank"
+                            href="{{ url }}" style="background:#EB5424;color:white;font-family:'Avenir Next', Avenir, sans-serif;font-size:14px;font-weight:500;line-height:120%;Margin:0;padding:10px 25px;text-decoration:none;text-transform:none;" target="_blank"
                           >
                           {% if user.user_metadata.interface_language == 'az' %}
                             TƏSDİQ EDİN
                           {% elsif user.user_metadata.interface_language == 'es' %}
                             CONFIRMAR
                           {% elsif user.user_metadata.interface_language == 'fr' %}
-                            CONFIRM
+                            CONFIRMER
                           {% elsif user.user_metadata.interface_language == 'id' %}
                             Konfirmasi
                           {% elsif user.user_metadata.interface_language == 'ko' %}
@@ -500,8 +500,8 @@
                       Si tiene algún problema con su cuenta, no dude en ponerse en contacto con nosotros respondiendo a este correo.
                       <br>¡Gracias!
                     {% elsif user.user_metadata.interface_language == 'fr' %}
-                      If you are having any issues with your account, please don't hesitate to contact us by replying to this mail.
-                      <br>Thanks!
+                      Si vous avez le moindre problème avec votre compte, n'hésitez pas à nous contacter en répondant à cet e-mail.
+                      <br>Merci!
                     {% elsif user.user_metadata.interface_language == 'id' %}
                       Jika Anda memiliki masalah dengan akun Anda, jangan ragu untuk menghubungi kami dengan membalas surat ini.
                       <br>Terimakasih!
@@ -581,8 +581,8 @@
                       Usted está recibiendo este correo electrónico porque tiene una cuenta en {{ friendly_name }}.
                       Si no está seguro de por qué está recibiendo esto, contáctenos a través de nuestro <a href="{{ support_url }}" style="color:#0a84ae;text-decoration:none">Centro de Soporte</a>.
                     {% elsif user.user_metadata.interface_language == 'fr' %}
-                      You're receiving this email because you have an account in {{ friendly_name }}.
-                      If you are not sure why you're receiving this, please contact us through our <a href="{{ support_url }}" style="color:#0a84ae;text-decoration:none">Support Center</a>.
+                      Vous recevez cet e-mail parce que vous avez un compte sur {{ friendly_name }}.
+                      Si vous vous demandez pourquoi vous recevez cette notification, veuillez nous contacter via notre <a href="{{ support_url }}" style="color:#0a84ae;text-decoration:none">Centre de support</a>.
                     {% elsif user.user_metadata.interface_language == 'id' %}
                       Anda menerima surel ini karena Anda memiliki akun di {{ friendly_name }}.
                       Jika Anda tidak yakin mengapa Anda menerima ini, silakan hubungi kami melalui <a href="{{ support_url }}" style="color:#0a84ae;text-decoration:none">Pusat Bantuan</a> kami.
@@ -590,8 +590,8 @@
                       You're receiving this email because you have an account in {{ friendly_name }}.
                       If you are not sure why you're receiving this, please contact us through our <a href="{{ support_url }}" style="color:#0a84ae;text-decoration:none">Support Center</a>.
                     {% elsif user.user_metadata.interface_language == 'kyu' %}
-                      You're receiving this email because you have an account in {{ friendly_name }}.
-                      If you are not sure why you're receiving this, please contact us through our <a href="{{ support_url }}" style="color:#0a84ae;text-decoration:none">Support Center</a>.
+                      ꤔꤟꤢꤧ꤬ ꤔꤟꤌꤣ꤭ꤟꤢꤪ account ꤒꤣ꤬ꤊꤟꤌꤣ꤬ ꤢ꤬ꤋꤢꤨ꤬ꤢ꤬ꤋꤛꤢꤩ꤭, ꤔꤟꤢꤧ꤬ ꤔꤟꤤꤙꤢꤧ꤬ ꤟꤢꤪ email ꤛꤢꤩ꤭ꤟꤢꤪ꤯
+                      ꤔꤟꤢꤧ꤬ ꤔꤟꤤꤙꤢꤧ꤬ ꤘꤣ ꤤ꤭ꤒꤢꤩ꤭ ꤢ꤬ꤋꤢꤨ꤬ꤢ꤬ꤋꤛꤢꤩ꤭ ꤒꤢꤩ꤭ ꤔꤌꤣ꤬, ꤔꤟꤢꤧ꤬ ꤊꤤ꤬ ꤞꤢꤧꤑꤢꤩ꤭ꤒꤥ꤬ ꤟꤢꤩꤚꤢꤪ ꤋꤛꤢꤞꤢꤧꤘꤥ꤭ ꤟꤢꤩꤏꤥ꤬ ꤟꤛꤢ꤭ ꤕꤟꤢꤧ꤬ ꤘꤣ ꤕꤚꤟꤢꤧ꤬ꤗꤟꤢꤩ꤬ꤡꤝꤟꤥꤒꤟꤢꤧ꤬ ꤕꤜꤢꤪꤗꤟꤢꤨ꤬ꤋꤢ꤭ꤏꤛꤢꤩ ꤢ꤬ꤥ꤬ ꤔꤌꤣ꤬꤯
                     {% elsif user.user_metadata.interface_language == 'pt-BR' %}
                       Você está recebendo este e-mail porque você tem uma conta em {{ friendly_name }}.
                       Se você não tiver certeza por que está recebendo este e-mail, por favor entre em contato conosco através do nosso <a href="{{ support_url }}" style="color:#0a84ae;text-decoration:none">Centro de Suporte</a>.

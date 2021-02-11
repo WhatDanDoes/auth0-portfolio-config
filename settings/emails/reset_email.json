@@ -2,7 +2,7 @@
   "syntax": "liquid",
   "body": "./reset_email.html",
   "from": "",
-  "subject": "{% if user.user_metadata.interface_language == 'az' %} Şifrənizi bərpa edin {% elsif user.user_metadata.interface_language == 'es' %} Restablecer contraseña {% elsif user.user_metadata.interface_language == 'id' %} Atur ulang kata sandi Anda {% elsif user.user_metadata.interface_language == 'kyu' %} ꤗꤟꤢꤩ꤬ꤕꤜꤤ꤭ꤊꤛꤢ꤭ ꤔꤟꤢꤧ꤬ password {% elsif user.user_metadata.interface_language == 'pt-BR' %} Redefinir sua senha {% elsif user.user_metadata.interface_language == 'ru' %} Сбросить пароль {% elsif user.user_metadata.interface_language == 'zh-CN' %} 重置您的密码 {% else %} Reset your password {% endif %}",
+  "subject": "{% if user.user_metadata.interface_language == 'az' %} Şifrənizi bərpa edin {% elsif user.user_metadata.interface_language == 'es' %} Restablecer contraseña {% elsif user.user_metadata.interface_language == 'fr' %} Réinitialisez votre mot de passe {% elsif user.user_metadata.interface_language == 'id' %} Atur ulang kata sandi Anda {% elsif user.user_metadata.interface_language == 'kyu' %} ꤗꤟꤢꤩ꤬ꤕꤜꤤ꤭ꤊꤛꤢ꤭ ꤔꤟꤢꤧ꤬ password {% elsif user.user_metadata.interface_language == 'pt-BR' %} Redefinir sua senha {% elsif user.user_metadata.interface_language == 'ru' %} Сбросить пароль {% elsif user.user_metadata.interface_language == 'zh-CN' %} 重置您的密码 {% else %} Reset your password {% endif %}",
   "urlLifetimeInSeconds": 432000,
   "template": "reset_email",
   "enabled": true
