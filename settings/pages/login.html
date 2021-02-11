@@ -9,6 +9,9 @@
       .auth0-lock.auth0-lock div.auth0-lock-content-wrapper {
         overflow: visible; /* prevent scrollbar that causes UX issues on mobile */
       }
+      .auth0-lock-cred-pane-internal-wrapper {
+        overflow-y: auto;
+      }
     </style>
   </head>
   <body>
@@ -52,11 +55,11 @@
         { value: "es", label: "Español" },
         { value: "ru", label: "Русский" },
         { value: "pt-BR", label: "Português" },
+        { value: "fr", label: "français" },
         { value: "id", label: "Bahasa Indonesia" },
         { value: "az", label: "Azərbaycanca" },
         { value: "lo", label: "ພາສາລາວ *" },
         { value: "kyu", label: "ꤊꤢ꤬ꤛꤢ꤭ꤜꤟꤤ꤬ (W. Kayah Li)" },
-        // { value: "fr", label: "français *" },
         // { value: "ko", label: "한국어 *" },
       ];
       var requestedLanguageOptions;

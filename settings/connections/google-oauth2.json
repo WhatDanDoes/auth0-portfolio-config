@@ -1,20 +1,10 @@
 {
-  "name": "google-oauth2",
-  "strategy": "google-oauth2",
-  "is_domain_connection": false,
-  "enabled_clients": [
-    "Default App",
-    "Scriptoria",
-    "Scripture Forge",
-    "SIL Transcriber",
-    "SIL Transcriber Desktop Extension",
-    "SIL Identity",
-    "SIL Identity Frontend"
-  ],
   "options": {
     "email": true,
     "profile": true,
     "scope": ["email", "profile"],
+    "client_secret": "##GOOGLE_CLIENT_SECRET##",
+    "client_id": "##GOOGLE_CLIENT_ID##",
     "allowed_audiences": "",
     "contacts": false,
     "blogger": false,
@@ -44,5 +34,15 @@
     "webmaster_tools": false,
     "coordinate": false,
     "coordinate_readonly": false
-  }
+  },
+  "strategy": "google-oauth2",
+  "name": "google-oauth2",
+  "is_domain_connection": false,
+  "enabled_clients": [
+    "Default App",
+    "Scriptoria",
+    "Scripture Forge",
+    "SIL Transcriber",
+    "SIL Transcriber Desktop"
+  ]
 }
