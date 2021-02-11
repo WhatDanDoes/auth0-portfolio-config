@@ -1,4 +1,9 @@
 {
+  "allowed_logout_urls": [
+    "https://##SILID_APP_HOSTNAME##.languagetechnology.org/cheerio",
+    "https://id.whatdandoes.info/cheerio",
+    "http://localhost:3001/cheerio"
+  ],
   "flags": {
     "enable_custom_domain_in_emails": true,
     "disable_clickjack_protection_headers": true,
