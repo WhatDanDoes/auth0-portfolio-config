@@ -1,6 +1,6 @@
 {
   "is_token_endpoint_ip_header_trusted": false,
-  "name": "SIL Identity Backend",
+  "name": "sil-identity-backend",
   "allowed_clients": [],
   "allowed_logout_urls": [
     "http://localhost:3001",
