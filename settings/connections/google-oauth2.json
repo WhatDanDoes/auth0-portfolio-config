@@ -8,7 +8,8 @@
     "Scripture Forge",
     "SIL Transcriber",
     "SIL Transcriber Desktop Extension",
-    "SIL Identity"
+    "SIL Identity",
+    "SIL Identity Frontend"
   ],
   "options": {
     "email": true,
