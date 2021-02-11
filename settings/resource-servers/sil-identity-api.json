@@ -1,5 +1,5 @@
 {
-  "name": "silid-server",
+  "name": "SIL Identity Backend API",
   "identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/",
   "allow_offline_access": false,
   "skip_consent_for_verifiable_first_party_clients": true,

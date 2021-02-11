@@ -42,9 +42,7 @@
   "app_type": "regular_web",
   "grant_types": [
     "authorization_code",
-    "implicit",
-    "refresh_token",
-    "client_credentials"
+    "refresh_token"
   ],
   "custom_login_page_on": true
 }
