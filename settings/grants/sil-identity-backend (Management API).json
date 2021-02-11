@@ -1,5 +1,5 @@
 {
-  "client_id": "SIL Identity Backend",
+  "client_id": "sil-identity-backend",
   "audience": "https://silid-migration.us.auth0.com/api/v2/",
   "scope": [
     "read:users",
