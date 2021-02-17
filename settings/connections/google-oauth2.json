@@ -43,9 +43,7 @@
     "auth0-deploy-cli-extension",
     "auth0-github-deploy",
     "Default App",
-    "Scriptoria",
     "Scripture Forge",
-    "SIL Identity Frontend",
-    "SIL Transcriber"
+    "SIL Identity Frontend"
   ]
 }

@@ -14,10 +14,7 @@
   "realms": ["Username-Password-Authentication"],
   "enabled_clients": [
     "Default App",
-    "Scriptoria",
     "Scripture Forge",
-    "SIL Identity Frontend",
-    "SIL Transcriber",
-    "SIL Transcriber Desktop"
+    "SIL Identity Frontend"
   ]
 }

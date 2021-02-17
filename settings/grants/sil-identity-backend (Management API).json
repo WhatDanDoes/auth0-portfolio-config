@@ -1,6 +1,6 @@
 {
   "client_id": "sil-identity-backend",
-  "audience": "https://silid-migration.us.auth0.com/api/v2/",
+  "audience": "https://##AUTH0_DOMAIN##/api/v2/",
   "scope": [
     "read:users",
     "update:users",
