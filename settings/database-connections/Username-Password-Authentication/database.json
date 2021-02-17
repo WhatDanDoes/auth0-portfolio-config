@@ -15,6 +15,7 @@
   "enabled_clients": [
     "Default App",
     "Scripture Forge",
-    "SIL Identity Frontend"
+    "SIL Identity Frontend",
+    "Wycliffe Photos"
   ]
 }
