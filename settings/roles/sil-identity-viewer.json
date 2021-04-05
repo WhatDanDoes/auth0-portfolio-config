@@ -4,39 +4,39 @@
   "permissions": [
     {
       "permission_name": "create:team-member",
-      "resource_server_identifier": "https://id-dev.languagetechnology.org/"
+      "resource_server_identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/"
     },
     {
       "permission_name": "create:teams",
-      "resource_server_identifier": "https://id-dev.languagetechnology.org/"
+      "resource_server_identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/"
     },
     {
       "permission_name": "delete:team-member",
-      "resource_server_identifier": "https://id-dev.languagetechnology.org/"
+      "resource_server_identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/"
     },
     {
       "permission_name": "delete:teams",
-      "resource_server_identifier": "https://id-dev.languagetechnology.org/"
+      "resource_server_identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/"
     },
     {
       "permission_name": "read:agents",
-      "resource_server_identifier": "https://id-dev.languagetechnology.org/"
+      "resource_server_identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/"
     },
     {
       "permission_name": "read:organizations",
-      "resource_server_identifier": "https://id-dev.languagetechnology.org/"
+      "resource_server_identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/"
     },
     {
       "permission_name": "read:teams",
-      "resource_server_identifier": "https://id-dev.languagetechnology.org/"
+      "resource_server_identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/"
     },
     {
       "permission_name": "update:agents",
-      "resource_server_identifier": "https://id-dev.languagetechnology.org/"
+      "resource_server_identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/"
     },
     {
       "permission_name": "update:teams",
-      "resource_server_identifier": "https://id-dev.languagetechnology.org/"
+      "resource_server_identifier": "https://##SILID_APP_HOSTNAME##.languagetechnology.org/"
     }
   ]
 }
