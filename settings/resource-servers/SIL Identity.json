@@ -1,5 +1,5 @@
 {
-  "name": "SIL Identity Backend API",
+  "name": "SIL Identity",
   "identifier": "https://id.languagetechnology.org/",
   "allow_offline_access": false,
   "skip_consent_for_verifiable_first_party_clients": true,
