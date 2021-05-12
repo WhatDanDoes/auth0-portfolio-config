@@ -42,10 +42,10 @@
   "enabled_clients": [
     "auth0-deploy-cli-extension",
     "auth0-github-deploy",
-    "Demo: React SPA Identity API",
-    "Demo: Regular App Identity API",
+    "Demo - React SPA Identity API",
+    "Demo - Regular App Identity API",
     "progressive-audio-recorder",
-    "sil-identity-backend",
+    "SIL Identity",
     "Wycliffe Photos"
   ]
 }
