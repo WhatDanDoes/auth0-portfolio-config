@@ -1,5 +1,0 @@
-{
-  "client_id": "Scripture Forge Backend",
-  "audience": "https://##AUTH0_DOMAIN##/api/v2/",
-  "scope": ["read:users", "update:users", "read:user_idp_tokens"]
-}

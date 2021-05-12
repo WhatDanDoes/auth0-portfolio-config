@@ -1,7 +1,0 @@
-{
-  "enabled": true,
-  "script": "./New User Slack Notification.js",
-  "name": "New User Slack Notification",
-  "order": 60,
-  "stage": "login_success"
-}
