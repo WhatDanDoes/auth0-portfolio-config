@@ -1,6 +1,6 @@
 {
   "is_token_endpoint_ip_header_trusted": false,
-  "name": "auth0-github-deploy",
+  "name": "Demo - Regular App Identity API",
   "is_first_party": true,
   "oidc_conformant": true,
   "sso_disabled": false,
@@ -14,13 +14,32 @@
     "idle_token_lifetime": 2592000,
     "rotation_type": "non-rotating"
   },
-  "logo_uri": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+  "allowed_logout_urls": [
+    "https://reg.0yy.ca",
+    "http://localhost:3000"
+  ],
+  "callbacks": [
+    "https://reg.0yy.ca/callback",
+    "http://localhost:3000/callback"
+  ],
+  "allowed_clients": [],
+  "native_social_login": {
+    "apple": {
+      "enabled": false
+    },
+    "facebook": {
+      "enabled": false
+    }
+  },
+  "logo_uri": "https://cdn.auth0.com/website/awards/auth0_badge.svg",
   "jwt_configuration": {
     "alg": "RS256",
     "lifetime_in_seconds": 36000,
     "secret_encoded": false
   },
+  "client_aliases": [],
   "token_endpoint_auth_method": "client_secret_post",
+  "app_type": "regular_web",
   "grant_types": [
     "authorization_code",
     "implicit",

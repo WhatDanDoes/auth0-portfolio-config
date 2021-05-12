@@ -1,6 +1,6 @@
 {
   "is_token_endpoint_ip_header_trusted": false,
-  "name": "auth0-github-deploy",
+  "name": "Wycliffe Photos",
   "is_first_party": true,
   "oidc_conformant": true,
   "sso_disabled": false,
@@ -14,18 +14,38 @@
     "idle_token_lifetime": 2592000,
     "rotation_type": "non-rotating"
   },
-  "logo_uri": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+  "allowed_clients": [],
+  "allowed_logout_urls": [
+    "https://wycliffe.photos/cheerio",
+    "https://merman.whatdandoes.info/cheerio",
+    "https://0yy.ca/cheerio"
+  ],
+  "callbacks": [
+    "https://wycliffe.photos/callback",
+    "http://localhost:3001/callback",
+    "https://merman.whatdandoes.info/callback",
+    "https://0yy.ca/callback"
+  ],
+  "native_social_login": {
+    "apple": {
+      "enabled": false
+    },
+    "facebook": {
+      "enabled": false
+    }
+  },
+  "logo_uri": "https://wycliffe.photos/images/bpe-logo.png",
   "jwt_configuration": {
     "alg": "RS256",
     "lifetime_in_seconds": 36000,
     "secret_encoded": false
   },
+  "client_aliases": [],
   "token_endpoint_auth_method": "client_secret_post",
+  "app_type": "regular_web",
   "grant_types": [
     "authorization_code",
-    "implicit",
-    "refresh_token",
-    "client_credentials"
+    "refresh_token"
   ],
   "custom_login_page_on": true
 }

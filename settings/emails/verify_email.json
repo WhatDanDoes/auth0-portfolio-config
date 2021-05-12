@@ -3,6 +3,7 @@
   "body": "./verify_email.html",
   "from": "",
   "subject": "{% if user.user_metadata.interface_language == 'az' %} E-poçtunuzu təsdiq edin {% elsif user.user_metadata.interface_language == 'es' %} Verificar su correo electrónico {% elsif user.user_metadata.interface_language == 'fr' %} Vérifiez votre e-mail {% elsif user.user_metadata.interface_language == 'id' %} Verifikasi surel Anda {% elsif user.user_metadata.interface_language == 'kyu' %} ꤢꤩ꤬ꤊꤜꤟꤢꤪ꤬ꤗꤢ꤬ ꤔꤟꤢꤧ꤬ email {% elsif user.user_metadata.interface_language == 'pt-BR' %} Verifique seu e-mail {% else %} Verify your email {% endif %}",
+  "resultUrl": "{{ application.callback_domain }}/logout",
   "urlLifetimeInSeconds": 432000,
   "template": "verify_email",
   "enabled": true

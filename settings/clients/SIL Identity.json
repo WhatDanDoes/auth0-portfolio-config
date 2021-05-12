@@ -1,0 +1,55 @@
+{
+  "is_token_endpoint_ip_header_trusted": false,
+  "name": "SIL Identity",
+  "allowed_clients": [],
+  "allowed_logout_urls": [
+    "http://localhost:3001",
+    "https://id.whatdandoes.info",
+    "https://id.languagetechnology.org",
+    "https://id.languagetechnology.org/cheerio",
+    "https://id.whatdandoes.info/cheerio",
+    "http://localhost:3001/cheerio"
+  ],
+  "callbacks": [
+    "https://id.languagetechnology.org/callback",
+    "http://localhost:3001/callback",
+    "https://id.whatdandoes.info/callback",
+    "https://auth.whatdandoes.info/login/callback"
+  ],
+  "cross_origin_auth": false,
+  "is_first_party": true,
+  "logo_uri": "https://id.languagetechnology.org/favicons/apple-icon-152x152.png",
+  "native_social_login": {
+    "apple": {
+      "enabled": false
+    },
+    "facebook": {
+      "enabled": false
+    }
+  },
+  "oidc_conformant": true,
+  "refresh_token": {
+    "expiration_type": "non-expiring",
+    "idle_token_lifetime": 2592000,
+    "infinite_idle_token_lifetime": true,
+    "infinite_token_lifetime": true,
+    "leeway": 0,
+    "token_lifetime": 31557600,
+    "rotation_type": "non-rotating"
+  },
+  "sso_disabled": false,
+  "jwt_configuration": {
+    "alg": "RS256",
+    "lifetime_in_seconds": 36000,
+    "secret_encoded": false
+  },
+  "client_aliases": [],
+  "token_endpoint_auth_method": "client_secret_post",
+  "app_type": "non_interactive",
+  "grant_types": [
+    "refresh_token",
+    "client_credentials",
+    "authorization_code"
+  ],
+  "custom_login_page_on": true
+}

@@ -1,7 +1,0 @@
-{
-  "enabled": true,
-  "script": "./Add language to user metadata.js",
-  "name": "Add language to user metadata",
-  "order": 30,
-  "stage": "login_success"
-}

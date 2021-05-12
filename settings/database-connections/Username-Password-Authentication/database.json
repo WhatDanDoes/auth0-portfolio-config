@@ -5,17 +5,19 @@
       "return_enroll_settings": true
     },
     "passwordPolicy": "good",
-    "brute_force_protection": true,
-    "strategy_version": 2
+    "strategy_version": 2,
+    "brute_force_protection": true
   },
   "strategy": "auth0",
   "name": "Username-Password-Authentication",
   "is_domain_connection": false,
-  "realms": ["Username-Password-Authentication"],
+  "realms": [
+    "Username-Password-Authentication"
+  ],
   "enabled_clients": [
-    "Default App",
-    "Scripture Forge",
-    "SIL Identity Frontend",
-    "Wycliffe Photos"
+    "Demo - React SPA Identity API",
+    "Demo - Regular App Identity API",
+    "progressive-audio-recorder",
+    "SIL Identity"
   ]
 }

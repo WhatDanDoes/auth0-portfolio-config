@@ -1,7 +1,0 @@
-{
-  "enabled": true,
-  "script": "./Link Accounts with Same Email Address while Merging Metadata.js",
-  "name": "Link Accounts with Same Email Address while Merging Metadata",
-  "order": 10,
-  "stage": "login_success"
-}
