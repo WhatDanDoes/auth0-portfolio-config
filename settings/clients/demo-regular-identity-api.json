@@ -31,6 +31,7 @@
       "enabled": false
     }
   },
+  "logo_uri": "https://cdn.auth0.com/website/awards/auth0_badge.svg",
   "jwt_configuration": {
     "alg": "RS256",
     "lifetime_in_seconds": 36000,
