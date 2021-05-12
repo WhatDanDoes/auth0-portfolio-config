@@ -1,2 +1,2 @@
 *.sw*
-silid-migration-config.json
+*-config.json
