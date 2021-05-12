@@ -43,9 +43,9 @@
     "auth0-deploy-cli-extension",
     "auth0-github-deploy",
     "progressive-audio-recorder",
-    "Regular Profile App",
+    "Demo: Regular App Identity API",
+    "Demo: React SPA Identity API",
     "sil-identity-backend",
-    "SPA Profile App",
     "Wycliffe Photos"
   ]
 }

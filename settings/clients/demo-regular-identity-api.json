@@ -1,6 +1,6 @@
 {
   "is_token_endpoint_ip_header_trusted": false,
-  "name": "Regular Profile App",
+  "name": "Demo: Regular App Identity API",
   "is_first_party": true,
   "oidc_conformant": true,
   "sso_disabled": false,

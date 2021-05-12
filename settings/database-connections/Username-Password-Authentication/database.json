@@ -16,8 +16,8 @@
   ],
   "enabled_clients": [
     "progressive-audio-recorder",
-    "Regular Profile App",
-    "sil-identity-backend",
-    "SPA Profile App"
+    "Demo: Regular App Identity API",
+    "Demo: React SPA Identity API",
+    "sil-identity-backend"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "is_token_endpoint_ip_header_trusted": false,
-  "name": "SPA Profile App",
+  "name": "Demo: React SPA Identity API",
   "is_first_party": true,
   "oidc_conformant": true,
   "sso_disabled": false,

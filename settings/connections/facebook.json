@@ -50,7 +50,7 @@
   "is_domain_connection": false,
   "enabled_clients": [
     "progressive-audio-recorder",
-    "Regular Profile App",
-    "SPA Profile App"
+    "Demo: Regular App Identity API",
+    "Demo: React SPA Identity API"
   ]
 }
