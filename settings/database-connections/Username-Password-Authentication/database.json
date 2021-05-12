@@ -15,9 +15,9 @@
     "Username-Password-Authentication"
   ],
   "enabled_clients": [
-    "progressive-audio-recorder",
-    "Demo: Regular App Identity API",
     "Demo: React SPA Identity API",
+    "Demo: Regular App Identity API",
+    "progressive-audio-recorder",
     "sil-identity-backend"
   ]
 }

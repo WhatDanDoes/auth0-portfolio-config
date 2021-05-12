@@ -49,8 +49,8 @@
   "name": "facebook",
   "is_domain_connection": false,
   "enabled_clients": [
-    "progressive-audio-recorder",
+    "Demo: React SPA Identity API",
     "Demo: Regular App Identity API",
-    "Demo: React SPA Identity API"
+    "progressive-audio-recorder"
   ]
 }
