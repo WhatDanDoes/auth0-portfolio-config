@@ -35,6 +35,7 @@
     }
   },
   "logo_uri": "https://wycliffe.photos/images/bpe-logo.png",
+  "description": "Social PWA with image capture, upload, and viewing.",
   "jwt_configuration": {
     "alg": "RS256",
     "lifetime_in_seconds": 36000,

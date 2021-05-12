@@ -32,6 +32,7 @@
     }
   },
   "logo_uri": "https://0yy.ca/images/mic-logo.png",
+  "description": "Social PWA with audio capture, upload, and playback.",
   "jwt_configuration": {
     "alg": "RS256",
     "lifetime_in_seconds": 36000,

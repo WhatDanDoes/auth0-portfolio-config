@@ -38,6 +38,7 @@
     "rotation_type": "non-rotating"
   },
   "sso_disabled": false,
+  "description": "Client-facing SIL Identity application and resource server",
   "jwt_configuration": {
     "alg": "RS256",
     "lifetime_in_seconds": 36000,
