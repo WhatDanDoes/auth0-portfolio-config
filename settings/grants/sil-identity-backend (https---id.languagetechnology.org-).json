@@ -1,0 +1,22 @@
+{
+  "client_id": "sil-identity-backend",
+  "audience": "https://id.languagetechnology.org/",
+  "scope": [
+    "read:organizations",
+    "create:organizations",
+    "update:organizations",
+    "delete:organizations",
+    "read:teams",
+    "create:teams",
+    "update:teams",
+    "delete:teams",
+    "create:agents",
+    "read:agents",
+    "update:agents",
+    "delete:agents",
+    "add:organization-member",
+    "delete:organization-member",
+    "delete:team-member",
+    "create:team-member"
+  ]
+}

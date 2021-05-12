@@ -1,16 +1,21 @@
 {
   "options": {
+    "scope": "openid, email, projects:read, data_access, offline_access, projects.members:read, projects.members:write",
     "scripts": {
       "fetchUserProfile": "function(accessToken, ctx, cb) {\n  request.get('https://registry.paratext.org/api8/userinfo', {\n      headers: {\n        'Authorization': 'Bearer ' + accessToken\n      }\n    },\n    function(err, r, body) {\n      if (err) {\n        return cb(err);\n      }\n      try {\n        var profile = JSON.parse(body);\n        profile.user_id = profile.sub;\n        profile.name = profile.username;\n        delete profile.sub;\n        delete profile.pt_approved;\n        delete profile.primary_org_id;\n        cb(null, profile);\n      } catch (e) {\n        cb(e);\n      }\n    }\n  );\n}"
     },
+    "tokenURL": "https://registry.paratext.org/api8/token",
     "client_id": "##PARATEXT_CLIENT_ID##",
     "client_secret": "##PARATEXT_CLIENT_SECRET##",
-    "authorizationURL": "https://registry.paratext.org/auth",
-    "tokenURL": "https://registry.paratext.org/api8/token",
-    "scope": "openid, email, projects:read, data_access, offline_access, projects.members:read, projects.members:write"
+    "authorizationURL": "https://registry.paratext.org/auth"
   },
   "strategy": "oauth2",
   "name": "paratext",
   "is_domain_connection": false,
-  "enabled_clients": ["Scripture Forge"]
+  "enabled_clients": [
+    "progressive-audio-recorder",
+    "Regular Profile App",
+    "Scripture Forge",
+    "SPA Profile App"
+  ]
 }

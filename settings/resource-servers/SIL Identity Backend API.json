@@ -1,0 +1,77 @@
+{
+  "name": "SIL Identity Backend API",
+  "identifier": "https://id.languagetechnology.org/",
+  "allow_offline_access": false,
+  "skip_consent_for_verifiable_first_party_clients": true,
+  "token_lifetime": 86400,
+  "token_lifetime_for_web": 7200,
+  "signing_alg": "RS256",
+  "scopes": [
+    {
+      "value": "read:organizations",
+      "description": "Read your organizations"
+    },
+    {
+      "value": "create:organizations",
+      "description": "Create an organization"
+    },
+    {
+      "value": "update:organizations",
+      "description": "Update an organization"
+    },
+    {
+      "value": "delete:organizations",
+      "description": "Delete your organizations"
+    },
+    {
+      "value": "read:teams",
+      "description": "Read your teams"
+    },
+    {
+      "value": "create:teams",
+      "description": "Create a team"
+    },
+    {
+      "value": "update:teams",
+      "description": "Update a team"
+    },
+    {
+      "value": "delete:teams",
+      "description": "Delete your teams"
+    },
+    {
+      "value": "create:agents",
+      "description": "Create an agent"
+    },
+    {
+      "value": "read:agents",
+      "description": "Read agents"
+    },
+    {
+      "value": "update:agents",
+      "description": "Update an agent"
+    },
+    {
+      "value": "delete:agents",
+      "description": "Delete agents"
+    },
+    {
+      "value": "add:organization-member",
+      "description": "Add a member to your organization"
+    },
+    {
+      "value": "delete:organization-member",
+      "description": "Delete an organization member"
+    },
+    {
+      "value": "delete:team-member",
+      "description": "Delete a member from your team"
+    },
+    {
+      "value": "create:team-member",
+      "description": "Add a member to your team"
+    }
+  ],
+  "enforce_policies": true,
+  "token_dialect": "access_token_authz"
+}

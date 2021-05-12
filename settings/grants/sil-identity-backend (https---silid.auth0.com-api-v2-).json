@@ -1,0 +1,14 @@
+{
+  "client_id": "sil-identity-backend",
+  "audience": "https://silid.auth0.com/api/v2/",
+  "scope": [
+    "read:users",
+    "update:users",
+    "delete:users",
+    "create:users",
+    "read:users_app_metadata",
+    "update:users_app_metadata",
+    "read:clients",
+    "read:roles"
+  ]
+}

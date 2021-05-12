@@ -42,9 +42,11 @@
   "enabled_clients": [
     "auth0-deploy-cli-extension",
     "auth0-github-deploy",
-    "Default App",
+    "progressive-audio-recorder",
+    "Regular Profile App",
     "Scripture Forge",
-    "SIL Identity Frontend",
+    "sil-identity-backend",
+    "SPA Profile App",
     "Wycliffe Photos"
   ]
 }

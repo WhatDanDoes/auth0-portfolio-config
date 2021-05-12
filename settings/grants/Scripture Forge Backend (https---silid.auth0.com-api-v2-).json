@@ -1,0 +1,9 @@
+{
+  "client_id": "Scripture Forge Backend",
+  "audience": "https://silid.auth0.com/api/v2/",
+  "scope": [
+    "read:users",
+    "update:users",
+    "read:user_idp_tokens"
+  ]
+}

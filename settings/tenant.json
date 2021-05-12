@@ -1,17 +1,29 @@
 {
   "allowed_logout_urls": [
-    "https://##SILID_APP_HOSTNAME##.languagetechnology.org/cheerio",
+    "https://id.languagetechnology.org/cheerio",
     "https://id.whatdandoes.info/cheerio",
     "http://localhost:3001/cheerio"
   ],
+  "enabled_locales": [
+    "en"
+  ],
   "flags": {
     "enable_custom_domain_in_emails": false,
+    "new_universal_login_experience_enabled": true,
+    "universal_login": true,
+    "use_scope_descriptions_for_consent": true,
     "disable_clickjack_protection_headers": true,
-    "use_scope_descriptions_for_consent": true
+    "include_email_in_reset_pwd_redirect": true,
+    "include_email_in_verify_email_redirect": true
   },
   "friendly_name": "SIL Language Technology",
   "picture_url": "https://www.sil.org/sites/default/files/sil-logo-blue-2017_1.png",
   "support_email": "ltops@sil.org",
   "support_url": "",
-  "enabled_locales": ["en"]
+  "universal_login": {
+    "colors": {
+      "page_background": "#000000",
+      "primary": "#005c99"
+    }
+  }
 }
