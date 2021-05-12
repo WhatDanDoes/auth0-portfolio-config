@@ -37,3 +37,10 @@ When `silid` tenant configurations needs to be moved or reset, execute the follo
 a0deploy import --config_file silid-config.json --input_file /path/to/silid-infra-auth0/settings
 ```
 
+## Making destructive changes
+
+The `AUTH0_ALLOW_DELETE` setting in `silid-config.json` is set to `false` as a safeguard. If a configuration file is removed from `settings/`, the corresponding configuration will not be removed from Auth0. Set this value to `true`:
+
+```
+  "AUTH0_ALLOW_DELETE": true,
+```
