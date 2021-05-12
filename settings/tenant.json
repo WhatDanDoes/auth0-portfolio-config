@@ -1,6 +1,7 @@
 {
   "allowed_logout_urls": [
     "https://id.languagetechnology.org/cheerio",
+    "https://id-dev.languagetechnology.org/cheerio",
     "https://id.whatdandoes.info/cheerio",
     "http://localhost:3001/cheerio"
   ],
