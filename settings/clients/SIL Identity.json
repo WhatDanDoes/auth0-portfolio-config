@@ -6,12 +6,15 @@
     "http://localhost:3001",
     "https://id.whatdandoes.info",
     "https://id.languagetechnology.org",
+    "https://id-dev.languagetechnology.org",
     "https://id.languagetechnology.org/cheerio",
+    "https://id-dev.languagetechnology.org/cheerio",
     "https://id.whatdandoes.info/cheerio",
     "http://localhost:3001/cheerio"
   ],
   "callbacks": [
     "https://id.languagetechnology.org/callback",
+    "https://id-dev.languagetechnology.org/callback",
     "http://localhost:3001/callback",
     "https://id.whatdandoes.info/callback",
     "https://auth.whatdandoes.info/login/callback"
