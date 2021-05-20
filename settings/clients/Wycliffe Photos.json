@@ -17,14 +17,12 @@
   "allowed_clients": [],
   "allowed_logout_urls": [
     "https://wycliffe.photos/cheerio",
-    "https://merman.whatdandoes.info/cheerio",
-    "https://0yy.ca/cheerio"
+    "https://merman.whatdandoes.info/cheerio"
   ],
   "callbacks": [
     "https://wycliffe.photos/callback",
     "http://localhost:3001/callback",
-    "https://merman.whatdandoes.info/callback",
-    "https://0yy.ca/callback"
+    "https://merman.whatdandoes.info/callback"
   ],
   "native_social_login": {
     "apple": {
