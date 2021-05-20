@@ -1,0 +1,9 @@
+{
+  "AUTH0_DOMAIN": "silid.auth0.com",
+  "AUTH0_CLIENT_ID": "HFB2wUA288T9UuIXcN78jwSN9SbIEexF",
+  "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
+    "AUTH0_TENANT_NAME": "silid"
+  },
+  "AUTH0_ALLOW_DELETE": true,
+  "AUTH0_EXCLUDED_RULES": []
+}
