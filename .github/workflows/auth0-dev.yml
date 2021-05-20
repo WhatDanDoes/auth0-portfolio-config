@@ -17,5 +17,5 @@ jobs:
         run: npm install -g auth0-deploy-cli
       - name: Import changes to the Auth0 staging account
         env:
-          AUTH0_CLIENT_SECRET: ${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}
+          AUTH0_CLIENT_SECRET: ${{ secrets.DEV_AUTH0_CLIENT_SECRET }}
         run: npm run import:dev
