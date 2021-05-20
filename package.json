@@ -1,0 +1,27 @@
+{
+  "name": "silid-infra-auth0",
+  "version": "0.0.0",
+  "description": "Auth0 silid tenant configuration management",
+  "scripts": {
+    "export:dev": "a0deploy export --config_file silid-config.json --format directory --output_folder ./settings",
+    "import:dev": "a0deploy import --config_file ./config/dev.json --input_file ./settings",
+    "import:staging": "a0deploy import --config_file ./config/staging.json --input_file ./settings",
+    "import:prod": "a0deploy import --config_file ./config/prod.json --input_file ./settings"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sillsdev/silid-infra-auth0.git"
+  },
+  "keywords": [
+    "auth0",
+    "silid",
+    "tenant",
+    "config"
+  ],
+  "author": "Daniel Bidulock",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sillsdev/silid-infra-auth0/issues"
+  },
+  "homepage": "https://github.com/sillsdev/silid-infra-auth0#readme"
+}
