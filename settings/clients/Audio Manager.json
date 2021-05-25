@@ -1,0 +1,33 @@
+{
+  "is_token_endpoint_ip_header_trusted": false,
+  "name": "Audio Manager",
+  "is_first_party": true,
+  "oidc_conformant": true,
+  "sso_disabled": false,
+  "cross_origin_auth": false,
+  "allowed_clients": [],
+  "allowed_logout_urls": [
+    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org"
+  ],
+  "callbacks": [
+    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback"
+  ],
+  "logo_uri": "http://help.siltranscriber.org/en/faviconT.png",
+  "client_metadata": {
+    "isAudioManagerApp": "true",
+    "domain": "##AUDIOMANAGER_CLIENT_SUBDOMAIN##siltranscriber.org"
+  },
+  "jwt_configuration": {
+    "alg": "RS256",
+    "lifetime_in_seconds": 36000,
+    "secret_encoded": false
+  },
+  "client_aliases": [],
+  "token_endpoint_auth_method": "none",
+  "app_type": "spa",
+  "grant_types": ["authorization_code", "implicit", "refresh_token"],
+  "web_origins": [
+    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org"
+  ],
+  "custom_login_page_on": true
+}

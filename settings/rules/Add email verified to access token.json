@@ -1,0 +1,7 @@
+{
+    "enabled": true,
+    "script": "./Add email verified to access token.js",
+    "name": "Add email verified to access token",
+    "order": 70,
+    "stage": "login_success"
+  }
