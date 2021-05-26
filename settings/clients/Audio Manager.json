@@ -14,7 +14,6 @@
   ],
   "logo_uri": "http://help.siltranscriber.org/en/faviconT.png",
   "client_metadata": {
-    "isAudioManagerApp": "true",
     "domain": "##AUDIOMANAGER_CLIENT_SUBDOMAIN##siltranscriber.org"
   },
   "jwt_configuration": {
