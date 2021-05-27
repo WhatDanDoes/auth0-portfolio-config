@@ -12,6 +12,14 @@
   "callbacks": [
     "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback"
   ],
+  "native_social_login": {
+    "apple": {
+      "enabled": false
+    },
+    "facebook": {
+      "enabled": false
+    }
+  },
   "logo_uri": "http://help.siltranscriber.org/en/faviconT.png",
   "client_metadata": {
     "domain": "##AUDIOMANAGER_CLIENT_SUBDOMAIN##siltranscriber.org"
