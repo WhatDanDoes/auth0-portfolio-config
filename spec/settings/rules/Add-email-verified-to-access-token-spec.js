@@ -3,10 +3,10 @@ const fs = require('fs');
 /**
  * 2021-5-27
  *
- * These samples were obtained from the "Save and try" manual debug facility
- * provided by Auth0's_Rules_ interface.
+ * These samples were obtained from the _Save and try_ manual debug facility
+ * provided by Auth0's _Rules_ interface.
  *
- * Update as they are updated at Auth0.
+ * Update these as they are updated at Auth0.
  */
 const _agent = require('../../fixtures/agent.json');
 const _context = require('../../fixtures/context.json');
@@ -34,7 +34,7 @@ describe('Add-email-verified-to-access-token', () => {
      *   `SyntaxError: Function statements require a function name`
      *
      * Prepping the actual rule for testing requires storing the _anonymous_
-     * rule function in a variable. I.e., I am defining the rule to be tested
+     * rule function in a variable. I.e., I am defining the rule under test 
      * as an expression.
      */
     fs.readFile('./settings/rules/Add\ email\ verified\ to\ access\ token.js', 'utf8', (err, data) => {
@@ -113,6 +113,7 @@ describe('Add-email-verified-to-access-token', () => {
     });
 
     describe('when authenticated through Audio Manager', () => {
+
       it('adds namespaced email_verified property to access token', done => {
         const clientConfig = require('../../../settings/clients/Audio\ Manager.json');
         context.clientName = clientConfig.name;
@@ -159,6 +160,9 @@ describe('Add-email-verified-to-access-token', () => {
       it('does not modify the access token on any of the client config files', done => {
         let ruleCalls = 0;
 
+        /**
+         * Test every committed client config currently stored in this repository
+         */
         function testConfigs(files) {
           // Reset
           context = { ..._context, accessToken: {} };
