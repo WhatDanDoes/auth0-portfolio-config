@@ -20,6 +20,7 @@ jobs:
           NODE_ENV: 'test'
         run: npm test
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Download files from the current repository
