@@ -1,0 +1,15 @@
+{
+  "name": "jdoe@foobar.com",
+  "email": "jdoe@foobar.com",
+  "user_id": "auth0|0123456789",
+  "nickname": "jdoe",
+  "picture": "http://foobar.com/pictures/jdoe.png",
+  "identities": [
+    {
+      "provider": "auth0",
+      "user_id": "0123456789",
+      "connection": "Username-Password-Connection",
+      "isSocial": false
+    }
+  ]
+}
