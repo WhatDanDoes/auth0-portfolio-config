@@ -34,7 +34,7 @@ describe('Add-email-verified-to-access-token', () => {
      *   `SyntaxError: Function statements require a function name`
      *
      * Prepping the actual rule for testing requires storing the _anonymous_
-     * rule function in a variable. I.e., I am defining the rule under test 
+     * rule function in a variable. I.e., I am defining the rule under test
      * as an expression.
      */
     fs.readFile('./settings/rules/Add\ email\ verified\ to\ access\ token.js', 'utf8', (err, data) => {
@@ -106,6 +106,10 @@ describe('Add-email-verified-to-access-token', () => {
     });
   });
 
+  /**
+   * If `email` is requested, `email_verified` is set to whatever is in
+   * `agent.email_verified`
+   */
   describe('email claimed', () => {
 
     beforeEach(() => {
@@ -164,7 +168,7 @@ describe('Add-email-verified-to-access-token', () => {
          * Test every committed client config currently stored in this repository
          */
         function testConfigs(files) {
-          // Reset
+          // Reset (as in the first `beforeEach`)
           context = { ..._context, accessToken: {} };
 
           if (!files.length) {
@@ -199,6 +203,7 @@ describe('Add-email-verified-to-access-token', () => {
           }
         };
 
+        // Read all the client configs and start test
         fs.readdir('./settings/clients', (err, files) => {
           if (err) return done.fail();
           testConfigs(files);
