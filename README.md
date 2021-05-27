@@ -13,6 +13,22 @@ Changes made to the `main` branch are deployed automatically to the Auth0 tenant
 
 Assuming the changes submitted are well-formed and only impact the target app, they will reviewed, approved, merged into `main`, and deployed. Upon successful deployment, the _feature_ branch will be deleted.
 
+# Setup
+
+This installs the modules required for testing:
+
+```
+npm install
+```
+
+# Test
+
+All tests must pass before merging to `main`.
+
+```
+npm test
+```
+
 # Under the hood
 
 This section is included as a reference and resource for the curious. Teams updating app configurations _do not_ use the CLI tool directly. Export operations are executed with GitHub [Actions](https://github.com/features/actions).
