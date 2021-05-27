@@ -12,7 +12,7 @@
   ],
   "callbacks": [
     "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback",
-    "https://spa.0yy.ca/callback"
+    "https://spa.0yy.ca"
   ],
   "native_social_login": {
     "apple": {
