@@ -13,9 +13,20 @@ const _context = require('../../fixtures/context.json');
 
 describe('Add-email-verified-to-access-token', () => {
 
-  let rule;
+  const NAMESPACE = 'https://sil.org/';
 
-  beforeEach(() => {
+  let rule, agent, context;
+
+  beforeEach(done => {
+
+    /**
+     * These are the parameters to be modified for individual tests.
+     * This resets them to their defaults before each test
+     */
+    agent = { ..._agent };
+    // Careful! Spread only does a shallow copy. Hence the explicit accessToken reset
+    context = { ..._context, accessToken: {} };
+
     /**
      * Try loading the relevant rule in the conventional way with `require`.
      * You will receive an error:
@@ -53,18 +64,142 @@ describe('Add-email-verified-to-access-token', () => {
 
       // `rule` is now a testable function
       rule = makeFunc();
+
+      done();
     });
   });
 
-  describe('when authenticated through Audio Manager', () => {
-    it('adds email_verified property to access token', done => {
-      done.fail();
+  /**
+   * If `email` is not part of the requested scope, `email_verified` will be
+   * `undefined`.
+   */
+  describe('no email claim', () => {
+
+    beforeEach(() => {
+      expect(agent.email_verified).toBeUndefined();
+    });
+
+    describe('when authenticated through Audio Manager', () => {
+
+      it('adds and sets namespaced value to false if email_verified is undefined', done => {
+        const clientConfig = require('../../../settings/clients/Audio\ Manager.json');
+        context.clientName = clientConfig.name;
+
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+          expect(cntxt.accessToken[`${NAMESPACE}email_verified`]).toBe(false);
+          done();
+        });
+      });
+
+      it('adds and sets namespaced value to false if email_verified is undefined on call from desktop version', done => {
+        const clientConfig = require('../../../settings/clients/Audio\ Manager\ Desktop.json');
+        context.clientName = clientConfig.name;
+
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(cntxt.accessToken[`${NAMESPACE}email_verified`]).toBe(false);
+          done();
+        });
+      });
     });
   });
 
-  describe('when authenticated through any other app', () => {
-    it('does not modify the access token', done => {
-      done.fail();
+  describe('email claimed', () => {
+
+    beforeEach(() => {
+      agent.email_verified = true;
+    });
+
+    describe('when authenticated through Audio Manager', () => {
+      it('adds namespaced email_verified property to access token', done => {
+        const clientConfig = require('../../../settings/clients/Audio\ Manager.json');
+        context.clientName = clientConfig.name;
+
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(cntxt.accessToken[`${NAMESPACE}email_verified`]).toBe(true);
+          done();
+        });
+      });
+
+      it('adds namespaced email_verified property to access token on call from desktop version', done => {
+        const clientConfig = require('../../../settings/clients/Audio\ Manager\ Desktop.json');
+        context.clientName = clientConfig.name;
+
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(cntxt.accessToken[`${NAMESPACE}email_verified`]).toBe(true);
+          done();
+        });
+      });
+    });
+
+    describe('when authenticated through any other app', () => {
+
+      it('does not modify the access token', done => {
+        expect(context.accessToken).toEqual({});
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(cntxt.accessToken).toEqual({});
+          expect(cntxt).toEqual(_context);
+
+          done();
+        });
+      });
+
+      /**
+       * This basically performs the same test as above upon every
+       * _live_ client configuration.
+       */
+      it('does not modify the access token on any of the client config files', done => {
+        let ruleCalls = 0;
+
+        function testConfigs(files) {
+          // Reset
+          context = { ..._context, accessToken: {} };
+
+          if (!files.length) {
+            expect(ruleCalls).toEqual(2);
+            return done();
+          }
+
+          const file = files.pop();
+
+          if (/\.json$/.test(file)) {
+            const clientConfig = require(`../../../settings/clients/${file}`);
+            context.clientName = clientConfig.name;
+
+            expect(context.accessToken).toEqual({});
+
+            rule(agent, context, (err, agnt, cntxt) => {
+              if (err) return done.fail(err);
+
+              if (Object.keys(cntxt.accessToken).length) {
+                // Only two configured clients
+                ruleCalls++;
+                expect(cntxt.clientName).toMatch(/Audio Manager/);
+              }
+              else {
+                expect(cntxt).toEqual(context);
+              }
+              testConfigs(files);
+            });
+          }
+          else {
+            testConfigs(files);
+          }
+        };
+
+        fs.readdir('./settings/clients', (err, files) => {
+          if (err) return done.fail();
+          testConfigs(files);
+        });
+      });
     });
   });
 });
