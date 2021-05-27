@@ -12,6 +12,12 @@
   "allowed_clients": [],
   "callbacks": ["http://localhost/callback"],
   "native_social_login": {
+    "apple": {
+      "enabled": false
+    },
+    "facebook": {
+      "enabled": false
+    }
   },
   "jwt_configuration": {
     "alg": "RS256",
