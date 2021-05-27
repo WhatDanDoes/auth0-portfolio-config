@@ -40,6 +40,8 @@
   "name": "google-oauth2",
   "is_domain_connection": false,
   "enabled_clients": [
+    "Audio Manager",
+    "Audio Manager Desktop",
     "auth0-deploy-cli-extension",
     "Demo - React SPA Identity API",
     "Demo - Regular App Identity API",
