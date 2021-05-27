@@ -7,6 +7,6 @@ function (user, context, callback) {
 
   var namespace = 'https://sil.org/';
 
-  context.accessToken[namespace + 'email_verified'] = user.email_verified;
+  context.accessToken[namespace + 'email_verified'] = user.email_verified ? user.email_verified : false;
   return callback(null, user, context);
 }
