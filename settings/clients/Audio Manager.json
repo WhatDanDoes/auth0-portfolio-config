@@ -7,10 +7,12 @@
   "cross_origin_auth": false,
   "allowed_clients": [],
   "allowed_logout_urls": [
-    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org"
+    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org",
+    "https://spa.0yy.ca"
   ],
   "callbacks": [
-    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback"
+    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback",
+    "https://spa.0yy.ca/callback"
   ],
   "native_social_login": {
     "apple": {
@@ -34,7 +36,8 @@
   "app_type": "spa",
   "grant_types": ["authorization_code", "implicit", "refresh_token"],
   "web_origins": [
-    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org"
+    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org",
+    "https://spa.0yy.ca"
   ],
   "custom_login_page_on": true
 }
