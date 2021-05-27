@@ -23,7 +23,7 @@ npm install
 
 # Test
 
-All tests must pass before merging to `main`.
+All tests must pass before merging to `main`. This is enforced through GitHub [Actions](https://github.com/features/actions).
 
 ```
 npm test
@@ -31,7 +31,7 @@ npm test
 
 # Under the hood
 
-This section is included as a reference and resource for the curious. Teams updating app configurations _do not_ use the CLI tool directly. Export operations are executed with GitHub [Actions](https://github.com/features/actions).
+This section is included as a reference and resource for the curious. Teams updating app configurations _do not_ use the CLI tool directly. Export operations are executed with GitHub Actions.
 
 The configs contained in this repository are saved and restored with the [Deploy CLI Tool](https://auth0.com/docs/deploy/deploy-cli-tool/install-and-configure-the-deploy-cli-tool). This requires that the [auth0-deploy-cli-extension](https://auth0.com/docs/deploy/deploy-cli-tool/create-and-configure-the-deploy-cli-application) be installed and configured on the tenant.
 
