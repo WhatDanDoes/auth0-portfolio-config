@@ -6,7 +6,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-     steps:
+    steps:
       - name: Download files from the current repository
         uses: actions/checkout@v2
       - name: Install Node.js
