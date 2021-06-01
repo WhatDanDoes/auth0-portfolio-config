@@ -8,11 +8,13 @@
   "allowed_clients": [],
   "allowed_logout_urls": [
     "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org",
-    "https://spa.0yy.ca"
+    "https://spa.0yy.ca",
+    "http://localhost:3000"
   ],
   "callbacks": [
     "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback",
-    "https://spa.0yy.ca"
+    "https://spa.0yy.ca",
+    "http://localhost:3000/callback"
   ],
   "native_social_login": {
     "apple": {
@@ -37,7 +39,8 @@
   "grant_types": ["authorization_code", "implicit", "refresh_token"],
   "web_origins": [
     "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org",
-    "https://spa.0yy.ca"
+    "https://spa.0yy.ca",
+    "http://localhost:3000"
   ],
   "custom_login_page_on": true
 }
