@@ -10,7 +10,7 @@
     "expiration_type": "non-expiring"
   },
   "allowed_clients": [],
-  "callbacks": ["http://localhost/callback"],
+  "callbacks": ["http://localhost/callback", "http://localhost:3000/callback"],
   "native_social_login": {
     "apple": {
       "enabled": false

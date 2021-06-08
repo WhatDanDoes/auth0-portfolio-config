@@ -14,7 +14,8 @@
   "callbacks": [
     "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback",
     "https://spa.0yy.ca",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://localhost:3000/callback"
   ],
   "native_social_login": {
     "apple": {
