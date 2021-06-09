@@ -4,7 +4,8 @@
   "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
     "AUTH0_TENANT_NAME": "silid",
     "AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX": "-id",
-    "AUDIOMANAGER_CLIENT_SUBDOMAIN": "id."
+    "AUDIOMANAGER_CLIENT_SUBDOMAIN": "id.",
+    "EMAIL_DEFAULT_FROM_ADDRESS": "SIL Language Technology <support@languagetechnology.org>"
   },
   "AUTH0_ALLOW_DELETE": true,
   "AUTH0_EXCLUDED_RULES": []
