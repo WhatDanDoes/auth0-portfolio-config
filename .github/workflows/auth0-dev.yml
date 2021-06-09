@@ -35,4 +35,6 @@ jobs:
         env:
           AUTH0_CLIENT_SECRET: ${{ secrets.DEV_AUTH0_CLIENT_SECRET }}
           AUTH0_ALLOW_DELETE: true
+          SES_ACCESS_KEY_ID: ${{ secrets.SES_ACCESS_KEY_ID }}
+          SES_ACCESS_SECRET_KEY: ${{ secrets.SES_ACCESS_SECRET_KEY }}
         run: npm run import:dev
