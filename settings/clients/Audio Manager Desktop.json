@@ -10,7 +10,7 @@
     "expiration_type": "non-expiring"
   },
   "allowed_clients": [],
-  "callbacks": ["http://localhost/callback", "http://localhost:3000/callback"],
+  "callbacks": ["http://localhost/callback", "http://localhost:3000/callback", "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback"],
   "native_social_login": {
     "apple": {
       "enabled": false
