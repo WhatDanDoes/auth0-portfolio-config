@@ -1,7 +1,7 @@
 name: Deploy to Auth0 development account
 on:
   push:
-    branches: [config/audiomanager-minimal]
+    branches: [config/google-client-id]
 
 jobs:
   test:
@@ -35,6 +35,8 @@ jobs:
         env:
           AUTH0_CLIENT_SECRET: ${{ secrets.DEV_AUTH0_CLIENT_SECRET }}
           AUTH0_ALLOW_DELETE: true
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           SES_ACCESS_KEY_ID: ${{ secrets.SES_ACCESS_KEY_ID }}
           SES_ACCESS_SECRET_KEY: ${{ secrets.SES_ACCESS_SECRET_KEY }}
         run: npm run import:dev
