@@ -17,10 +17,12 @@
   "allowed_clients": [],
   "allowed_logout_urls": [
     "https://0yy.ca/logout",
+    "https://paraat.app/logout",
     "http://localhost:3001/logout"
   ],
   "callbacks": [
     "https://0yy.ca/callback",
+    "https://paraat.app/callback",
     "http://localhost:3001/callback"
   ],
   "native_social_login": {
@@ -31,8 +33,8 @@
       "enabled": false
     }
   },
-  "logo_uri": "https://0yy.ca/images/mic-logo.png",
-  "description": "Social PWA with audio capture, upload, and playback.",
+  "logo_uri": "https://paraat.app/images/mic-logo.png",
+  "description": "Social PWA with audio capture, upload, playback and automatic English transcription.",
   "jwt_configuration": {
     "alg": "RS256",
     "lifetime_in_seconds": 36000,
