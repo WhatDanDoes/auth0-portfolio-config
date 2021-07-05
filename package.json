@@ -27,6 +27,7 @@
   "homepage": "https://github.com/sillsdev/silid-infra-auth0#readme",
   "devDependencies": {
     "jasmine": "^3.7.0",
-    "nock": "^13.1.1"
+    "nock": "^13.1.1",
+    "request": "^2.88.2"
   }
 }
