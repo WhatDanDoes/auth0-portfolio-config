@@ -14,6 +14,7 @@
   "is_domain_connection": false,
   "enabled_clients": [
     "Audio Manager",
-    "Audio Manager Desktop"
+    "Audio Manager Desktop",
+    "SIL Identity"
   ]
 }
