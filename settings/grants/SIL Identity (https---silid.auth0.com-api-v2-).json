@@ -9,6 +9,7 @@
     "read:users_app_metadata",
     "update:users_app_metadata",
     "read:clients",
-    "read:roles"
+    "read:roles",
+    "read:user_idp_tokens"
   ]
 }
