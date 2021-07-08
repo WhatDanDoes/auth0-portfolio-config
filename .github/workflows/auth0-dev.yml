@@ -1,7 +1,7 @@
 name: Deploy to Auth0 development account
 on:
   push:
-    branches: [config/paraat.app]
+    branches: [config/paratext-audiomanager-connection]
 
 jobs:
   test:
@@ -37,6 +37,8 @@ jobs:
           AUTH0_ALLOW_DELETE: true
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          PARATEXT_AUDIOMANAGER_CLIENT_ID: ${{ secrets.PARATEXT_AUDIOMANAGER_CLIENT_ID }}
+          PARATEXT_AUDIOMANAGER_CLIENT_SECRET: ${{ secrets.PARATEXT_AUDIOMANAGER_CLIENT_SECRET }}
           SES_ACCESS_KEY_ID: ${{ secrets.SES_ACCESS_KEY_ID }}
           SES_ACCESS_SECRET_KEY: ${{ secrets.SES_ACCESS_SECRET_KEY }}
         run: npm run import:dev
