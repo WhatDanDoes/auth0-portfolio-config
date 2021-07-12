@@ -8,38 +8,6 @@
   "signing_alg": "RS256",
   "scopes": [
     {
-      "value": "read:organizations",
-      "description": "Read your organizations"
-    },
-    {
-      "value": "create:organizations",
-      "description": "Create an organization"
-    },
-    {
-      "value": "update:organizations",
-      "description": "Update an organization"
-    },
-    {
-      "value": "delete:organizations",
-      "description": "Delete your organizations"
-    },
-    {
-      "value": "read:teams",
-      "description": "Read your teams"
-    },
-    {
-      "value": "create:teams",
-      "description": "Create a team"
-    },
-    {
-      "value": "update:teams",
-      "description": "Update a team"
-    },
-    {
-      "value": "delete:teams",
-      "description": "Delete your teams"
-    },
-    {
       "value": "create:agents",
       "description": "Create an agent"
     },
@@ -54,22 +22,6 @@
     {
       "value": "delete:agents",
       "description": "Delete agents"
-    },
-    {
-      "value": "add:organization-member",
-      "description": "Add a member to your organization"
-    },
-    {
-      "value": "delete:organization-member",
-      "description": "Delete an organization member"
-    },
-    {
-      "value": "delete:team-member",
-      "description": "Delete a member from your team"
-    },
-    {
-      "value": "create:team-member",
-      "description": "Add a member to your team"
     }
   ],
   "enforce_policies": true,
