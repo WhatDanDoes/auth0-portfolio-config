@@ -27,9 +27,10 @@
     var languageDictionary;
     var language;
 
-    //if (config.dict && config.dict.signin && config.dict.signin.title) {
-    //  languageDictionary = { title: config.dict.signin.title };
-    //} else if (typeof config.dict === 'string') {
+    if (config.dict && config.dict.signin && config.dict.signin.title) {
+      languageDictionary = { title: config.dict.signin.title };
+    }
+    //else if (typeof config.dict === 'string') {
     //  language = config.dict;
     //}
     language = config.extraParams.ui_locales || 'en';
