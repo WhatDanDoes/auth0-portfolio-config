@@ -7,12 +7,11 @@
   ],
   "enabled_locales": [
     "en",
-    "zh-CN",
+    "fr-CA",
     "fr-FR",
-    "de",
+    "pt-BR",
     "pt-PT",
-    "ru",
-    "es"
+    "ru"
   ],
   "flags": {
     "enable_custom_domain_in_emails": false,
