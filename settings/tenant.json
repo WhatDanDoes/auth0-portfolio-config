@@ -6,7 +6,13 @@
     "http://localhost:3001/cheerio"
   ],
   "enabled_locales": [
-    "en"
+    "en",
+    "zh-CN",
+    "fr-FR",
+    "de",
+    "pt-PT",
+    "ru",
+    "es"
   ],
   "flags": {
     "enable_custom_domain_in_emails": false,
