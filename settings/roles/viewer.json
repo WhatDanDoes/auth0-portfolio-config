@@ -1,41 +1,13 @@
 {
   "name": "viewer",
-  "description": "Basic agent, organization, and team viewing permissions",
+  "description": "Basic agent viewing/updating permissions",
   "permissions": [
-    {
-      "permission_name": "create:team-member",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
-      "permission_name": "create:teams",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
-      "permission_name": "delete:team-member",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
-      "permission_name": "delete:teams",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
     {
       "permission_name": "read:agents",
       "resource_server_identifier": "https://id.languagetechnology.org/"
     },
     {
-      "permission_name": "read:organizations",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
-      "permission_name": "read:teams",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
       "permission_name": "update:agents",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
-      "permission_name": "update:teams",
       "resource_server_identifier": "https://id.languagetechnology.org/"
     }
   ]

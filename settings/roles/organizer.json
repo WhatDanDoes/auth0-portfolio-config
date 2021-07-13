@@ -1,30 +1,6 @@
 {
   "name": "organizer",
-  "description": "Manage organizations and team memberships therein",
+  "description": "View all agents",
   "permissions": [
-    {
-      "permission_name": "add:organization-member",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
-      "permission_name": "create:organizations",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
-      "permission_name": "delete:organization-member",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
-      "permission_name": "delete:organizations",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
-      "permission_name": "read:organizations",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    },
-    {
-      "permission_name": "update:organizations",
-      "resource_server_identifier": "https://id.languagetechnology.org/"
-    }
   ]
 }
