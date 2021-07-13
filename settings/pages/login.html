@@ -32,18 +32,18 @@
       );
       config.extraParams = config.extraParams || {};
       var prompt = config.prompt;
+      var mode = config.extraParams.mode;
       var loginHint = config.extraParams.login_hint;
       var language = config.extraParams.language || "en";
       var colors = config.colors || {};
       var connections = [
-        "Paratext-AudioManager",
-        "paratext",
+        "paratext-audiomanager",
         "google-oauth2",
         "facebook",
         "Username-Password-Authentication"
       ];
 
-      var isSignupSelected = loginHint === "signUp";
+      var isSignupSelected = mode === "signUp";
       var languageDictionary;
 
       // * indicates a language that isn't production ready yet
@@ -117,11 +117,11 @@
           primaryColor: colors.primary ? colors.primary : "#ea5323",
           authButtons: {
             paratext: {
-              primaryColor: "#648047",
-              icon: "https://registry.paratext.org/static/logo.png"
+              primaryColor: "#8aab68",
+              icon: "https://registry.paratext.org/static/logo-pt9.png"
             },
-            "Paratext-AudioManager": {
-              displayName: "Paratext",
+            "paratext-audiomanager": {
+              displayName: "Paratext AudioManager",
               primaryColor: "#647418",
               icon:
                 "https://paratext.org/wp-content/uploads/2019/10/p9logo312o-150x150.png"
@@ -129,7 +129,7 @@
           }
         },
         prefill:
-          loginHint && loginHint !== "signUp"
+          loginHint && loginHint !== language
             ? { email: loginHint, username: loginHint }
             : null,
         additionalSignUpFields: [
