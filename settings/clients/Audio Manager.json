@@ -17,6 +17,19 @@
     "http://localhost:3000",
     "http://localhost:3000/callback"
   ],
+  "logo_uri": "http://help.siltranscriber.org/en/faviconT.png",
+  "client_metadata": {
+    "domain": "##AUDIOMANAGER_CLIENT_SUBDOMAIN##siltranscriber.org"
+  },
+  "refresh_token": {
+    "expiration_type": "expiring",
+    "leeway": 0,
+    "token_lifetime": 2592000,
+    "idle_token_lifetime": 1296000,
+    "infinite_token_lifetime": false,
+    "infinite_idle_token_lifetime": false,
+    "rotation_type": "rotating"
+  },
   "native_social_login": {
     "apple": {
       "enabled": false
@@ -24,10 +37,6 @@
     "facebook": {
       "enabled": false
     }
-  },
-  "logo_uri": "http://help.siltranscriber.org/en/faviconT.png",
-  "client_metadata": {
-    "domain": "##AUDIOMANAGER_CLIENT_SUBDOMAIN##siltranscriber.org"
   },
   "jwt_configuration": {
     "alg": "RS256",
@@ -37,7 +46,11 @@
   "client_aliases": [],
   "token_endpoint_auth_method": "none",
   "app_type": "spa",
-  "grant_types": ["authorization_code", "implicit", "refresh_token"],
+  "grant_types": [
+    "authorization_code",
+    "implicit",
+    "refresh_token"
+  ],
   "web_origins": [
     "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org",
     "https://spa.0yy.ca",
