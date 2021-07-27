@@ -1,6 +1,5 @@
 {
   "name": "organizer",
   "description": "View all agents",
-  "permissions": [
-  ]
+  "permissions": []
 }
