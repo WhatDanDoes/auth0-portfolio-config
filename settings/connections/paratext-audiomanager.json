@@ -1,13 +1,13 @@
 {
   "options": {
+    "scope": "openid, email, projects:read, data_access, offline_access, projects.members:read, projects.members:write",
     "scripts": {
-      "fetchUserProfile":"function(accessToken, ctx, cb) {  \n  request.get('https://registry##PARATEXT_AUDIOMANAGER_REGISTRY_SUBDOMAIN_SUFFIX##.paratext.org/api8/userinfo', {\n      headers: {\n        'Authorization': 'Bearer ' + accessToken\n      }\n    },\n    function(err, res, body) {\n      if (err) {\n        return cb(err);\n      }\n\n      if (res.statusCode !== 200) {\n        return cb(new Error(body));\n      }\n\n      try {\n        var profile = JSON.parse(body);\n        profile.user_id = profile.sub;\n        profile.name = profile.username;\n        delete profile.sub;\n        delete profile.pt_approved;\n        delete profile.primary_org_id;\n        cb(null, profile);\n      } catch (e) {\n        cb(e);\n      }\n    }\n  );\n}"
+      "fetchUserProfile": "function(accessToken, ctx, cb) {  \n  request.get('https://registry-dev.paratext.org/api8/userinfo', {\n      headers: {\n        'Authorization': 'Bearer ' + accessToken\n      }\n    },\n    function(err, res, body) {\n      if (err) {\n        return cb(err);\n      }\n\n      if (res.statusCode !== 200) {\n        return cb(new Error(body));\n      }\n\n      try {\n        var profile = JSON.parse(body);\n        profile.user_id = profile.sub;\n        profile.name = profile.username;\n        delete profile.sub;\n        delete profile.pt_approved;\n        delete profile.primary_org_id;\n        cb(null, profile);\n      } catch (e) {\n        cb(e);\n      }\n    }\n  );\n}"
     },
-    "client_id": "YDrJgjf8Mhd5H5xsa",
-    "client_secret": "##PARATEXT_AUDIOMANAGER_CLIENT_SECRET##",
-    "authorizationURL": "https://registry##PARATEXT_AUDIOMANAGER_REGISTRY_SUBDOMAIN_SUFFIX##.paratext.org/auth",
     "tokenURL": "https://registry##PARATEXT_AUDIOMANAGER_REGISTRY_SUBDOMAIN_SUFFIX##.paratext.org/api8/token",
-    "scope": "openid, email, projects:read, data_access, offline_access, projects.members:read, projects.members:write"
+    "client_id": ""##PARATEXT_AUDIOMANAGER_CLIENT_ID##",
+    "client_secret": "##PARATEXT_AUDIOMANAGER_CLIENT_SECRET##",
+    "authorizationURL": "https://registry##PARATEXT_AUDIOMANAGER_REGISTRY_SUBDOMAIN_SUFFIX##.paratext.org/auth"
   },
   "strategy": "oauth2",
   "name": "paratext-audiomanager",
@@ -15,6 +15,7 @@
   "enabled_clients": [
     "Audio Manager",
     "Audio Manager Desktop",
+    "auth0-account-link",
     "SIL Identity"
   ]
 }
