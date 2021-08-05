@@ -17,5 +17,12 @@
  * logins; we advise against it_
  */
 function (user, context, callback) {
-  return callback(null, user, context);
+
+  auth0.users.getUsersByEmail(user.email, (err, agents) => {
+    if (err) {
+      return callback(err);
+    }
+
+    return callback(null, user, context);
+  });
 }
