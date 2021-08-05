@@ -15,11 +15,12 @@
     "Username-Password-Authentication"
   ],
   "enabled_clients": [
+    "Audio Manager",
+    "Audio Manager Desktop",
+    "auth0-account-link",
     "Demo - React SPA Identity API",
     "Demo - Regular App Identity API",
     "progressive-audio-recorder",
-    "SIL Identity",
-    "Audio Manager",
-    "Audio Manager Desktop"
+    "SIL Identity"
   ]
 }

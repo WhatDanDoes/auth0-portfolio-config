@@ -49,6 +49,7 @@
   "name": "facebook",
   "is_domain_connection": false,
   "enabled_clients": [
+    "auth0-account-link",
     "Demo - React SPA Identity API",
     "Demo - Regular App Identity API",
     "progressive-audio-recorder"
