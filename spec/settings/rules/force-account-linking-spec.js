@@ -115,24 +115,47 @@ describe('force-account-linking', () => {
       });
     });
 
-    describe('account was manually unlinked', () => {
+    describe('authenticated account is manually_unlinked', () => {
+      let identity1, identity2;
       beforeEach(() => {
+        identity1 = {
+          "user_id": "113710000000000000000",
+          "provider": "google-oauth2",
+          "connection": "google-oauth2",
+          "isSocial": true
+        };
+        identity2 = {
+          "user_id": "paratext-audiomanager|WfCxeyQQi00000000",
+          "provider": "oauth2",
+          "connection": "paratext-audiomanager",
+          "isSocial": true
+        };
+
+        // Oldest account gets to be primary
         getUsersByEmailSpy = getUsersByEmailSpy.and.callFake(function(email, cb) {
-          cb(null, [{...agent, user_metadata: { manually_unlinked: true } }]);
+          cb(null, [
+            {...agent, created_at: new Date().toISOString(), user_metadata: { manually_unlinked: true }},
+            {...agent, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity1] },
+            {...agent, created_at: new Date(2009, 7, 24).toISOString(), name: 'Same Goy', identities: [identity2] }
+          ]);
+        });
+
+        linkUsersSpy = linkUsersSpy.and.callFake(function(primary, secondary, cb) {
+          cb(null, { junk: 'does not matter for these purposes' });
         });
       });
 
-      it('calls find users-by-email endpoint', done => {
-        rule(agent, context, (err, agnt, cntxt) => {
+      it('does not call find users-by-email endpoint', done => {
+        rule({...agent, user_metadata: { manually_unlinked: true }}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-          expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
-          expect(getUsersByEmailSpy.calls.count()).toEqual(1);
+          expect(getUsersByEmailSpy.calls.count()).toEqual(0);
+          expect(getUsersByEmailSpy).not.toHaveBeenCalled();
           done();
         });
       });
 
       it('does not call the link accounts endpoint', done => {
-        rule(agent, context, (err, agnt, cntxt) => {
+        rule({...agent, user_metadata: { manually_unlinked: true }}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
           expect(linkUsersSpy).not.toHaveBeenCalled();
           expect(linkUsersSpy.calls.count()).toEqual(0);
@@ -153,8 +176,16 @@ describe('force-account-linking', () => {
         "isSocial": true
       };
 
+      // Oldest account gets to be primary
       getUsersByEmailSpy = getUsersByEmailSpy.and.callFake(function(email, cb) {
-        cb(null, [{...agent}, {...agent, name: 'Some Guy', identities: [identity] }]);
+        cb(null, [
+          {...agent, created_at: new Date().toISOString() },
+          {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] }
+        ]);
+      });
+
+      linkUsersSpy = linkUsersSpy.and.callFake(function(primary, secondary, cb) {
+        cb(null, {...agent});
       });
     });
 
@@ -167,10 +198,12 @@ describe('force-account-linking', () => {
       });
     });
 
-    it('calls the link accounts endpoint', done => {
+    it('calls the link accounts endpoint with the oldest account set as primary', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
-        expect(linkUsersSpy).toHaveBeenCalledWith(agent.user_id, {user_id: identity.user_id, provider: identity.provider}, jasmine.any(Function));
+        expect(linkUsersSpy).toHaveBeenCalledWith(`${identity.provider}|${identity.user_id}`,
+                                                  {user_id: agent.identities[0].user_id, provider: agent.identities[0].provider},
+                                                  jasmine.any(Function));
         expect(linkUsersSpy.calls.count()).toEqual(1);
         done();
       });
@@ -194,12 +227,17 @@ describe('force-account-linking', () => {
         "isSocial": true
       };
 
+      // Oldest account gets to be primary
       getUsersByEmailSpy = getUsersByEmailSpy.and.callFake(function(email, cb) {
         cb(null, [
-          {...agent},
-          {...agent, name: 'Some Guy', identities: [identity1] },
-          {...agent, name: 'Same Goy', identities: [identity2] }
+          {...agent, created_at: new Date().toISOString()},
+          {...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1] },
+          {...agent, created_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
         ]);
+      });
+
+      linkUsersSpy = linkUsersSpy.and.callFake(function(primary, secondary, cb) {
+        cb(null, { junk: 'does not matter for these purposes' });
       });
     });
 
@@ -215,14 +253,68 @@ describe('force-account-linking', () => {
     it('calls the link accounts endpoint for each of the linkable accounts', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
+        const args =  linkUsersSpy.calls.allArgs()
         expect(linkUsersSpy.calls.count()).toEqual(2);
-        expect(linkUsersSpy).toHaveBeenCalledWith(agent.user_id, {user_id: identity1.user_id, provider: identity1.provider}, jasmine.any(Function));
-        expect(linkUsersSpy).toHaveBeenCalledWith(agent.user_id, {user_id: identity2.user_id, provider: identity2.provider}, jasmine.any(Function));
+        expect(linkUsersSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`,
+                                                  {user_id: agent.identities[0].user_id, provider: agent.identities[0].provider},
+                                                  jasmine.any(Function));
+        expect(linkUsersSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`,
+                                                  {user_id: identity2.user_id, provider: identity2.provider},
+                                                  jasmine.any(Function));
         done();
       });
     });
 
-    describe('with manually_unlinked account', () => {
+    describe('new account access with oldest account manually_unlinked', () => {
+      let identity1, identity2;
+      beforeEach(() => {
+        identity1 = {
+          "user_id": "113710000000000000000",
+          "provider": "google-oauth2",
+          "connection": "google-oauth2",
+          "isSocial": true
+        };
+        identity2 = {
+          "user_id": "paratext-audiomanager|WfCxeyQQi00000000",
+          "provider": "oauth2",
+          "connection": "paratext-audiomanager",
+          "isSocial": true
+        };
+
+        // Oldest account is usually primary
+        getUsersByEmailSpy = getUsersByEmailSpy.and.callFake(function(email, cb) {
+          cb(null, [
+            {...agent, created_at: new Date().toISOString()},
+            {...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1], user_metadata: { manually_unlinked: true } },
+            {...agent, created_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
+          ]);
+        });
+      });
+
+      it('calls find users-by-email endpoint', done => {
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+          expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
+          expect(getUsersByEmailSpy.calls.count()).toEqual(1);
+          done();
+        });
+      });
+
+      it('calls the link-accounts endpoint and sets the next oldest as primary', done => {
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(linkUsersSpy.calls.count()).toEqual(1);
+          expect(linkUsersSpy).toHaveBeenCalledWith(`${identity2.provider}|${identity2.user_id}`,
+                                                    {user_id: agent.identities[0].user_id,
+                                                    provider: agent.identities[0].provider},
+                                                    jasmine.any(Function));
+          done();
+        });
+      });
+    });
+
+    describe('with manually_unlinked secondary account', () => {
 
       let identity1, identity2;
       beforeEach(() => {
@@ -238,12 +330,15 @@ describe('force-account-linking', () => {
           "connection": "paratext-audiomanager",
           "isSocial": true
         };
-  
+
+        // Oldest account gets to be primary
         getUsersByEmailSpy = getUsersByEmailSpy.and.callFake(function(email, cb) {
           cb(null, [
-            {...agent},
-            {...agent, name: 'Some Guy', identities: [identity1], user_metadata: { manually_unlinked: true } },
-            {...agent, name: 'Same Goy', identities: [identity2] }
+            {...agent, created_at: new Date().toISOString()},
+            {...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1] },
+            {...agent, created_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2],
+              user_metadata: { manually_unlinked: true }
+            }
           ]);
         });
       });
@@ -260,8 +355,11 @@ describe('force-account-linking', () => {
       it('does not call the link-accounts endpoint for the manually_unlinked account', done => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
+
           expect(linkUsersSpy.calls.count()).toEqual(1);
-          expect(linkUsersSpy).toHaveBeenCalledWith(agent.user_id, {user_id: identity2.user_id, provider: identity2.provider}, jasmine.any(Function));
+          expect(linkUsersSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`,
+                                                    {user_id: agent.identities[0].user_id, provider: agent.identities[0].provider},
+                                                    jasmine.any(Function));
           done();
         });
       });

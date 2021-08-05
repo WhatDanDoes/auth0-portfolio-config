@@ -18,11 +18,50 @@
  */
 function (user, context, callback) {
 
+  // If manually unlinked, go no further
+  if (user.user_metadata && user.user_metadata.manually_unlinked) {
+    return callback(null, user, context);
+  }
+
   auth0.users.getUsersByEmail(user.email, (err, agents) => {
     if (err) {
       return callback(err);
     }
 
-    return callback(null, user, context);
+    // Don't re-link accounts that have been explicitly unlinked (via Identity)
+    const linkables = agents.filter(a => !a.user_metadata || !a.user_metadata.manually_unlinked);
+
+    // If only one agent remains, there are no accounts to link
+    if (agents.length < 2) {
+      return callback(null, user, context);
+    }
+
+    // Sort by `created_at`. First account created becomes the primary account
+    linkables.sort((a, b) => a.created_at < b.created_at ? -1 : 1);
+    const primary = linkables.shift();
+
+    // Prepare remaining accounts for linking
+    const params = linkables.map(l => {
+      const i = l.user_id.indexOf('|');
+      const provider = l.user_id.slice(0, i);
+      const user_id = l.user_id.slice(i + 1);
+      return { user_id: user_id, provider: provider };
+    });
+
+    // Recurse over the list of account-linking params
+    function link() {
+      if (!params.length) {
+        return callback(null, user, context);
+      }
+
+      const p = params.shift();
+      auth0.users.linkUsers(primary.user_id, { user_id: p.user_id, provider: p.provider }, (err, agent) => {
+        if (err) {
+          return callback(err);
+        }
+        link();
+      });
+    };
+    link();
   });
 }
