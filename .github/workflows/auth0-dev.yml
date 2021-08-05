@@ -1,7 +1,7 @@
 name: Deploy to Auth0 development account
 on:
   push:
-    branches: [config/account-link-extension]
+    branches: [config/forced-account-linking-rule]
 
 jobs:
   test:
