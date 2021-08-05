@@ -61,7 +61,7 @@ function (user, context, callback) {
         }
         link();
       });
-    };
+    }
     link();
   });
 }
