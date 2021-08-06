@@ -16,8 +16,30 @@
  *
  *    > Searching for users from inside Rules may affect the performance of your
  *    logins; we advise against it
+ *
+ * Auth0 does not offer any immediate access to such look-up functionality. The
+ * `auth0` global object only allows updates to user and app metadata, by
+ * default.
+ *
+ *    https://auth0.com/docs/rules/use-management-api
+ *
+ *
+ *
+ *
+ *
  */
 function (user, context, callback) {
+
+// https://www.npmjs.com/package/auth0
+//  const ManagementClient = require('auth0@2.36.1').ManagementClient;
+//  const management = new ManagementClient({
+//    token: auth0.accessToken,
+//    domain: auth0.domain
+//  });
+
+  // actually, on second thought, it might be better just to hit the
+  // user-by-email endpoint with `request`
+  // Easier for testing too
 
   // If manually unlinked, go no further
   if (user.user_metadata && user.user_metadata.manually_unlinked) {

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const nock = require('nock');
 
 /**
  * 2021-5-27
@@ -13,9 +14,10 @@ const _context = require('../../fixtures/context.json');
 
 describe('force-account-linking', () => {
 
-  let rule, agent, context;
+  let rule, agent, context, auth0;
 
   let getUsersByEmailSpy, linkUsersSpy;
+  let findUsersByEmailScope, linkAccountsScope;
 
   beforeEach(done => {
     agent = { ..._agent };
@@ -30,11 +32,13 @@ describe('force-account-linking', () => {
       function makeFunc() {
 
         let configuration = {};
-        let auth0 = {
+        auth0 = {
           users: {
             getUsersByEmail: getUsersByEmailSpy,
             linkUsers: linkUsersSpy,
           },
+          accessToken: 'abc-123',
+          baseUrl: 'https://silid.auth0.com',
         };
 
         let func;
@@ -49,26 +53,66 @@ describe('force-account-linking', () => {
   });
 
   describe('no linkable accounts', () => {
+
+
     beforeEach(() => {
       getUsersByEmailSpy = getUsersByEmailSpy.and.callFake(function(email, cb) {
         cb(null, [{...agent}]);
       });
+
+      findUsersByEmailScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .get(`/users-by-email/${agent.email}`)
+      .reply(200, [{...agent}]);
+
+      linkAccountsScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .post(`/api/v2/users/${agent.user_id}/identities`, {
+        provider: '',
+        user_id: '',
+      })
+      .reply(200, []);
     });
+
+//    it('calls find users-by-email endpoint', done => {
+//      rule(agent, context, (err, agnt, cntxt) => {
+//        if (err) return done.fail(err);
+//        expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
+//        expect(getUsersByEmailSpy.calls.count()).toEqual(1);
+//        done();
+//      });
+//    });
 
     it('calls find users-by-email endpoint', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
-        expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
-        expect(getUsersByEmailSpy.calls.count()).toEqual(1);
+
+        expect(findUsersByEmailScope.isDone()).toBe(true);
         done();
       });
     });
 
+
+//    it('does not call the link accounts endpoint', done => {
+//      rule(agent, context, (err, agnt, cntxt) => {
+//        if (err) return done.fail(err);
+//        expect(linkUsersSpy).not.toHaveBeenCalled();
+//        expect(linkUsersSpy.calls.count()).toEqual(0);
+//        done();
+//      });
+//    });
+
     it('does not call the link accounts endpoint', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
-        expect(linkUsersSpy).not.toHaveBeenCalled();
-        expect(linkUsersSpy.calls.count()).toEqual(0);
+
+        expect(linkAccountsScope.isDone()).toBe(false);
         done();
       });
     });
@@ -94,13 +138,53 @@ describe('force-account-linking', () => {
             }]
           }]);
         });
+
+        findUsersByEmailScope = nock(auth0.baseUrl, {
+          reqheaders: {
+            authorization: 'Bearer ' + auth0.accessToken,
+          },
+        })
+        .get(`/users-by-email/${agent.email}`)
+        .reply(200, [{
+          ...agent, identities: [agent.identities[0], {
+          "profileData": {
+            "email": agent.email,
+            "email_verified": true,
+            "name": "Some Guy",
+            "given_name": "Some",
+            "family_name": "Guy",
+            "picture": "https://lh3.googleusercontent.com/a-/.jpg",
+            "gender": "male",
+            "locale": "en"
+          },
+          "user_id": "113710000000000000000",
+          "provider": "google-oauth2",
+          "connection": "google-oauth2",
+          "isSocial": true
+          }]
+        }]);
+  
+        linkAccountsScope = nock(auth0.baseUrl, {
+          reqheaders: {
+            authorization: 'Bearer ' + auth0.accessToken,
+          },
+        })
+        .post(`/api/v2/users/${agent.user_id}/identities`, {
+          provider: '',
+          user_id: '',
+        })
+        .reply(200, []);
+
+
       });
 
       it('calls find users-by-email endpoint', done => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-          expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
-          expect(getUsersByEmailSpy.calls.count()).toEqual(1);
+
+          expect(findUsersByEmailScope.isDone()).toBe(true);
+//          expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
+//          expect(getUsersByEmailSpy.calls.count()).toEqual(1);
           done();
         });
       });
@@ -108,8 +192,10 @@ describe('force-account-linking', () => {
       it('does not call the link accounts endpoint', done => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-          expect(linkUsersSpy).not.toHaveBeenCalled();
-          expect(linkUsersSpy.calls.count()).toEqual(0);
+
+          expect(linkAccountsScope.isDone()).toBe(false);
+//          expect(linkUsersSpy).not.toHaveBeenCalled();
+//          expect(linkUsersSpy.calls.count()).toEqual(0);
           done();
         });
       });
@@ -143,13 +229,37 @@ describe('force-account-linking', () => {
         linkUsersSpy = linkUsersSpy.and.callFake(function(primary, secondary, cb) {
           cb(null, { junk: 'does not matter for these purposes' });
         });
+
+        findUsersByEmailScope = nock(auth0.baseUrl, {
+          reqheaders: {
+            authorization: 'Bearer ' + auth0.accessToken,
+          },
+        })
+        .get(`/users-by-email/${agent.email}`)
+        .reply(200, [
+          {...agent, created_at: new Date().toISOString(), user_metadata: { manually_unlinked: true }},
+          {...agent, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity1] },
+          {...agent, created_at: new Date(2009, 7, 24).toISOString(), name: 'Same Goy', identities: [identity2] }
+        ]);
+  
+        linkAccountsScope = nock(auth0.baseUrl, {
+          reqheaders: {
+            authorization: 'Bearer ' + auth0.accessToken,
+          },
+        })
+        .post(`/api/v2/users/${agent.user_id}/identities`, {
+          provider: '',
+          user_id: '',
+        })
+        .reply(200, { junk: 'does not matter for these purposes' });
       });
 
       it('does not call find users-by-email endpoint', done => {
         rule({...agent, user_metadata: { manually_unlinked: true }}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-          expect(getUsersByEmailSpy.calls.count()).toEqual(0);
-          expect(getUsersByEmailSpy).not.toHaveBeenCalled();
+          expect(findUsersByEmailScope.isDone()).toBe(false);
+//          expect(getUsersByEmailSpy.calls.count()).toEqual(0);
+//          expect(getUsersByEmailSpy).not.toHaveBeenCalled();
           done();
         });
       });
@@ -157,8 +267,9 @@ describe('force-account-linking', () => {
       it('does not call the link accounts endpoint', done => {
         rule({...agent, user_metadata: { manually_unlinked: true }}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-          expect(linkUsersSpy).not.toHaveBeenCalled();
-          expect(linkUsersSpy.calls.count()).toEqual(0);
+          expect(linkAccountsScope.isDone()).toBe(false);
+//          expect(linkUsersSpy).not.toHaveBeenCalled();
+//          expect(linkUsersSpy.calls.count()).toEqual(0);
           done();
         });
       });
@@ -187,13 +298,37 @@ describe('force-account-linking', () => {
       linkUsersSpy = linkUsersSpy.and.callFake(function(primary, secondary, cb) {
         cb(null, {...agent});
       });
+
+      findUsersByEmailScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .get(`/users-by-email/${agent.email}`)
+      .reply(200, [
+        {...agent, created_at: new Date().toISOString() },
+        {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] }
+      ]);
+
+      linkAccountsScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .post(`/api/v2/users/${agent.user_id}/identities`, {
+        provider: identity.provider,
+        user_id: identity.user_id,
+      })
+      .reply(200, {...agent});
+
     });
 
     it('calls find users-by-email endpoint', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
-        expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
-        expect(getUsersByEmailSpy.calls.count()).toEqual(1);
+        expect(findUsersByEmailScope.isDone()).toBe(false);
+//        expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
+//        expect(getUsersByEmailSpy.calls.count()).toEqual(1);
         done();
       });
     });
@@ -201,10 +336,12 @@ describe('force-account-linking', () => {
     it('calls the link accounts endpoint with the oldest account set as primary', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
-        expect(linkUsersSpy).toHaveBeenCalledWith(`${identity.provider}|${identity.user_id}`,
-                                                  {user_id: agent.identities[0].user_id, provider: agent.identities[0].provider},
-                                                  jasmine.any(Function));
-        expect(linkUsersSpy.calls.count()).toEqual(1);
+        expect(linkAccountsScope.isDone()).toBe(true);
+
+//        expect(linkUsersSpy).toHaveBeenCalledWith(`${identity.provider}|${identity.user_id}`,
+//                                                  {user_id: agent.identities[0].user_id, provider: agent.identities[0].provider},
+//                                                  jasmine.any(Function));
+//        expect(linkUsersSpy.calls.count()).toEqual(1);
         done();
       });
     });
@@ -212,6 +349,7 @@ describe('force-account-linking', () => {
 
   describe('several linkable accounts', () => {
 
+    let linkAccountScope1, linkAccountScope2;
     let identity1, identity2;
     beforeEach(() => {
       identity1 = {
@@ -239,13 +377,48 @@ describe('force-account-linking', () => {
       linkUsersSpy = linkUsersSpy.and.callFake(function(primary, secondary, cb) {
         cb(null, { junk: 'does not matter for these purposes' });
       });
+
+      findUsersByEmailScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .get(`/users-by-email/${agent.email}`)
+      .reply(200, [
+        {...agent, created_at: new Date().toISOString()},
+        {...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1] },
+        {...agent, created_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
+      ]);
+
+      linkAccountScope1 = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .post(`/api/v2/users/${identity1.provider}|${identity1.user_id}/identities`, {
+        provider: agent.identities[0].provider,
+        user_id: agent.identities[0].user_id,
+      })
+      .reply(200, { junk: 'does not matter for these purposes' });
+
+      linkAccountScope2 = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .post(`/api/v2/users/${identity1.provider}|${identity1.user_id}/identities`, {
+        provider: identity2.provider,
+        user_id: identity2.user_id,
+      })
+      .reply(200, { junk: 'does not matter for these purposes' });
     });
 
     it('calls find users-by-email endpoint', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
-        expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
-        expect(getUsersByEmailSpy.calls.count()).toEqual(1);
+        expect(findUsersByEmailScope.isDone()).toBe(false);
+//        expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
+//        expect(getUsersByEmailSpy.calls.count()).toEqual(1);
         done();
       });
     });
@@ -254,13 +427,16 @@ describe('force-account-linking', () => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
         const args =  linkUsersSpy.calls.allArgs()
-        expect(linkUsersSpy.calls.count()).toEqual(2);
-        expect(linkUsersSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`,
-                                                  {user_id: agent.identities[0].user_id, provider: agent.identities[0].provider},
-                                                  jasmine.any(Function));
-        expect(linkUsersSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`,
-                                                  {user_id: identity2.user_id, provider: identity2.provider},
-                                                  jasmine.any(Function));
+        expect(linkAccountScope1.isDone()).toBe(true);
+        expect(linkAccountScope2.isDone()).toBe(true);
+
+//        expect(linkUsersSpy.calls.count()).toEqual(2);
+//        expect(linkUsersSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`,
+//                                                  {user_id: agent.identities[0].user_id, provider: agent.identities[0].provider},
+//                                                  jasmine.any(Function));
+//        expect(linkUsersSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`,
+//                                                  {user_id: identity2.user_id, provider: identity2.provider},
+//                                                  jasmine.any(Function));
         done();
       });
     });
@@ -289,13 +465,37 @@ describe('force-account-linking', () => {
             {...agent, created_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
           ]);
         });
+
+        findUsersByEmailScope = nock(auth0.baseUrl, {
+          reqheaders: {
+            authorization: 'Bearer ' + auth0.accessToken,
+          },
+        })
+        .get(`/users-by-email/${agent.email}`)
+        .reply(200, [
+            {...agent, created_at: new Date().toISOString()},
+            {...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1], user_metadata: { manually_unlinked: true } },
+            {...agent, created_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
+        ]);
+  
+        linkAccountsScope = nock(auth0.baseUrl, {
+          reqheaders: {
+            authorization: 'Bearer ' + auth0.accessToken,
+          },
+        })
+        .post(`/api/v2/users/${identity2.provider}|${identity2.user_id}/identities`, {
+          provider: agent.identities[0].provider,
+          user_id: agent.identities[0].user_id,
+        })
+        .reply(200, {...agent});
       });
 
       it('calls find users-by-email endpoint', done => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-          expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
-          expect(getUsersByEmailSpy.calls.count()).toEqual(1);
+          expect(findUsersByEmailScope.isDone()).toBe(false);
+//          expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
+//          expect(getUsersByEmailSpy.calls.count()).toEqual(1);
           done();
         });
       });
@@ -304,11 +504,12 @@ describe('force-account-linking', () => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
 
-          expect(linkUsersSpy.calls.count()).toEqual(1);
-          expect(linkUsersSpy).toHaveBeenCalledWith(`${identity2.provider}|${identity2.user_id}`,
-                                                    {user_id: agent.identities[0].user_id,
-                                                    provider: agent.identities[0].provider},
-                                                    jasmine.any(Function));
+          expect(linkAccountsScope.isDone()).toBe(true);
+//          expect(linkUsersSpy.calls.count()).toEqual(1);
+//          expect(linkUsersSpy).toHaveBeenCalledWith(`${identity2.provider}|${identity2.user_id}`,
+//                                                    {user_id: agent.identities[0].user_id,
+//                                                    provider: agent.identities[0].provider},
+//                                                    jasmine.any(Function));
           done();
         });
       });
@@ -341,13 +542,40 @@ describe('force-account-linking', () => {
             }
           ]);
         });
+
+        findUsersByEmailScope = nock(auth0.baseUrl, {
+          reqheaders: {
+            authorization: 'Bearer ' + auth0.accessToken,
+          },
+        })
+        .get(`/users-by-email/${agent.email}`)
+        .reply(200, [
+            {...agent, created_at: new Date().toISOString()},
+            {...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1] },
+            {...agent, created_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2],
+              user_metadata: { manually_unlinked: true }
+            }
+        ]);
+
+        linkAccountsScope = nock(auth0.baseUrl, {
+          reqheaders: {
+            authorization: 'Bearer ' + auth0.accessToken,
+          },
+        })
+        .post(`/api/v2/users/${identity1.provider}|${identity1.user_id}/identities`, {
+          provider: agent.identities[0].provider,
+          user_id: agent.identities[0].user_id,
+        })
+        .reply(200, {...agent});
+
       });
 
       it('calls find users-by-email endpoint', done => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-          expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
-          expect(getUsersByEmailSpy.calls.count()).toEqual(1);
+          expect(findUsersByEmailScope.isDone()).toBe(false);
+//          expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
+//          expect(getUsersByEmailSpy.calls.count()).toEqual(1);
           done();
         });
       });
@@ -356,10 +584,11 @@ describe('force-account-linking', () => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
 
-          expect(linkUsersSpy.calls.count()).toEqual(1);
-          expect(linkUsersSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`,
-                                                    {user_id: agent.identities[0].user_id, provider: agent.identities[0].provider},
-                                                    jasmine.any(Function));
+          expect(linkAccountsScope.isDone()).toBe(true);
+//          expect(linkUsersSpy.calls.count()).toEqual(1);
+//          expect(linkUsersSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`,
+//                                                    {user_id: agent.identities[0].user_id, provider: agent.identities[0].provider},
+//                                                    jasmine.any(Function));
           done();
         });
       });
