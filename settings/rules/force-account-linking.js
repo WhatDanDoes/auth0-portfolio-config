@@ -22,11 +22,6 @@
  * default.
  *
  *    https://auth0.com/docs/rules/use-management-api
- *
- *
- *
- *
- *
  */
 function (user, context, callback) {
 
@@ -36,11 +31,6 @@ function (user, context, callback) {
   if (user.user_metadata && user.user_metadata.manually_unlinked) {
     return callback(null, user, context);
   }
-
-//  auth0.users.getUsersByEmail(user.email, (err, agents) => {
-//    if (err) {
-//      return callback(err);
-//    }
 
   // Get agents by email
   let reqOptions = Object.assign({
@@ -58,7 +48,7 @@ function (user, context, callback) {
       return callback(err);
     }
     else if (response.statusCode < 200 || response.statusCode >= 300) {
-      console.error(LOG_TAG, 'API call failed: ', body);
+      console.error('account-linking', 'API call failed: ', body);
       return callback(body)
     }
 
@@ -110,15 +100,10 @@ function (user, context, callback) {
           return callback(err);
         }
         else if (response.statusCode < 200 || response.statusCode >= 300) {
-          console.error(LOG_TAG, 'API call failed: ', body);
+          console.error('account-linking', 'API call failed: ', body);
           return callback(body)
         }
 
-
-//      auth0.users.linkUsers(primary.user_id, { user_id: p.user_id, provider: p.provider }, (err, agent) => {
-//        if (err) {
-//          return callback(err);
-//        }
         link();
       });
     }
