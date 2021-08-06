@@ -48,8 +48,8 @@ function (user, context, callback) {
       return callback(err);
     }
     else if (response.statusCode < 200 || response.statusCode >= 300) {
-      console.error('account-linking', 'API call failed: ', body);
-      return callback(body)
+      console.error('account-linking', 'API call failed: ', agents);
+      return callback(agents)
     }
 
     // Don't re-link accounts that have been explicitly unlinked (via Identity)
@@ -100,8 +100,8 @@ function (user, context, callback) {
           return callback(err);
         }
         else if (response.statusCode < 200 || response.statusCode >= 300) {
-          console.error('account-linking', 'API call failed: ', body);
-          return callback(body)
+          console.error('account-linking', 'API call failed: ', agents);
+          return callback(agents)
         }
 
         link();
