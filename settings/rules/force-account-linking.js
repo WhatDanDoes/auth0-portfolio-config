@@ -30,25 +30,36 @@
  */
 function (user, context, callback) {
 
-// https://www.npmjs.com/package/auth0
-//  const ManagementClient = require('auth0@2.36.1').ManagementClient;
-//  const management = new ManagementClient({
-//    token: auth0.accessToken,
-//    domain: auth0.domain
-//  });
-
-  // actually, on second thought, it might be better just to hit the
-  // user-by-email endpoint with `request`
-  // Easier for testing too
+  const request = require('request');
 
   // If manually unlinked, go no further
   if (user.user_metadata && user.user_metadata.manually_unlinked) {
     return callback(null, user, context);
   }
 
-  auth0.users.getUsersByEmail(user.email, (err, agents) => {
+//  auth0.users.getUsersByEmail(user.email, (err, agents) => {
+//    if (err) {
+//      return callback(err);
+//    }
+
+  // Get agents by email
+  let reqOptions = Object.assign({
+    url: auth0.baseUrl + '/users-by-email/' + user.email,
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + auth0.accessToken,
+      Accept: 'application/json'
+    },
+    json: true
+  });
+
+  request(reqOptions, function handleResponse(err, response, agents) {
     if (err) {
       return callback(err);
+    }
+    else if (response.statusCode < 200 || response.statusCode >= 300) {
+      console.error(LOG_TAG, 'API call failed: ', body);
+      return callback(body)
     }
 
     // Don't re-link accounts that have been explicitly unlinked (via Identity)
@@ -78,10 +89,36 @@ function (user, context, callback) {
       }
 
       const p = params.shift();
-      auth0.users.linkUsers(primary.user_id, { user_id: p.user_id, provider: p.provider }, (err, agent) => {
+
+      // Link agent accounts
+      reqOptions = Object.assign({
+        url: auth0.baseUrl + `/users/${primary.user_id}/identities`,
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + auth0.accessToken,
+          Accept: 'application/json',
+        },
+        json: true,
+        body: {
+          user_id: p.user_id,
+          provider: p.provider
+        }
+      });
+
+      request(reqOptions, function handleResponse(err, response, agents) {
         if (err) {
           return callback(err);
         }
+        else if (response.statusCode < 200 || response.statusCode >= 300) {
+          console.error(LOG_TAG, 'API call failed: ', body);
+          return callback(body)
+        }
+
+
+//      auth0.users.linkUsers(primary.user_id, { user_id: p.user_id, provider: p.provider }, (err, agent) => {
+//        if (err) {
+//          return callback(err);
+//        }
         link();
       });
     }

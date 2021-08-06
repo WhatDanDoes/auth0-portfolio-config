@@ -119,6 +119,8 @@ describe('force-account-linking', () => {
 
     describe('accounts are already linked', () => {
       beforeEach(() => {
+        nock.cleanAll();
+
         getUsersByEmailSpy = getUsersByEmailSpy.and.callFake(function(email, cb) {
           cb(null, [{...agent, identities: [agent.identities[0], {
             "profileData": {
@@ -174,8 +176,6 @@ describe('force-account-linking', () => {
           user_id: '',
         })
         .reply(200, []);
-
-
       });
 
       it('calls find users-by-email endpoint', done => {
@@ -280,6 +280,9 @@ describe('force-account-linking', () => {
 
     let identity;
     beforeEach(() => {
+
+      nock.cleanAll();
+
       identity = {
         "user_id": "113710000000000000000",
         "provider": "google-oauth2",
@@ -288,16 +291,16 @@ describe('force-account-linking', () => {
       };
 
       // Oldest account gets to be primary
-      getUsersByEmailSpy = getUsersByEmailSpy.and.callFake(function(email, cb) {
-        cb(null, [
-          {...agent, created_at: new Date().toISOString() },
-          {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] }
-        ]);
-      });
-
-      linkUsersSpy = linkUsersSpy.and.callFake(function(primary, secondary, cb) {
-        cb(null, {...agent});
-      });
+//      getUsersByEmailSpy = getUsersByEmailSpy.and.callFake(function(email, cb) {
+//        cb(null, [
+//          {...agent, created_at: new Date().toISOString() },
+//          {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] }
+//        ]);
+//      });
+//
+//      linkUsersSpy = linkUsersSpy.and.callFake(function(primary, secondary, cb) {
+//        cb(null, {...agent});
+//      });
 
       findUsersByEmailScope = nock(auth0.baseUrl, {
         reqheaders: {
@@ -310,23 +313,36 @@ describe('force-account-linking', () => {
         {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] }
       ]);
 
+//      linkAccountsScope = nock(auth0.baseUrl, {
+//        reqheaders: {
+//          authorization: 'Bearer ' + auth0.accessToken,
+//          accept: 'application/json',
+//          "content-type": "application/json",
+//        },
+//      })
+//      .post(`/users/${identity.provider}|${identity.user_id}/identities`, {
+//        provider: agent.identities[0].provider,
+//        user_id: agent.identities[0].user_id,
+//      })
+//      .reply(200, {...agent});
+
       linkAccountsScope = nock(auth0.baseUrl, {
         reqheaders: {
           authorization: 'Bearer ' + auth0.accessToken,
-        },
+          accept: 'application/json',
+        }
       })
-      .post(`/api/v2/users/${agent.user_id}/identities`, {
-        provider: identity.provider,
-        user_id: identity.user_id,
-      })
+      .post('/users/' + encodeURIComponent(`${identity.provider}|${identity.user_id}`) + '/identities', JSON.stringify({
+        user_id: agent.identities[0].user_id,
+        provider: agent.identities[0].provider,
+      }))
       .reply(200, {...agent});
-
     });
 
     it('calls find users-by-email endpoint', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
-        expect(findUsersByEmailScope.isDone()).toBe(false);
+        expect(findUsersByEmailScope.isDone()).toBe(true);
 //        expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
 //        expect(getUsersByEmailSpy.calls.count()).toEqual(1);
         done();
@@ -395,10 +411,10 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .post(`/api/v2/users/${identity1.provider}|${identity1.user_id}/identities`, {
-        provider: agent.identities[0].provider,
+      .post('/users/' + encodeURIComponent(`${identity1.provider}|${identity1.user_id}`) + '/identities', JSON.stringify({
         user_id: agent.identities[0].user_id,
-      })
+        provider: agent.identities[0].provider,
+      }))
       .reply(200, { junk: 'does not matter for these purposes' });
 
       linkAccountScope2 = nock(auth0.baseUrl, {
@@ -406,17 +422,17 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .post(`/api/v2/users/${identity1.provider}|${identity1.user_id}/identities`, {
-        provider: identity2.provider,
+      .post('/users/' + encodeURIComponent(`${identity1.provider}|${identity1.user_id}`) + '/identities', JSON.stringify({
         user_id: identity2.user_id,
-      })
+        provider: identity2.provider,
+      }))
       .reply(200, { junk: 'does not matter for these purposes' });
     });
 
     it('calls find users-by-email endpoint', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
-        expect(findUsersByEmailScope.isDone()).toBe(false);
+        expect(findUsersByEmailScope.isDone()).toBe(true);
 //        expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
 //        expect(getUsersByEmailSpy.calls.count()).toEqual(1);
         done();
@@ -444,6 +460,8 @@ describe('force-account-linking', () => {
     describe('new account access with oldest account manually_unlinked', () => {
       let identity1, identity2;
       beforeEach(() => {
+        nock.cleanAll();
+
         identity1 = {
           "user_id": "113710000000000000000",
           "provider": "google-oauth2",
@@ -483,17 +501,17 @@ describe('force-account-linking', () => {
             authorization: 'Bearer ' + auth0.accessToken,
           },
         })
-        .post(`/api/v2/users/${identity2.provider}|${identity2.user_id}/identities`, {
-          provider: agent.identities[0].provider,
+        .post('/users/' + encodeURIComponent(`${identity2.provider}|${identity2.user_id}`) + '/identities', JSON.stringify({
           user_id: agent.identities[0].user_id,
-        })
+          provider: agent.identities[0].provider,
+        }))
         .reply(200, {...agent});
       });
 
       it('calls find users-by-email endpoint', done => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-          expect(findUsersByEmailScope.isDone()).toBe(false);
+          expect(findUsersByEmailScope.isDone()).toBe(true);
 //          expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
 //          expect(getUsersByEmailSpy.calls.count()).toEqual(1);
           done();
@@ -519,6 +537,8 @@ describe('force-account-linking', () => {
 
       let identity1, identity2;
       beforeEach(() => {
+        nock.cleanAll();
+
         identity1 = {
           "user_id": "113710000000000000000",
           "provider": "google-oauth2",
@@ -562,10 +582,10 @@ describe('force-account-linking', () => {
             authorization: 'Bearer ' + auth0.accessToken,
           },
         })
-        .post(`/api/v2/users/${identity1.provider}|${identity1.user_id}/identities`, {
-          provider: agent.identities[0].provider,
+        .post('/users/' + encodeURIComponent(`${identity1.provider}|${identity1.user_id}`) + '/identities', JSON.stringify({
           user_id: agent.identities[0].user_id,
-        })
+          provider: agent.identities[0].provider,
+        }))
         .reply(200, {...agent});
 
       });
@@ -573,7 +593,7 @@ describe('force-account-linking', () => {
       it('calls find users-by-email endpoint', done => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-          expect(findUsersByEmailScope.isDone()).toBe(false);
+          expect(findUsersByEmailScope.isDone()).toBe(true);
 //          expect(getUsersByEmailSpy).toHaveBeenCalledWith(agent.email, jasmine.any(Function));
 //          expect(getUsersByEmailSpy.calls.count()).toEqual(1);
           done();
