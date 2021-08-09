@@ -19,7 +19,7 @@
  *
  * Auth0 does not offer any immediate access to such look-up functionality. The
  * `auth0` global object only allows updates to user and app metadata, by
- * default.
+ * default (hence the dependence on the `request` module).
  *
  *    https://auth0.com/docs/rules/use-management-api
  */
@@ -55,16 +55,18 @@ function (user, context, callback) {
     }
 
     // Don't re-link accounts that have been explicitly unlinked (via Identity, for example)
-    const linkables = agents.filter(a => !a.user_metadata || !a.user_metadata.manually_unlinked);
+    let linkables = agents.filter(a => !a.user_metadata || !a.user_metadata.manually_unlinked);
+
+    // Don't link accounts with unverified emails
+    linkables = linkables.filter(a => a.email_verified);
+
+    // Don't try to link the account to itself
+    linkables = linkables.filter(a => a.user_id !== user.user_id);
 
     // If only one agent remains, there are no accounts to link
     if (agents.length < 2) {
       return callback(null, user, context);
     }
-
-    // Sort by `created_at`. First account created becomes the primary account
-    linkables.sort((a, b) => a.created_at < b.created_at ? -1 : 1);
-    const primary = linkables.shift();
 
     // Prepare remaining accounts for linking
     const params = linkables.map(l => {
@@ -84,7 +86,7 @@ function (user, context, callback) {
 
       // Link agent accounts
       reqOptions = Object.assign({
-        url: auth0.baseUrl + `/users/${primary.user_id}/identities`,
+        url: auth0.baseUrl + `/users/${user.user_id}/identities`,
         method: 'POST',
         headers: {
           Authorization: 'Bearer ' + auth0.accessToken,
@@ -97,7 +99,7 @@ function (user, context, callback) {
         }
       });
 
-      request(reqOptions, (err, response, agents) => {
+      request(reqOptions, (err, response, identities) => {
         if (err) {
           console.error('force-account-linking', 'POST /identities ERROR:', err);
           return callback(null, user, context);

@@ -19,7 +19,7 @@ describe('force-account-linking', () => {
   let findUsersByEmailScope, linkAccountsScope;
 
   beforeEach(done => {
-    agent = { ..._agent };
+    agent = { ..._agent, email_verified: true };
     context = { ..._context, accessToken: {} };
 
     fs.readFile('./settings/rules/force-account-linking.js', 'utf8', (err, data) => {
@@ -205,6 +205,62 @@ describe('force-account-linking', () => {
     });
   });
 
+  describe('potentially linkable account not verified', () => {
+
+    let identity;
+    beforeEach(() => {
+
+      nock.cleanAll();
+
+      identity = {
+        "user_id": "113710000000000000000",
+        "provider": "google-oauth2",
+        "connection": "google-oauth2",
+        "isSocial": true
+      };
+
+      findUsersByEmailScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
+      .reply(200, [
+        {...agent, created_at: new Date().toISOString() },
+        {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(),
+          name: 'Some Guy', identities: [identity], email_verified: false }
+      ]);
+
+      linkAccountsScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+          accept: 'application/json',
+        }
+      })
+      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
+        user_id: identity.user_id,
+        provider: identity.provider,
+      }))
+      .reply(200, {...agent});
+    });
+
+    it('calls find users-by-email endpoint', done => {
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+        expect(findUsersByEmailScope.isDone()).toBe(true);
+        done();
+      });
+    });
+
+    it('calls the link accounts endpoint with current account set as primary', done => {
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+        expect(linkAccountsScope.isDone()).toBe(false);
+        done();
+      });
+    });
+  });
+
   describe('one linkable account', () => {
 
     let identity;
@@ -236,9 +292,9 @@ describe('force-account-linking', () => {
           accept: 'application/json',
         }
       })
-      .post('/users/' + encodeURIComponent(`${identity.provider}|${identity.user_id}`) + '/identities', JSON.stringify({
-        user_id: agent.identities[0].user_id,
-        provider: agent.identities[0].provider,
+      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
+        user_id: identity.user_id,
+        provider: identity.provider,
       }))
       .reply(200, {...agent});
     });
@@ -251,7 +307,7 @@ describe('force-account-linking', () => {
       });
     });
 
-    it('calls the link accounts endpoint with the oldest account set as primary', done => {
+    it('calls the link accounts endpoint with the current account set as primary', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
         expect(linkAccountsScope.isDone()).toBe(true);
@@ -295,9 +351,9 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .post('/users/' + encodeURIComponent(`${identity1.provider}|${identity1.user_id}`) + '/identities', JSON.stringify({
-        user_id: agent.identities[0].user_id,
-        provider: agent.identities[0].provider,
+      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
+        user_id: identity1.user_id,
+        provider: identity1.provider,
       }))
       .reply(200, { junk: 'does not matter for these purposes' });
 
@@ -306,7 +362,7 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .post('/users/' + encodeURIComponent(`${identity1.provider}|${identity1.user_id}`) + '/identities', JSON.stringify({
+      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
         user_id: identity2.user_id,
         provider: identity2.provider,
       }))
@@ -330,7 +386,7 @@ describe('force-account-linking', () => {
       });
     });
 
-    describe('new account access with oldest account manually_unlinked', () => {
+    describe('new account access with current account manually_unlinked', () => {
       let identity1, identity2;
       beforeEach(() => {
         nock.cleanAll();
@@ -366,9 +422,9 @@ describe('force-account-linking', () => {
             authorization: 'Bearer ' + auth0.accessToken,
           },
         })
-        .post('/users/' + encodeURIComponent(`${identity2.provider}|${identity2.user_id}`) + '/identities', JSON.stringify({
-          user_id: agent.identities[0].user_id,
-          provider: agent.identities[0].provider,
+        .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
+          user_id: identity2.user_id,
+          provider: identity2.provider,
         }))
         .reply(200, {...agent});
       });
@@ -381,7 +437,7 @@ describe('force-account-linking', () => {
         });
       });
 
-      it('calls the link-accounts endpoint and sets the next oldest as primary', done => {
+      it('calls the link-accounts endpoint and sets the current account as primary', done => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
 
@@ -429,9 +485,9 @@ describe('force-account-linking', () => {
             authorization: 'Bearer ' + auth0.accessToken,
           },
         })
-        .post('/users/' + encodeURIComponent(`${identity1.provider}|${identity1.user_id}`) + '/identities', JSON.stringify({
-          user_id: agent.identities[0].user_id,
-          provider: agent.identities[0].provider,
+        .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
+          user_id: identity1.user_id,
+          provider: identity1.provider,
         }))
         .reply(200, {...agent});
       });
@@ -468,7 +524,6 @@ describe('force-account-linking', () => {
         "isSocial": true
       };
     });
-
 
     it('calls through without error if GET /users-by-email fails for some reason', done => {
       findUsersByEmailScope = nock(auth0.baseUrl, {
@@ -522,9 +577,9 @@ describe('force-account-linking', () => {
           accept: 'application/json',
         }
       })
-      .post('/users/' + encodeURIComponent(`${identity.provider}|${identity.user_id}`) + '/identities', JSON.stringify({
-        user_id: agent.identities[0].user_id,
-        provider: agent.identities[0].provider,
+      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
+        user_id: identity.user_id,
+        provider: identity.provider,
       }))
       .reply(400, { error: 'Disaster!'});
 
