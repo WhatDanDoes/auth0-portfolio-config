@@ -54,7 +54,7 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .get(`/users-by-email/${agent.email}`)
+      .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
       .reply(200, [{...agent}]);
 
       linkAccountsScope = nock(auth0.baseUrl, {
@@ -96,7 +96,7 @@ describe('force-account-linking', () => {
             authorization: 'Bearer ' + auth0.accessToken,
           },
         })
-        .get(`/users-by-email/${agent.email}`)
+        .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
         .reply(200, [{
           ...agent, identities: [agent.identities[0], {
           "profileData": {
@@ -168,7 +168,7 @@ describe('force-account-linking', () => {
             authorization: 'Bearer ' + auth0.accessToken,
           },
         })
-        .get(`/users-by-email/${agent.email}`)
+        .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
         .reply(200, [
           {...agent, created_at: new Date().toISOString(), user_metadata: { manually_unlinked: true }},
           {...agent, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity1] },
@@ -224,7 +224,7 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .get(`/users-by-email/${agent.email}`)
+      .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
       .reply(200, [
         {...agent, created_at: new Date().toISOString() },
         {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] }
@@ -283,7 +283,7 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .get(`/users-by-email/${agent.email}`)
+      .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
       .reply(200, [
         {...agent, created_at: new Date().toISOString()},
         {...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1] },
@@ -353,7 +353,7 @@ describe('force-account-linking', () => {
             authorization: 'Bearer ' + auth0.accessToken,
           },
         })
-        .get(`/users-by-email/${agent.email}`)
+        .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
         .reply(200, [
             {...agent, created_at: new Date().toISOString()},
             {...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1],
@@ -415,7 +415,7 @@ describe('force-account-linking', () => {
             authorization: 'Bearer ' + auth0.accessToken,
           },
         })
-        .get(`/users-by-email/${agent.email}`)
+        .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
         .reply(200, [
             {...agent, created_at: new Date().toISOString()},
             {...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1] },
@@ -476,7 +476,7 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .get(`/users-by-email/${agent.email}`)
+      .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
       .reply(400, { error: 'Something terrible has happened' });
 
       linkAccountsScope = nock(auth0.baseUrl, {
@@ -509,7 +509,7 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .get(`/users-by-email/${agent.email}`)
+      .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
       .reply(200, [
         {...agent, created_at: new Date().toISOString() },
         {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] }

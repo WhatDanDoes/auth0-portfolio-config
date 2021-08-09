@@ -34,13 +34,14 @@ function (user, context, callback) {
 
   // Get agents by email
   let reqOptions = Object.assign({
-    url: auth0.baseUrl + '/users-by-email/' + user.email,
+    url: auth0.baseUrl + '/users-by-email',
     method: 'GET',
     headers: {
       Authorization: 'Bearer ' + auth0.accessToken,
       Accept: 'application/json'
     },
-    json: true
+    json: true,
+    qs: { email: user.email }
   });
 
   request(reqOptions, (err, response, agents) => {
