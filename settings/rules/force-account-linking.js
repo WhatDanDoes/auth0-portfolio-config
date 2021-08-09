@@ -27,8 +27,8 @@ function (user, context, callback) {
 
   const request = require('request');
 
-  // If manually unlinked, go no further
-  if (user.user_metadata && user.user_metadata.manually_unlinked) {
+  // If manually unlinked or unverified, go no further
+  if ((user.user_metadata && user.user_metadata.manually_unlinked) || !user.email_verified) {
     return callback(null, user, context);
   }
 

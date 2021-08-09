@@ -205,6 +205,61 @@ describe('force-account-linking', () => {
     });
   });
 
+  describe('currently authenticated account not verified', () => {
+
+    let identity;
+    beforeEach(() => {
+
+      nock.cleanAll();
+
+      identity = {
+        "user_id": "113710000000000000000",
+        "provider": "google-oauth2",
+        "connection": "google-oauth2",
+        "isSocial": true
+      };
+
+      findUsersByEmailScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
+      .reply(200, [
+        {...agent, created_at: new Date().toISOString(), email_verified: false },
+        {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(),
+          name: 'Some Guy', identities: [identity] }
+      ]);
+
+      linkAccountsScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+          accept: 'application/json',
+        }
+      })
+      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
+        user_id: identity.user_id,
+        provider: identity.provider,
+      }))
+      .reply(200, {...agent});
+    });
+
+    it('does not call find users-by-email endpoint', done => {
+      rule({...agent, email_verified: false }, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+        expect(findUsersByEmailScope.isDone()).toBe(false);
+        done();
+      });
+    });
+
+    it('does not call the link accounts endpoint with current account set as primary', done => {
+      rule({...agent, email_verified: false }, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+        expect(linkAccountsScope.isDone()).toBe(false);
+        done();
+      });
+    });
+  });
   describe('potentially linkable account not verified', () => {
 
     let identity;
