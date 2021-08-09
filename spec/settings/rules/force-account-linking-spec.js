@@ -453,4 +453,91 @@ describe('force-account-linking', () => {
       });
     });
   });
+
+  describe('internal API call failures', () => {
+
+    let identity;
+    beforeEach(() => {
+
+      nock.cleanAll();
+
+      identity = {
+        "user_id": "113710000000000000000",
+        "provider": "google-oauth2",
+        "connection": "google-oauth2",
+        "isSocial": true
+      };
+    });
+
+
+    it('calls through without error if GET /users-by-email fails for some reason', done => {
+      findUsersByEmailScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .get(`/users-by-email/${agent.email}`)
+      .reply(400, { error: 'Something terrible has happened' });
+
+      linkAccountsScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+          accept: 'application/json',
+        }
+      })
+      .post('/users/' + encodeURIComponent(`${identity.provider}|${identity.user_id}`) + '/identities', JSON.stringify({
+        user_id: agent.identities[0].user_id,
+        provider: agent.identities[0].provider,
+      }))
+      .reply(200, {...agent});
+
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(findUsersByEmailScope.isDone()).toBe(true);
+        expect(linkAccountsScope.isDone()).toBe(false);
+        expect(agnt).toEqual(agent);
+        expect(cntxt).toEqual(context);
+        done();
+      });
+    });
+
+    it('calls through without error if POST /identities fails for some reason', done => {
+      // Success
+      findUsersByEmailScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+        },
+      })
+      .get(`/users-by-email/${agent.email}`)
+      .reply(200, [
+        {...agent, created_at: new Date().toISOString() },
+        {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] }
+      ]);
+
+      // Fail
+      linkAccountsScope = nock(auth0.baseUrl, {
+        reqheaders: {
+          authorization: 'Bearer ' + auth0.accessToken,
+          accept: 'application/json',
+        }
+      })
+      .post('/users/' + encodeURIComponent(`${identity.provider}|${identity.user_id}`) + '/identities', JSON.stringify({
+        user_id: agent.identities[0].user_id,
+        provider: agent.identities[0].provider,
+      }))
+      .reply(400, { error: 'Disaster!'});
+
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(findUsersByEmailScope.isDone()).toBe(true);
+        expect(linkAccountsScope.isDone()).toBe(true);
+
+        expect(agnt).toEqual(agent);
+        expect(cntxt).toEqual(context);
+        done();
+      });
+    });
+  });
 });

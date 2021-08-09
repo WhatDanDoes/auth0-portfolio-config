@@ -43,16 +43,17 @@ function (user, context, callback) {
     json: true
   });
 
-  request(reqOptions, function handleResponse(err, response, agents) {
+  request(reqOptions, (err, response, agents) => {
     if (err) {
-      return callback(err);
+      console.error('force-account-linking', 'GET /users-by-email ERROR:', err);
+      return callback(null, user, context);
     }
     else if (response.statusCode < 200 || response.statusCode >= 300) {
-      console.error('account-linking', 'API call failed: ', agents);
-      return callback(agents);
+      console.error('force-account-linking', 'GET /users-by-email non-200 response: ', response.body);
+      return callback(null, user, context);
     }
 
-    // Don't re-link accounts that have been explicitly unlinked (via Identity)
+    // Don't re-link accounts that have been explicitly unlinked (via Identity, for example)
     const linkables = agents.filter(a => !a.user_metadata || !a.user_metadata.manually_unlinked);
 
     // If only one agent remains, there are no accounts to link
@@ -95,13 +96,14 @@ function (user, context, callback) {
         }
       });
 
-      request(reqOptions, function handleResponse(err, response, agents) {
+      request(reqOptions, (err, response, agents) => {
         if (err) {
-          return callback(err);
+          console.error('force-account-linking', 'POST /identities ERROR:', err);
+          return callback(null, user, context);
         }
         else if (response.statusCode < 200 || response.statusCode >= 300) {
-          console.error('account-linking', 'API call failed: ', agents);
-          return callback(agents);
+          console.error('force-account-linking', 'POST /identities non-200 response: ', response.body);
+          return callback(null, user, context);
         }
 
         link();
