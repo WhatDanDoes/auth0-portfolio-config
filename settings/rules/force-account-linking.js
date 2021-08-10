@@ -17,6 +17,10 @@
  *    > Searching for users from inside Rules may affect the performance of your
  *    logins; we advise against it
  *
+ * More best practices on limiting calls to the Management API:
+ *
+ *    https://auth0.com/docs/best-practices/performance-best-practices#limit-calls-to-the-management-api
+ *
  * Auth0 does not offer any immediate access to such look-up functionality. The
  * `auth0` global object only allows updates to user and app metadata, by
  * default (hence the dependence on the `request` module).
