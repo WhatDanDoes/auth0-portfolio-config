@@ -11,9 +11,6 @@ function (user, context, callback) {
 
   const LOG_FLAG = 'dev-sillsdev-account-linking-rule';
 
-  // Check if email is verified, we shouldn't automatically
-  // merge accounts if this is not the case.
-
   // If manually unlinked or unverified, go no further.
   // The email check was inspired by `dev-sillsdev`
   if ((user.user_metadata && user.user_metadata.manually_unlinked) || !user.email || !user.email_verified) {
@@ -75,94 +72,53 @@ function (user, context, callback) {
       secondaryAcct = user;
     }
 
-      // Taken as-is from `dev-sillsdev` tenant/
-      //
-      // How badly do I want to test this?
-      const _ = require('lodash');
-      const mergeCustomizer = (objectValue, sourceValue) => {
-        if (_.isArray(objectValue)) {
-          return sourceValue.concat(objectValue);
-        }
-      };
-      const mergedUserMetadata = _.merge({}, secondaryAcct.user_metadata, primaryAcct.user_metadata, mergeCustomizer);
-      const mergedAppMetadata = _.merge({}, secondaryAcct.app_metadata, primaryAcct.app_metadata, mergeCustomizer);
-      auth0.users.updateAppMetadata(primaryAcct.user_id, mergedAppMetadata)
-        .then(auth0.users.updateUserMetadata(primaryAcct.user_id, mergedUserMetadata))
-        .then(() => {
+    // Taken as-is from `dev-sillsdev` tenant/
+    //
+    // How badly do I want to test this?
+    const _ = require('lodash');
+    const mergeCustomizer = (objectValue, sourceValue) => {
+      if (_.isArray(objectValue)) {
+        return sourceValue.concat(objectValue);
+      }
+    };
+    const mergedUserMetadata = _.merge({}, secondaryAcct.user_metadata, primaryAcct.user_metadata, mergeCustomizer);
+    const mergedAppMetadata = _.merge({}, secondaryAcct.app_metadata, primaryAcct.app_metadata, mergeCustomizer);
+    auth0.users.updateAppMetadata(primaryAcct.user_id, mergedAppMetadata)
+      .then(auth0.users.updateUserMetadata(primaryAcct.user_id, mergedUserMetadata))
+      .then(() => {
 
-          // Link agent accounts
-          reqOptions = Object.assign({
-            url: auth0.baseUrl + `/users/${primaryAcct.user_id}/identities`,
-            method: 'POST',
-            headers: {
-              Authorization: 'Bearer ' + auth0.accessToken,
-              Accept: 'application/json',
-            },
-            json: true,
-            body: {
-              user_id: secondaryAcct.identities[0].user_id,
-              provider: secondaryAcct.identities[0].provider
-            }
-          });
+        // Link agent accounts
+        reqOptions = Object.assign({
+          url: auth0.baseUrl + `/users/${primaryAcct.user_id}/identities`,
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + auth0.accessToken,
+            Accept: 'application/json',
+          },
+          json: true,
+          body: {
+            user_id: secondaryAcct.identities[0].user_id,
+            provider: secondaryAcct.identities[0].provider
+          }
+        });
 
-          request(reqOptions, (err, response, identities) => {
-            if (err) {
-              console.error(LOG_FLAG, 'POST /identities ERROR:', err);
-              return callback(null, user, context);
-            }
-            else if (response.statusCode < 200 || response.statusCode >= 300) {
-              console.error(LOG_FLAG, 'POST /identities non-200 response: ', response.body);
-              return callback(null, user, context);
-            }
+        request(reqOptions, (err, response, identities) => {
+          if (err) {
+            console.error(LOG_FLAG, 'POST /identities ERROR:', err);
+            return callback(null, user, context);
+          }
+          else if (response.statusCode < 200 || response.statusCode >= 300) {
+            console.error(LOG_FLAG, 'POST /identities non-200 response: ', response.body);
+            return callback(null, user, context);
+          }
 
-          /// THIS HASN"T BEEN TESTED YET
-            context.primaryUser = primaryAcct.user_id;
-            // the new user has been linked to the original user and no longer exists, so pass original user to the
-            // next rule
-            callback(null, primaryAcct, context);
-          });
-        })
-        .catch(err => callback(err));
-    });
-
-//          if (data.length > 1) {
-//            console.log('[-] Multiple user profiles detected - using most recently modified profile as the primary profile');
-//            data.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
-//          }
-//          primaryUser = data[0];
-//          secondaryUser = user;
-//        }
-//        const provider = secondaryUser.identities[0].provider;
-//        const providerUserId = secondaryUser.identities[0].user_id;
-//
-//        const mergeCustomizer = (objectValue, sourceValue) => {
-//          if (_.isArray(objectValue)) {
-//            return sourceValue.concat(objectValue);
-//          }
-//        };
-//        const mergedUserMetadata = _.merge({}, secondaryUser.user_metadata, primaryUser.user_metadata, mergeCustomizer);
-//        const mergedAppMetadata = _.merge({}, secondaryUser.app_metadata, primaryUser.app_metadata, mergeCustomizer);
-//        auth0.users.updateAppMetadata(primaryUser.user_id, mergedAppMetadata)
-//          .then(auth0.users.updateUserMetadata(primaryUser.user_id, mergedUserMetadata))
-//          .then(() => {
-//            request.post({
-//              url: auth0.baseUrl + '/users/' + primaryUser.user_id + '/identities',
-//              headers: {
-//                Authorization: 'Bearer ' + auth0.accessToken
-//              },
-//              json: { provider: provider, user_id: String(providerUserId) }
-//            }, (_err, response, _body) => {
-//              if (response && response.statusCode >= 400) {
-//                return callback(new Error('Error linking account: ' + response.statusMessage));
-//              }
-//              context.primaryUser = primaryUser.user_id;
-//              // the new user has been linked to the original user and no longer exists, so pass original user to the
-//              // next rule
-//              callback(null, primaryUser, context);
-//            });
-//          })
-//          .catch(err => callback(err));
-//      });
-//    });
+        /// THIS HASN"T BEEN TESTED YET
+          context.primaryUser = primaryAcct.user_id;
+          // the new user has been linked to the original user and no longer exists, so pass original user to the
+          // next rule
+          callback(null, primaryAcct, context);
+        });
+      })
+      .catch(err => callback(err));
+  });
 }
-
