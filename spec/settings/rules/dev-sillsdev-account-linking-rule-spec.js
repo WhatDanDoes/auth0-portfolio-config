@@ -175,7 +175,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
       it('does not merge app_metadata or user_metatdata', done => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-  
+
           expect(updateUserMetadataSpy).not.toHaveBeenCalled();
           expect(updateAppMetadataSpy).not.toHaveBeenCalled();
           done();
@@ -388,16 +388,16 @@ describe('dev-sillsdev-account-linking-rule', () => {
 
       let identity;
       beforeEach(() => {
-  
+
         nock.cleanAll();
-  
+
         identity = {
           "user_id": "113710000000000000000",
           "provider": "google-oauth2",
           "connection": "google-oauth2",
           "isSocial": true
         };
-  
+
         findUsersByEmailScope = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -408,7 +408,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           {...agent, created_at: new Date().toISOString() },
           {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] }
         ]);
-  
+
         linkAccountsScope = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -421,7 +421,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
         }))
         .reply(200, {...agent});
       });
-  
+
       it('calls find users-by-email endpoint', done => {
         rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
@@ -429,7 +429,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           done();
         });
       });
-  
+
       it('calls the link accounts endpoint with the currently authenticated account set as primary', done => {
         rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
@@ -437,11 +437,11 @@ describe('dev-sillsdev-account-linking-rule', () => {
           done();
         });
       });
-  
+
       it('calls the Management API to merge app_metadata and user_metatdata', done => {
         rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-  
+
           expect(updateUserMetadataSpy).toHaveBeenCalledWith(agent.user_id, {})
           expect(updateAppMetadataSpy).toHaveBeenCalledWith(agent.user_id, { stuff: 'Some data relevant to the app' });
 
@@ -454,16 +454,16 @@ describe('dev-sillsdev-account-linking-rule', () => {
 
       let identity;
       beforeEach(() => {
-  
+
         nock.cleanAll();
-  
+
         identity = {
           "user_id": "113710000000000000000",
           "provider": "google-oauth2",
           "connection": "google-oauth2",
           "isSocial": true
         };
-  
+
         findUsersByEmailScope = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -474,7 +474,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           {...agent, created_at: new Date().toISOString() },
           {...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] }
         ]);
-  
+
         linkAccountsScope = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -487,7 +487,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
         }))
         .reply(200, {...agent});
       });
-  
+
       it('calls find users-by-email endpoint', done => {
         rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
@@ -495,7 +495,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           done();
         });
       });
-  
+
       it('calls the link accounts endpoint with the oldest account set as primary', done => {
         rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
@@ -503,11 +503,11 @@ describe('dev-sillsdev-account-linking-rule', () => {
           done();
         });
       });
-  
+
       it('calls the Management API to merge app_metadata and user_metatdata', done => {
         rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-  
+
           expect(updateUserMetadataSpy).toHaveBeenCalled();
           expect(updateAppMetadataSpy).toHaveBeenCalled();
 
@@ -540,7 +540,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           "connection": "paratext-audiomanager",
           "isSocial": true
         };
-  
+
         findUsersByEmailScope = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -552,7 +552,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           {...agent, updated_at: new Date().toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1] },
           {...agent, updated_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
         ]);
-  
+
         linkAccountScope1 = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -563,7 +563,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           provider: identity1.provider,
         }))
         .reply(200, { junk: 'does not matter for these purposes' });
-  
+
         linkAccountScope2 = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -575,7 +575,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
         }))
         .reply(200, { junk: 'does not matter for these purposes' });
       });
-  
+
       it('calls find users-by-email endpoint', done => {
         rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
@@ -583,7 +583,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           done();
         });
       });
-  
+
       it('calls the link accounts endpoint for each of the linkable accounts', done => {
         rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
@@ -596,7 +596,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
       it('calls the Management API to merge app_metadata and user_metatdata', done => {
         rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-  
+
           expect(updateUserMetadataSpy).toHaveBeenCalledWith(agent.user_id, {})
           expect(updateAppMetadataSpy).toHaveBeenCalledWith(agent.user_id, { stuff: 'Some data relevant to the app' });
 
@@ -620,7 +620,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           "connection": "paratext-audiomanager",
           "isSocial": true
         };
-  
+
         findUsersByEmailScope = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -632,7 +632,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           {...agent, updated_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1] },
           {...agent, updated_at: new Date().toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
         ]);
-  
+
         linkAccountScope1 = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -643,7 +643,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           provider: agent.identities[0].provider,
         }))
         .reply(200, { junk: 'does not matter for these purposes' });
-  
+
         linkAccountScope2 = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -655,7 +655,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
         }))
         .reply(200, { junk: 'does not matter for these purposes' });
       });
-  
+
       it('calls find users-by-email endpoint', done => {
         rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
@@ -663,7 +663,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           done();
         });
       });
-  
+
       it('calls the link accounts endpoint wth the most recently updated linkable account set as primary', done => {
         rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
@@ -676,7 +676,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
       it('calls the Management API to merge app_metadata and user_metatdata', done => {
         rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-  
+
           expect(updateUserMetadataSpy).toHaveBeenCalledWith(`${identity2.provider}|${identity2.user_id}`, {})
           expect(updateAppMetadataSpy).toHaveBeenCalledWith(`${identity2.provider}|${identity2.user_id}`, {});
 
@@ -748,7 +748,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
       it('calls the Management API to merge app_metadata and user_metatdata', done => {
         rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
-  
+
           expect(updateUserMetadataSpy).toHaveBeenCalledWith(`${identity2.provider}|${identity2.user_id}`, {})
           expect(updateAppMetadataSpy).toHaveBeenCalledWith(`${identity2.provider}|${identity2.user_id}`, {});
 
@@ -764,7 +764,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
         let identity1, identity2;
         beforeEach(() => {
           nock.cleanAll();
-  
+
           identity1 = {
             "user_id": "113710000000000000000",
             "provider": "google-oauth2",
@@ -777,7 +777,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
             "connection": "paratext-audiomanager",
             "isSocial": true
           };
-  
+
           findUsersByEmailScope = nock(auth0.baseUrl, {
             reqheaders: {
               authorization: 'Bearer ' + auth0.accessToken,
@@ -791,7 +791,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
                 user_metadata: { manually_unlinked: true }
               }
           ]);
-  
+
           linkAccountsScope = nock(auth0.baseUrl, {
             reqheaders: {
               authorization: 'Bearer ' + auth0.accessToken,
@@ -803,7 +803,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           }))
           .reply(200, {...agent});
         });
-  
+
         it('calls find users-by-email endpoint', done => {
           rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
             if (err) return done.fail(err);
@@ -811,7 +811,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
             done();
           });
         });
-  
+
         it('calls the link-accounts endpoint with the most recently updated account set as primary', done => {
           rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
             if (err) return done.fail(err);
@@ -823,10 +823,10 @@ describe('dev-sillsdev-account-linking-rule', () => {
         it('calls the Management API to merge app_metadata and user_metatdata', done => {
           rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
             if (err) return done.fail(err);
-    
+
             expect(updateUserMetadataSpy).toHaveBeenCalledWith(agent.user_id, {})
             expect(updateAppMetadataSpy).toHaveBeenCalledWith(agent.user_id, { stuff: 'Some data relevant to the app' });
-  
+
             done();
           });
         });
@@ -837,7 +837,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
         let identity1, identity2;
         beforeEach(() => {
           nock.cleanAll();
-  
+
           identity1 = {
             "user_id": "113710000000000000000",
             "provider": "google-oauth2",
@@ -850,7 +850,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
             "connection": "paratext-audiomanager",
             "isSocial": true
           };
-  
+
           findUsersByEmailScope = nock(auth0.baseUrl, {
             reqheaders: {
               authorization: 'Bearer ' + auth0.accessToken,
@@ -864,7 +864,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
                 user_metadata: { manually_unlinked: true }
               }
           ]);
-  
+
           linkAccountsScope = nock(auth0.baseUrl, {
             reqheaders: {
               authorization: 'Bearer ' + auth0.accessToken,
@@ -876,7 +876,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           }))
           .reply(200, {...agent});
         });
-  
+
         it('calls find users-by-email endpoint', done => {
           rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
             if (err) return done.fail(err);
@@ -884,7 +884,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
             done();
           });
         });
-  
+
         it('calls the link-accounts endpoint with the most recently updated account set as primary', done => {
           rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
             if (err) return done.fail(err);
@@ -896,10 +896,10 @@ describe('dev-sillsdev-account-linking-rule', () => {
         it('calls the Management API to merge app_metadata and user_metatdata', done => {
           rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
             if (err) return done.fail(err);
-    
+
             expect(updateUserMetadataSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`, {})
             expect(updateAppMetadataSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`, {});
-  
+
             done();
           });
         });
