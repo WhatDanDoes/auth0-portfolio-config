@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "script": "./auth0-account-link-extension.js",
   "name": "auth0-account-link-extension",
   "order": 71,
