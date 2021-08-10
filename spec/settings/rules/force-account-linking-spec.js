@@ -49,6 +49,9 @@ describe('force-account-linking', () => {
   describe('no linkable accounts', () => {
 
     beforeEach(() => {
+
+      nock.cleanAll();
+
       findUsersByEmailScope = nock(auth0.baseUrl, {
         reqheaders: {
           authorization: 'Bearer ' + auth0.accessToken,
