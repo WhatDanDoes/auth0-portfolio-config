@@ -112,6 +112,26 @@ describe('dev-sillsdev-account-linking-rule', () => {
       });
     });
 
+    it('does not change the context.primaryUser param', done => {
+      expect(context.primaryUser).toBeUndefined();
+
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(cntxt.primaryUser).toBeUndefined();
+        done();
+      });
+    });
+
+    it('returns the expected user profile', done => {
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(agnt).toEqual(agent);
+        done();
+      });
+    });
+
     describe('authenticated account is manually_unlinked', () => {
 
       let identity1, identity2;
@@ -178,6 +198,26 @@ describe('dev-sillsdev-account-linking-rule', () => {
 
           expect(updateUserMetadataSpy).not.toHaveBeenCalled();
           expect(updateAppMetadataSpy).not.toHaveBeenCalled();
+          done();
+        });
+      });
+
+      it('does not change the context.primaryUser param', done => {
+        expect(context.primaryUser).toBeUndefined();
+
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(cntxt.primaryUser).toBeUndefined();
+          done();
+        });
+      });
+
+      it('returns the expected user profile', done => {
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(agnt).toEqual(agent);
           done();
         });
       });
@@ -248,6 +288,26 @@ describe('dev-sillsdev-account-linking-rule', () => {
         done();
       });
     });
+
+    it('does not change the context.primaryUser param', done => {
+      expect(context.primaryUser).toBeUndefined();
+
+      rule({...agent, email_verified: false }, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(cntxt.primaryUser).toBeUndefined();
+        done();
+      });
+    });
+
+    it('returns the expected user profile', done => {
+      rule({...agent, email_verified: false }, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(agnt).toEqual({...agent, email_verified: false });
+        done();
+      });
+    });
   });
 
   describe('currently authenticated account has no email set', () => {
@@ -314,6 +374,26 @@ describe('dev-sillsdev-account-linking-rule', () => {
         done();
       });
     });
+
+    it('does not change the context.primaryUser param', done => {
+      expect(context.primaryUser).toBeUndefined();
+
+      rule({...agent, email: undefined }, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(cntxt.primaryUser).toBeUndefined();
+        done();
+      });
+    });
+
+    it('returns the expected user profile', done => {
+      rule({...agent, email: undefined }, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(agnt).toEqual({...agent, email: undefined });
+        done();
+      });
+    });
   });
 
   describe('potentially linkable account not verified', () => {
@@ -377,6 +457,26 @@ describe('dev-sillsdev-account-linking-rule', () => {
 
         expect(updateUserMetadataSpy).not.toHaveBeenCalled();
         expect(updateAppMetadataSpy).not.toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('does not change the context.primaryUser param', done => {
+      expect(context.primaryUser).toBeUndefined();
+
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(cntxt.primaryUser).toBeUndefined();
+        done();
+      });
+    });
+
+    it('returns the expected user profile', done => {
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(agnt).toEqual(agent);
         done();
       });
     });
@@ -448,6 +548,26 @@ describe('dev-sillsdev-account-linking-rule', () => {
           done();
         });
       });
+
+      it('changes the context.primaryUser param to the primary user_id', done => {
+        expect(context.primaryUser).toBeUndefined();
+
+        rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(cntxt.primaryUser).toEqual(agent.user_id);
+          done();
+        });
+      });
+
+      it('returns the expected user profile', done => {
+        rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(agnt).toEqual({...agent, app_metadata: { stuff: 'Some data relevant to the app' }});
+          done();
+        });
+      });
     });
 
     describe('with no app_metadata', () => {
@@ -514,6 +634,26 @@ describe('dev-sillsdev-account-linking-rule', () => {
           expect(updateUserMetadataSpy).toHaveBeenCalledWith(`${identity.provider}|${identity.user_id}`, {})
           expect(updateAppMetadataSpy).toHaveBeenCalledWith(`${identity.provider}|${identity.user_id}`, {});
 
+          done();
+        });
+      });
+
+      it('changes the context.primaryUser param to the primary user_id', done => {
+        expect(context.primaryUser).toBeUndefined();
+
+        rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(cntxt.primaryUser).toEqual(`${identity.provider}|${identity.user_id}`);
+          done();
+        });
+      });
+
+      it('returns the expected user profile', done => {
+        rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(agnt).toEqual({...agent, user_id: `${identity.provider}|${identity.user_id}`, created_at: new Date(1978, 8, 8).toISOString(), name: 'Some Guy', identities: [identity] });
           done();
         });
       });
@@ -603,9 +743,31 @@ describe('dev-sillsdev-account-linking-rule', () => {
           done();
         });
       });
+
+      it('changes the context.primaryUser param to the primary user_id', done => {
+        expect(context.primaryUser).toBeUndefined();
+
+        rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(cntxt.primaryUser).toEqual(agent.user_id);
+          done();
+        });
+      });
+
+      it('returns the expected user profile', done => {
+        rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(agnt).toEqual({...agent, app_metadata: { stuff: 'Some data relevant to the app' }});
+          done();
+        });
+      });
     });
 
     describe('with no app_metadata', () => {
+
+      let updatedAtForPrimaryAcct;
 
       beforeEach(() => {
         identity1 = {
@@ -621,6 +783,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           "isSocial": true
         };
 
+        updatedAtForPrimaryAcct = new Date().toISOString();
         findUsersByEmailScope = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -630,7 +793,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
         .reply(200, [
           {...agent, updated_at: new Date(1978, 8, 8).toISOString()},
           {...agent, updated_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1] },
-          {...agent, updated_at: new Date().toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
+          {...agent, updated_at: updatedAtForPrimaryAcct, user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
         ]);
 
         linkAccountScope1 = nock(auth0.baseUrl, {
@@ -683,10 +846,33 @@ describe('dev-sillsdev-account-linking-rule', () => {
           done();
         });
       });
+
+      it('changes the context.primaryUser param to the primary user_id', done => {
+        expect(context.primaryUser).toBeUndefined();
+
+        rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(cntxt.primaryUser).toEqual(`${identity2.provider}|${identity2.user_id}`);
+          done();
+        });
+      });
+
+      it('returns the expected user profile', done => {
+        rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(agnt).toEqual({...agent, updated_at: updatedAtForPrimaryAcct, user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] });
+          done();
+        });
+      });
     });
 
     describe('new account access with current account manually_unlinked', () => {
+
       let identity1, identity2;
+      let updatedAtForPrimaryAcct;
+
       beforeEach(() => {
         nock.cleanAll();
 
@@ -703,6 +889,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
           "isSocial": true
         };
 
+        updatedAtForPrimaryAcct = new Date().toISOString();
         findUsersByEmailScope = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -710,10 +897,10 @@ describe('dev-sillsdev-account-linking-rule', () => {
         })
         .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
         .reply(200, [
-            {...agent, created_at: new Date(1978, 8, 8).toISOString()},
-            {...agent, created_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1],
+            {...agent, updated_at: new Date(1978, 8, 8).toISOString()},
+            {...agent, updated_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1],
               user_metadata: { manually_unlinked: true } },
-            {...agent, created_at: new Date().toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
+            {...agent, updated_at: updatedAtForPrimaryAcct, user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
         ]);
 
         linkAccountsScope = nock(auth0.baseUrl, {
@@ -752,6 +939,26 @@ describe('dev-sillsdev-account-linking-rule', () => {
           expect(updateUserMetadataSpy).toHaveBeenCalledWith(`${identity2.provider}|${identity2.user_id}`, {})
           expect(updateAppMetadataSpy).toHaveBeenCalledWith(`${identity2.provider}|${identity2.user_id}`, {});
 
+          done();
+        });
+      });
+
+      it('changes the context.primaryUser param to the primary user_id', done => {
+        expect(context.primaryUser).toBeUndefined();
+
+        rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(cntxt.primaryUser).toEqual(`${identity2.provider}|${identity2.user_id}`);
+          done();
+        });
+      });
+
+      it('returns the expected user profile', done => {
+        rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(agnt).toEqual({...agent, updated_at: updatedAtForPrimaryAcct, user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] });
           done();
         });
       });
@@ -830,6 +1037,26 @@ describe('dev-sillsdev-account-linking-rule', () => {
             done();
           });
         });
+
+        it('changes the context.primaryUser param to the primary user_id', done => {
+          expect(context.primaryUser).toBeUndefined();
+
+          rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
+            if (err) return done.fail(err);
+
+            expect(cntxt.primaryUser).toEqual(agent.user_id);
+            done();
+          });
+        });
+
+        it('returns the expected user profile', done => {
+          rule({...agent, app_metadata: { stuff: 'Some data relevant to the app' }}, context, (err, agnt, cntxt) => {
+            if (err) return done.fail(err);
+
+            expect(agnt).toEqual({...agent, app_metadata: { stuff: 'Some data relevant to the app' }});
+            done();
+          });
+        });
       });
 
       describe('with no app_metadata', () => {
@@ -900,6 +1127,26 @@ describe('dev-sillsdev-account-linking-rule', () => {
             expect(updateUserMetadataSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`, {})
             expect(updateAppMetadataSpy).toHaveBeenCalledWith(`${identity1.provider}|${identity1.user_id}`, {});
 
+            done();
+          });
+        });
+
+        it('changes the context.primaryUser param to the primary user_id', done => {
+          expect(context.primaryUser).toBeUndefined();
+
+          rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
+            if (err) return done.fail(err);
+
+            expect(cntxt.primaryUser).toEqual(`${identity1.provider}|${identity1.user_id}`);
+            done();
+          });
+        });
+
+        it('returns the expected user profile', done => {
+          rule({...agent, app_metadata: undefined}, context, (err, agnt, cntxt) => {
+            if (err) return done.fail(err);
+
+            expect(agnt).toEqual({...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1] });
             done();
           });
         });

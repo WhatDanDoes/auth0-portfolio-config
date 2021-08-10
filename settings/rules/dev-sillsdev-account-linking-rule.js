@@ -112,8 +112,9 @@ function (user, context, callback) {
             return callback(null, user, context);
           }
 
-        /// THIS HASN"T BEEN TESTED YET
           context.primaryUser = primaryAcct.user_id;
+          // From the orginal rule:
+          //
           // the new user has been linked to the original user and no longer exists, so pass original user to the
           // next rule
           callback(null, primaryAcct, context);
