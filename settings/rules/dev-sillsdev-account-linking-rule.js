@@ -4,26 +4,97 @@
  * flagged as `manually_unlinked`, it is functionally identical to the original
  * rule.
  *
- * Note: the metadata merging functionality is copied verbatim and is, for the
+ * _Note:_ the metadata merging functionality is copied verbatim and is, for the
  * moment, untested.
  *
- * This rule forces account linking as linkable accounts are discovered. Through
- * post-hoc testing, it appears as though any authenticated agent with
- * associated `app_metadata` is set as _primary_ when a secondary linkable
- * account is discovered. When there is no associated `app_metadata`, the
- * authenticated account is set to secondary and the most recently updated agent
- * profile is set as primary. Any other potentially linkable accounts are
- * ignored.
+ * In the simplest terms this rule is meant to work like this:
  *
- * As it stands, a _linkable_ account will be discovered the first time an
- * agent authenticates with an identical email associated with another profile.
- * That is, assuming the email is verified, this rule makes the second
- * account primary. The first account authenticated against Auth0 becomes
- * secondary. This order is not assured, of course, as authentication can
- * happen in any order between the time an email is verified and the time the
- * accounts are linked.
+ * Upon authentication, if two linkable accounts exist, they will be linked
+ * and the first account authorized by Auth0 will be made _primary_.
  *
- * Further info...
+ * This functionality depends on two assumptions if it is to behave as expected:
+ *
+ * 1. Accounts are always linked as they are discovered (i.e., there can only
+ *    ever be two linkable accounts before linking takes place)
+ * 2. Authentication takes place immediately after email verification (as with
+ *    Auth0-managed signup accounts)
+ *
+ * Potential problems are introduced if either of these assumptions are
+ * incorrect.
+ *
+ * ## Concerning email verification and authentication
+ *
+ * Consider the following sequence of events:
+ *
+ * 1. A social account (e.g. Paratext) authenticates one or more times
+ * 2. A new Auth0 signup account is created, successfully verified, but not
+ *    authenticated after verification
+ * 3. A new linkable Gmail account authenticates
+ * 4. Gmail merges with the Auth0 account. Auth0 (not the oldest Paratext
+ *    account) is made primary because it is the most recently updated
+ *
+ * This is not a peculiar or unlikely edge case and can be verified through
+ * manual testing.
+ *
+ * This existing behaviour may not be an issue for every application
+ * configured against the `dev-sillsdev` tenant. However, if an app depends
+ * on a static primary `user_id` (e.g. for database indexing purposes)
+ * this cannot be guaranteed, as the primary ID could change.
+ *
+ * ## Concerning the existence of >2 linkable accounts
+ *
+ * If more than two linkable accounts exist, only the most recently updated
+ * will be linked (and made primary). The skipped accounts are merged on
+ * subsequent logins. Depending on the order of subsequent authentications,
+ * this potentially changes which account is primary.
+ *
+ * Unlike the email verification issue, this only presents problems if the first
+ * assumption named above is incorrect. If accounts are merged as they are
+ * discovered, then there will only ever be two linkable accounts before the
+ * linking operation is performed.
+ *
+ * Even if executed under _ideal_ circumstances, one important question
+ * requires manual testing and remains unanswered (as of 2021-8-23):
+ *
+ * _Does Auth0 create a profile for unverified third-party IdP authentication
+ * attempts?_
+ *
+ * This rule does not make the oldest account primary. It makes the most
+ * recently updated account primary.
+ *
+ * For Auth0 signup accounts, I have already verified that the all-critical
+ * `updated_at` profile property is updated on every login attempt and upon
+ * email verification itself. If this is also true for unverified third-party
+ * IdPs, then a linked profile's `primary_id` cannot be assumed to remain
+ * static.
+ *
+ * ## To summarize
+ *
+ * This rule basically works as follows...
+ *
+ * The existence of the `app_metadata` property on an Auth0 profile flags if
+ * an account has already been authenticated and linked. Any login with a
+ * previously _unknown_ account will not have any `app_metadata` and, as such,
+ * will be linked as a _secondary_ account to the existing merged profiles.
+ * The most recently updated account becomes the primary account.
+ *
+ * This is a problem for at least three reasons:
+ *
+ * 1. _Expected behaviour_, as understood when authenticating against the
+ * `dev-sillsdev` tenant, has led to the false impression that the _oldest_
+ * account always becomes primary. This depends on circumstance and is not
+ * necessarily true.
+ *
+ * 2. If this rule were ever disabled (or activated after the fact), the
+ * resulting behaviour will be quite unexpected if any new _unlinked_
+ * accounts were discovered in the downtime, because any one of those accounts
+ * may be made primary upon rule re-activation.
+ *
+ * 3. Even assuming this rule is active upon first deployment and never
+ * disabled, there is the potential for the primary account to lose its
+ * status for the reasons outlined above.
+ *
+ * ## Further info...
  *
  * This may best represent what Auth0 considers best practices:
  *
@@ -42,6 +113,11 @@
  * More best practices on limiting calls to the Management API:
  *
  *    https://auth0.com/docs/best-practices/performance-best-practices#limit-calls-to-the-management-api
+ *
+ * ## To be continued...
+ *
+ * I will post the reproducible results of my manual testing as new details
+ * are discovered.
  */
 function (user, context, callback) {
   const request = require('request');
