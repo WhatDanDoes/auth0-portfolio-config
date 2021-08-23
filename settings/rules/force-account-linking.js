@@ -58,6 +58,11 @@ function (user, context, callback) {
       return callback(null, user, context);
     }
 
+    // If only one agent remains, there are no accounts to link
+    if (agents.length < 2) {
+      return callback(null, user, context);
+    }
+
     // Don't re-link accounts that have been explicitly unlinked (via Identity, for example)
     let linkables = agents.filter(a => !a.user_metadata || !a.user_metadata.manually_unlinked);
 
@@ -66,11 +71,6 @@ function (user, context, callback) {
 
     // Don't try to link the account to itself
     linkables = linkables.filter(a => a.user_id !== user.user_id);
-
-    // If only one agent remains, there are no accounts to link
-    if (agents.length < 2) {
-      return callback(null, user, context);
-    }
 
     // Prepare remaining accounts for linking
     const params = linkables.map(l => {
