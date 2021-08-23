@@ -48,7 +48,6 @@
   "app_type": "spa",
   "grant_types": [
     "authorization_code",
-    "implicit",
     "refresh_token"
   ],
   "web_origins": [
