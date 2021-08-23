@@ -665,22 +665,24 @@ describe('dev-sillsdev-account-linking-rule', () => {
     let linkAccountScope1, linkAccountScope2;
     let identity1, identity2;
 
+    beforeEach(() => {
+      identity1 = {
+        "user_id": "113710000000000000000",
+        "provider": "google-oauth2",
+        "connection": "google-oauth2",
+        "isSocial": true
+      };
+      identity2 = {
+        "user_id": "paratext-audiomanager|WfCxeyQQi00000000",
+        "provider": "oauth2",
+        "connection": "paratext-audiomanager",
+        "isSocial": true
+      };
+    });
+
     describe('with app_metadata', () => {
 
       beforeEach(() => {
-        identity1 = {
-          "user_id": "113710000000000000000",
-          "provider": "google-oauth2",
-          "connection": "google-oauth2",
-          "isSocial": true
-        };
-        identity2 = {
-          "user_id": "paratext-audiomanager|WfCxeyQQi00000000",
-          "provider": "oauth2",
-          "connection": "paratext-audiomanager",
-          "isSocial": true
-        };
-
         findUsersByEmailScope = nock(auth0.baseUrl, {
           reqheaders: {
             authorization: 'Bearer ' + auth0.accessToken,
@@ -770,18 +772,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
       let updatedAtForPrimaryAcct;
 
       beforeEach(() => {
-        identity1 = {
-          "user_id": "113710000000000000000",
-          "provider": "google-oauth2",
-          "connection": "google-oauth2",
-          "isSocial": true
-        };
-        identity2 = {
-          "user_id": "paratext-audiomanager|WfCxeyQQi00000000",
-          "provider": "oauth2",
-          "connection": "paratext-audiomanager",
-          "isSocial": true
-        };
+        nock.cleanAll();
 
         updatedAtForPrimaryAcct = new Date().toISOString();
         findUsersByEmailScope = nock(auth0.baseUrl, {
@@ -870,24 +861,10 @@ describe('dev-sillsdev-account-linking-rule', () => {
 
     describe('new account access with current account manually_unlinked', () => {
 
-      let identity1, identity2;
       let updatedAtForPrimaryAcct;
 
       beforeEach(() => {
         nock.cleanAll();
-
-        identity1 = {
-          "user_id": "113710000000000000000",
-          "provider": "google-oauth2",
-          "connection": "google-oauth2",
-          "isSocial": true
-        };
-        identity2 = {
-          "user_id": "paratext-audiomanager|WfCxeyQQi00000000",
-          "provider": "oauth2",
-          "connection": "paratext-audiomanager",
-          "isSocial": true
-        };
 
         updatedAtForPrimaryAcct = new Date().toISOString();
         findUsersByEmailScope = nock(auth0.baseUrl, {
@@ -968,22 +945,8 @@ describe('dev-sillsdev-account-linking-rule', () => {
 
       describe('with app_metadata', () => {
 
-        let identity1, identity2;
         beforeEach(() => {
           nock.cleanAll();
-
-          identity1 = {
-            "user_id": "113710000000000000000",
-            "provider": "google-oauth2",
-            "connection": "google-oauth2",
-            "isSocial": true
-          };
-          identity2 = {
-            "user_id": "paratext-audiomanager|WfCxeyQQi00000000",
-            "provider": "oauth2",
-            "connection": "paratext-audiomanager",
-            "isSocial": true
-          };
 
           findUsersByEmailScope = nock(auth0.baseUrl, {
             reqheaders: {
@@ -1061,22 +1024,8 @@ describe('dev-sillsdev-account-linking-rule', () => {
 
       describe('with no app_metadata', () => {
 
-        let identity1, identity2;
         beforeEach(() => {
           nock.cleanAll();
-
-          identity1 = {
-            "user_id": "113710000000000000000",
-            "provider": "google-oauth2",
-            "connection": "google-oauth2",
-            "isSocial": true
-          };
-          identity2 = {
-            "user_id": "paratext-audiomanager|WfCxeyQQi00000000",
-            "provider": "oauth2",
-            "connection": "paratext-audiomanager",
-            "isSocial": true
-          };
 
           findUsersByEmailScope = nock(auth0.baseUrl, {
             reqheaders: {
