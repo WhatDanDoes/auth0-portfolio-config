@@ -90,7 +90,18 @@ describe('force-account-linking', () => {
       });
     });
 
+    it('returns the correct profile and context', done => {
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(agnt).toEqual(agent);
+        expect(cntxt).toEqual(context);
+        done();
+      });
+    });
+
     describe('accounts are already linked', () => {
+
       beforeEach(() => {
         nock.cleanAll();
 
@@ -148,9 +159,20 @@ describe('force-account-linking', () => {
           done();
         });
       });
+
+      it('returns the correct profile and context', done => {
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(agnt).toEqual(agent);
+          expect(cntxt).toEqual(context);
+          done();
+        });
+      });
     });
 
     describe('authenticated account is manually_unlinked', () => {
+
       let identity1, identity2;
       beforeEach(() => {
         identity1 = {
@@ -205,6 +227,16 @@ describe('force-account-linking', () => {
           done();
         });
       });
+
+      it('returns the correct profile and context', done => {
+        rule({...agent, user_metadata: { manually_unlinked: true }}, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(agnt.user_id).toEqual(agent.user_id);
+          expect(cntxt).toEqual(context);
+          done();
+        });
+      });
     });
   });
 
@@ -240,7 +272,7 @@ describe('force-account-linking', () => {
           accept: 'application/json',
         }
       })
-      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
+      .post('/users/' + encodeURIComponent(`${identity.provider}|${identity.user_id}`) + '/identities', JSON.stringify({
         user_id: identity.user_id,
         provider: identity.provider,
       }))
@@ -255,15 +287,26 @@ describe('force-account-linking', () => {
       });
     });
 
-    it('does not call the link accounts endpoint with current account set as primary', done => {
+    it('does not call the link accounts endpoint with the oldest account set as primary', done => {
       rule({...agent, email_verified: false }, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
         expect(linkAccountsScope.isDone()).toBe(false);
         done();
       });
     });
+
+    it('returns the correct profile and context', done => {
+      rule({...agent, email_verified: false }, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(agnt.user_id).toEqual(agent.user_id);
+        expect(cntxt).toEqual(context);
+        done();
+      });
+    });
   });
-  describe('potentially linkable account not verified', () => {
+
+  describe('oldest linkable account not verified', () => {
 
     let identity;
     beforeEach(() => {
@@ -295,9 +338,9 @@ describe('force-account-linking', () => {
           accept: 'application/json',
         }
       })
-      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
-        user_id: identity.user_id,
-        provider: identity.provider,
+      .post('/users/' + encodeURIComponent(`${identity.provider}|${identity.user_id}`) + '/identities', JSON.stringify({
+        user_id: agent.user_id,
+        provider: agent.identities[0].provider,
       }))
       .reply(200, {...agent});
     });
@@ -310,10 +353,20 @@ describe('force-account-linking', () => {
       });
     });
 
-    it('calls the link accounts endpoint with current account set as primary', done => {
+    it('does not call the link accounts endpoint with oldest account set as primary', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
         expect(linkAccountsScope.isDone()).toBe(false);
+        done();
+      });
+    });
+
+    it('returns the correct profile and context', done => {
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(agnt.user_id).toEqual(agent.user_id);
+        expect(cntxt).toEqual(context);
         done();
       });
     });
@@ -350,9 +403,9 @@ describe('force-account-linking', () => {
           accept: 'application/json',
         }
       })
-      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
-        user_id: identity.user_id,
-        provider: identity.provider,
+      .post('/users/' + encodeURIComponent(`${identity.provider}|${identity.user_id}`) + '/identities', JSON.stringify({
+        user_id: agent.identities[0].user_id,
+        provider: agent.identities[0].provider,
       }))
       .reply(200, {...agent});
     });
@@ -365,10 +418,20 @@ describe('force-account-linking', () => {
       });
     });
 
-    it('calls the link accounts endpoint with the current account set as primary', done => {
+    it('calls the link accounts endpoint with the oldest account set as primary', done => {
       rule(agent, context, (err, agnt, cntxt) => {
         if (err) return done.fail(err);
         expect(linkAccountsScope.isDone()).toBe(true);
+        done();
+      });
+    });
+
+    it('returns the correct profile and context', done => {
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(agnt.user_id).toEqual(`${identity.provider}|${identity.user_id}`);
+        expect(cntxt.primaryUser).toEqual(`${identity.provider}|${identity.user_id}`);
         done();
       });
     });
@@ -409,9 +472,9 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
-        user_id: identity1.user_id,
-        provider: identity1.provider,
+      .post('/users/' + encodeURIComponent(`${identity1.provider}|${identity1.user_id}`) + '/identities', JSON.stringify({
+        user_id: agent.identities[0].user_id,
+        provider: agent.identities[0].provider,
       }))
       .reply(200, { junk: 'does not matter for these purposes' });
 
@@ -420,7 +483,7 @@ describe('force-account-linking', () => {
           authorization: 'Bearer ' + auth0.accessToken,
         },
       })
-      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
+      .post('/users/' + encodeURIComponent(`${identity1.provider}|${identity1.user_id}`) + '/identities', JSON.stringify({
         user_id: identity2.user_id,
         provider: identity2.provider,
       }))
@@ -444,7 +507,18 @@ describe('force-account-linking', () => {
       });
     });
 
-    describe('new account access with current account manually_unlinked', () => {
+    it('returns the correct profile and context', done => {
+      rule(agent, context, (err, agnt, cntxt) => {
+        if (err) return done.fail(err);
+
+        expect(agnt.user_id).toEqual(`${identity1.provider}|${identity1.user_id}`);
+        expect(cntxt.primaryUser).toEqual(`${identity1.provider}|${identity1.user_id}`);
+        done();
+      });
+    });
+
+    describe('new account access with oldest account manually_unlinked', () => {
+
       let identity1, identity2;
       beforeEach(() => {
         nock.cleanAll();
@@ -469,7 +543,7 @@ describe('force-account-linking', () => {
         })
         .get(`/users-by-email?email=${encodeURIComponent(agent.email)}`)
         .reply(200, [
-            {...agent, created_at: new Date().toISOString()},
+            {...agent, created_at: new Date().toISOString() },
             {...agent, created_at: new Date(1978, 8, 8).toISOString(), user_id: `${identity1.provider}|${identity1.user_id}`, name: 'Some Guy', identities: [identity1],
               user_metadata: { manually_unlinked: true } },
             {...agent, created_at: new Date(2009, 7, 24).toISOString(), user_id: `${identity2.provider}|${identity2.user_id}`, name: 'Same Goy', identities: [identity2] }
@@ -480,9 +554,9 @@ describe('force-account-linking', () => {
             authorization: 'Bearer ' + auth0.accessToken,
           },
         })
-        .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
-          user_id: identity2.user_id,
-          provider: identity2.provider,
+        .post('/users/' + encodeURIComponent(`${identity2.provider}|${identity2.user_id}`) + '/identities', JSON.stringify({
+          user_id: agent.identities[0].user_id,
+          provider: agent.identities[0].provider,
         }))
         .reply(200, {...agent});
       });
@@ -495,11 +569,21 @@ describe('force-account-linking', () => {
         });
       });
 
-      it('calls the link-accounts endpoint and sets the current account as primary', done => {
+      it('calls the link-accounts endpoint and sets the second oldest account as primary', done => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
 
           expect(linkAccountsScope.isDone()).toBe(true);
+          done();
+        });
+      });
+
+      it('returns the correct profile and context', done => {
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(agnt.user_id).toEqual(`${identity2.provider}|${identity2.user_id}`);
+          expect(cntxt.primaryUser).toEqual(`${identity2.provider}|${identity2.user_id}`);
           done();
         });
       });
@@ -543,9 +627,9 @@ describe('force-account-linking', () => {
             authorization: 'Bearer ' + auth0.accessToken,
           },
         })
-        .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
-          user_id: identity1.user_id,
-          provider: identity1.provider,
+        .post('/users/' + encodeURIComponent(`${identity1.provider}|${identity1.user_id}`) + '/identities', JSON.stringify({
+          user_id: agent.identities[0].user_id,
+          provider: agent.identities[0].provider,
         }))
         .reply(200, {...agent});
       });
@@ -562,6 +646,16 @@ describe('force-account-linking', () => {
         rule(agent, context, (err, agnt, cntxt) => {
           if (err) return done.fail(err);
           expect(linkAccountsScope.isDone()).toBe(true);
+          done();
+        });
+      });
+
+      it('returns the correct profile and context', done => {
+        rule(agent, context, (err, agnt, cntxt) => {
+          if (err) return done.fail(err);
+
+          expect(agnt.user_id).toEqual(`${identity1.provider}|${identity1.user_id}`);
+          expect(cntxt.primaryUser).toEqual(`${identity1.provider}|${identity1.user_id}`);
           done();
         });
       });
@@ -635,9 +729,9 @@ describe('force-account-linking', () => {
           accept: 'application/json',
         }
       })
-      .post('/users/' + encodeURIComponent(agent.user_id) + '/identities', JSON.stringify({
-        user_id: identity.user_id,
-        provider: identity.provider,
+      .post('/users/' + encodeURIComponent(`${identity.provider}|${identity.user_id}`) + '/identities', JSON.stringify({
+        user_id: agent.identities[0].user_id,
+        provider: agent.identities[0].provider,
       }))
       .reply(400, { error: 'Disaster!'});
 

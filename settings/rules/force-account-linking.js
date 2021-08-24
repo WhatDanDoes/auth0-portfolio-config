@@ -1,7 +1,10 @@
 /**
  * This rule forces accounts registered under identical emails to be _linked_
- * at Auth0. Though Auth0 provides an extension to give an authenticated agent
- * the option to link accounts, this rule supersedes that functionality.
+ * at Auth0. The first account created (i.e., the oldest account) is made
+ * primary.
+ *
+ * Auth0 provides an extension to give an authenticated agent the option to link
+ * accounts. This rule supersedes that functionality.
  *
  * This may best represent what Auth0 considers best practices:
  *
@@ -69,8 +72,9 @@ function (user, context, callback) {
     // Don't link accounts with unverified emails
     linkables = linkables.filter(a => a.email_verified);
 
-    // Don't try to link the account to itself
-    linkables = linkables.filter(a => a.user_id !== user.user_id);
+    // Find the primary (i.e., oldest) account
+    linkables.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    const primary = linkables.shift();
 
     // Prepare remaining accounts for linking
     const params = linkables.map(l => {
@@ -83,14 +87,15 @@ function (user, context, callback) {
     // Recurse over the list of account-linking params
     function link() {
       if (!params.length) {
-        return callback(null, user, context);
+        context.primaryUser = primary.user_id;
+        return callback(null, primary, context);
       }
 
       const p = params.shift();
 
       // Link agent accounts
       reqOptions = Object.assign({
-        url: auth0.baseUrl + `/users/${user.user_id}/identities`,
+        url: auth0.baseUrl + `/users/${primary.user_id}/identities`,
         method: 'POST',
         headers: {
           Authorization: 'Bearer ' + auth0.accessToken,
