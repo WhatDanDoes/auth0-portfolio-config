@@ -8,14 +8,11 @@
   "allowed_clients": [],
   "allowed_logout_urls": [
     "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org",
-    "https://spa.0yy.ca",
     "http://localhost:3000"
   ],
   "callbacks": [
     "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback",
-    "https://spa.0yy.ca",
-    "http://localhost:3000",
-    "http://localhost:3000/callback"
+    "http://localhost:3000"
   ],
   "logo_uri": "http://help.siltranscriber.org/en/faviconT.png",
   "client_metadata": {
@@ -53,7 +50,6 @@
   ],
   "web_origins": [
     "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org",
-    "https://spa.0yy.ca",
     "http://localhost:3000"
   ],
   "custom_login_page_on": true
