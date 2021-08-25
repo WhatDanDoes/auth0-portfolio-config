@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "script": "./dev-sillsdev-account-linking-rule.js",
   "name": "dev-sillsdev-account-linking-rule",
   "order": 73,
