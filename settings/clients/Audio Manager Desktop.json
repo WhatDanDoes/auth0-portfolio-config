@@ -16,9 +16,9 @@
   },
   "allowed_clients": [],
   "callbacks": [
-    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org",
-    "http://localhost",
-    "http://localhost:3000"
+    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback",
+    "http://localhost/callback",
+    "http://localhost:3000/callback"
   ],
   "native_social_login": {
     "apple": {
@@ -38,6 +38,7 @@
   "app_type": "native",
   "grant_types": [
     "authorization_code",
+    "implicit",
     "refresh_token"
   ],
   "custom_login_page_on": true
