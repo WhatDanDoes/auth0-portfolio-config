@@ -16,7 +16,7 @@
   },
   "allowed_clients": [],
   "callbacks": [
-    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org/callback",
+    "https://app##AUDIOMANAGER_CLIENT_SUBDOMAIN_SUFFIX##.siltranscriber.org",
     "http://localhost",
     "http://localhost:3000"
   ],
