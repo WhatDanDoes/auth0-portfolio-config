@@ -16,8 +16,8 @@
   },
   "allowed_clients": [],
   "allowed_logout_urls": [
-    "https://wycliffe.photos/cheerio",
-    "https://merman.whatdandoes.info/cheerio"
+    "https://wycliffe.photos",
+    "https://merman.whatdandoes.info"
   ],
   "callbacks": [
     "https://wycliffe.photos/callback",
