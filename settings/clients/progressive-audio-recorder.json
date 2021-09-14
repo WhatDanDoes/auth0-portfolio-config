@@ -16,9 +16,9 @@
   },
   "allowed_clients": [],
   "allowed_logout_urls": [
-    "https://0yy.ca/logout",
-    "https://paraat.app/logout",
-    "http://localhost:3001/logout"
+    "https://0yy.ca",
+    "https://paraat.app",
+    "http://localhost:3001"
   ],
   "callbacks": [
     "https://0yy.ca/callback",
