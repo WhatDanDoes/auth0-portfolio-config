@@ -9,6 +9,12 @@ This expectation is critical for at least one application currently deployed aga
 
 This test ensures that the `user_id` of the resulting linked account does not change. It is an _ad hoc_ test born of the need to confirm a suspected bug in a similar rule deployed on the `dev-sillsdev` tenant.
 
+## Subject Code
+
+On the `silid` tenant, this test pertains to `/settings/rules/force-account-linking.js`.
+
+Also see `/settings/rules/dev-sillsdev-account-linking-rule.js`, which is a _lightly refactored_ version of the related account-linking rule currently deployed to `dev-sillsdev`.
+
 ## Requirements
 
 1. A single email address with registered Gmail and Paratext accounts
@@ -49,12 +55,5 @@ As in Step 1,
 ## Verify
 
 If the `user_id` obtained in the first and last steps are the same, this test passes.
-
-## Subject Code
-
-On the `silid` tenant, this test pertains to `/settings/rules/force-account-linking.js`.
-
-Also see `/settings/rules/dev-sillsdev-account-linking-rule.js`, which is a _lightly refactored_ version of the related account-linking rule currently deployed to `dev-sillsdev`.
-
 
 
