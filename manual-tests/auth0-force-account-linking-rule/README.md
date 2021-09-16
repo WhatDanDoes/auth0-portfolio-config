@@ -7,7 +7,7 @@ The subject rule is meant to work like this:
 
 This expectation is critical for at least one application currently deployed against SIL-managed Auth0 tenants. This app's own user management demands a static Auth0-provided `user_id`, which serves as their _primary key_ for database indexing purposes.
 
-This test ensures that the `user_id` of the linked accounts does not change. It is an _ad hoc_ test born of the need to confirm a suspected bug in a similar rule deployed on the `dev-sillsdev` tenant .
+This test ensures that the `user_id` of the resulting linked account does not change. It is an _ad hoc_ test born of the need to confirm a suspected bug in a similar rule deployed on the `dev-sillsdev` tenant.
 
 ## Requirements
 
