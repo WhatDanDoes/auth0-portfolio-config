@@ -1,7 +1,7 @@
 Auth0 force-account-linking Rule
 ================================
 
-In the simplest terms the subject rule is meant to work like this:
+The subject rule is meant to work like this:
 
 **Upon authentication, if two linkable accounts exist, they will be linked and the first account authorized by Auth0 will be made _primary_.**
 
