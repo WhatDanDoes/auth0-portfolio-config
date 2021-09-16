@@ -49,3 +49,12 @@ As in Step 1,
 ## Verify
 
 If the `user_id` obtained in the first and last steps are the same, this test passes.
+
+## Subject Code
+
+On the `silid` tenant, this test pertains to `/settings/rules/force-account-linking.js`.
+
+Also see `/settings/rules/dev-sillsdev-account-linking-rule.js`, which is a _lightly refactored_ version of the related account-linking rule currently deployed to `dev-sillsdev`.
+
+
+
