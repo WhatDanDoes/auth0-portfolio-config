@@ -1,7 +1,9 @@
 Auth0 force-account-linking Rule
 ================================
 
-In the simplest terms the rule subject to testing is meant to work like this: Upon authentication, if two linkable accounts exist, they will be linked and the first account authorized by Auth0 will be made _primary_.
+In the simplest terms the subject rule is meant to work like this:
+
+**Upon authentication, if two linkable accounts exist, they will be linked and the first account authorized by Auth0 will be made _primary_.**
 
 This expectation is critical for at least one application currently deployed against SIL-managed Auth0 tenants. This app's own user management demands a static Auth0-provided `user_id`, which serves as their _primary key_ for database indexing purposes.
 
