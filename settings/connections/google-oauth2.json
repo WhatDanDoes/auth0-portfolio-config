@@ -41,6 +41,10 @@
   "name": "google-oauth2",
   "is_domain_connection": false,
   "enabled_clients": [
-    "SIL Identity"
+    "Demo - React SPA Identity API",
+    "Demo - Regular App Identity API",
+    "progressive-audio-recorder",
+    "SIL Identity",
+    "Wycliffe Photos"
   ]
 }
