@@ -1,6 +1,6 @@
 {
   "client_id": "auth0-account-link",
-  "audience": "https://silid.auth0.com/api/v2/",
+  "audience": "https://dev-mo6xixxu.auth0.com/api/v2/",
   "scope": [
     "read:connections",
     "read:users",

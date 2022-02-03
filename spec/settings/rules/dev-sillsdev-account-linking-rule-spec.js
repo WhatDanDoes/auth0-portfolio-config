@@ -47,7 +47,7 @@ describe('dev-sillsdev-account-linking-rule', () => {
             })
           },
           accessToken: 'abc-123',
-          baseUrl: 'https://silid.auth0.com',
+          baseUrl: 'https://dev-mo6xixxu.auth0.com',
         };
 
         let func;
