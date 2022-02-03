@@ -5,6 +5,5 @@
     "AUTH0_TENANT_NAME": "dev-mo6xixxu",
     "EMAIL_DEFAULT_FROM_ADDRESS": "Support <dan@whatdandoes.info>"
   },
-  "AUTH0_ALLOW_DELETE": true,
   "AUTH0_EXCLUDED_RULES": []
 }
