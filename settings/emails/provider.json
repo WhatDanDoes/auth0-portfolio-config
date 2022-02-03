@@ -6,5 +6,5 @@
     "region": "us-east-1"
   },
   "name": "ses",
-  "default_from_address": "##EMAIL_DEFAULT_FROM_ADDRESS##"
+  "default_from_address": "Support <dan@whatdandoes.info>"
 }
