@@ -1,5 +1,5 @@
 {
-  "AUTH0_DOMAIN": "dev-mo6xixxu.auth0.com",
+  "AUTH0_DOMAIN": "dev-mo6xixxu.us.auth0.com",
   "AUTH0_CLIENT_ID": "ZiMcaAegTcDedhXlszQ8NeFXw6ALckq1",
   "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
     "AUTH0_TENANT_NAME": "dev-mo6xixxu",
