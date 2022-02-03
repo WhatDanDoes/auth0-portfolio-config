@@ -41,13 +41,13 @@
   "name": "google-oauth2",
   "is_domain_connection": false,
   "enabled_clients": [
--    "auth0-account-link",
--    "auth0-deploy-cli-extension",
--    "Demo - React SPA Identity API",
--    "Demo - Regular App Identity API",
--    "progressive-audio-recorder",
--    "SIL Identity",
--    "Wycliffe Photos"
+    "auth0-account-link",
+    "auth0-deploy-cli-extension",
+    "Demo - React SPA Identity API",
+    "Demo - Regular App Identity API",
+    "progressive-audio-recorder",
+    "SIL Identity",
+    "Wycliffe Photos",
     "SIL Identity"
   ]
 }
