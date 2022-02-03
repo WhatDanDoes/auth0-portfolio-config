@@ -29,6 +29,8 @@ All tests must pass before merging to `main`. This is enforced through GitHub [A
 npm test
 ```
 
+_2022-2-3_: tests aren't required for the moment because there's no hokey code to test. For examples of how to test, refer to the [archives](https://github.com/WhatDanDoes/auth0-portfolio-config/tree/archive/example-test-specs).
+
 # Under the hood
 
 This section is included as a reference and resource for the curious. Teams updating app configurations _do not_ use the CLI tool directly. Export operations are executed with GitHub Actions.
@@ -74,3 +76,4 @@ The `AUTH0_ALLOW_DELETE` setting in `portfolio-config.json` is set to `false` as
 ```
   "AUTH0_ALLOW_DELETE": true,
 ```
+
