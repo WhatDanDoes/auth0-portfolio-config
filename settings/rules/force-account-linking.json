@@ -1,7 +1,0 @@
-{
-  "enabled": true,
-  "script": "./force-account-linking.js",
-  "name": "force-account-linking",
-  "order": 72,
-  "stage": "login_success"
-}
