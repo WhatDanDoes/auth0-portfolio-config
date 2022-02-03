@@ -18,13 +18,11 @@
     "new_universal_login_experience_enabled": true,
     "universal_login": true,
     "use_scope_descriptions_for_consent": true,
-    "disable_clickjack_protection_headers": true,
-    "include_email_in_reset_pwd_redirect": true,
-    "include_email_in_verify_email_redirect": true
+    "disable_clickjack_protection_headers": true
   },
-  "friendly_name": "SIL Language Technology",
-  "picture_url": "https://www.sil.org/sites/default/files/sil-logo-blue-2017_1.png",
-  "support_email": "ltops@sil.org",
+  "friendly_name": "whatdandoes.info",
+  "picture_url": "https://whatdandoes.info/favicons/android-chrome-192x192.png",
+  "support_email": "dan@whatdandoes.info",
   "support_url": "",
   "universal_login": {
     "colors": {
