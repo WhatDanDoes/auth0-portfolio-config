@@ -17,7 +17,7 @@ function (user, context, callback) {
 
   var config = {
     endpoints: {
-      linking: 'https://silid.us12.webtask.io/4cb95bf92ced903b9b84ebedbf5ebffd',
+      linking: 'https://dev-mo6xixxu.us12.webtask.io/4cb95bf92ced903b9b84ebedbf5ebffd',
       userApi: auth0.baseUrl + '/users',
       usersByEmailApi: auth0.baseUrl + '/users-by-email'
     },

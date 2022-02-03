@@ -1,9 +1,9 @@
 {
-  "AUTH0_DOMAIN": "silid.auth0.com",
+  "AUTH0_DOMAIN": "dev-mo6xixxu.auth0.com",
   "AUTH0_CLIENT_ID": "deploy-cli-extension-client-id",
   "AUTH0_CLIENT_SECRET": "deploy-cli-extension-client-secret",
   "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
-    "AUTH0_TENANT_NAME": "silid"
+    "AUTH0_TENANT_NAME": "dev-mo6xixxu"
   },
   "AUTH0_ALLOW_DELETE": true,
   "AUTH0_EXCLUDED_RULES": []

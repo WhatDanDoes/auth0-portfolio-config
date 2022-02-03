@@ -1,7 +1,7 @@
-silid-infra-auth0
-=================
+auth0-portfolio-config
+======================
 
-This repository contains the current Auth0 `silid` tenant configurations.
+This repository contains my current Auth0 tenant configurations.
 
 Changes made to the `main` branch are deployed automatically to the Auth0 tenant via GitHub actions. As such, teams adding or updating their own app configurations are required to submit changes adhering to the following workflow:
 
@@ -37,10 +37,10 @@ The configs contained in this repository are saved and restored with the [Deploy
 
 ## Configure
 
-Upon execution, the `a0deploy` tool obtains authentication credentials and other configurations from the `silid-config.json` file:
+Upon execution, the `a0deploy` tool obtains authentication credentials and other configurations from the `portfolio-config.json` file:
 
 ```
-cp silid-config.json.example silid-config.json
+cp portfolio-config.json.example portfolio-config.json
 ```
 
 Change the _example_ settings therein as appropriate.
@@ -50,26 +50,26 @@ Change the _example_ settings therein as appropriate.
 The exported files contained in the `/settings` directory of this repository were obtained like this:
 
 ```
-a0deploy export --config_file silid-config.json --format directory --output_folder settings
+a0deploy export --config_file portfolio-config.json --format directory --output_folder settings
 ```
 
 You may also export to a `yaml` file:
 
 ```
-a0deploy export --config_file silid-config.json --format yaml --output_folder yaml
+a0deploy export --config_file portfolio-config.json --format yaml --output_folder yaml
 ```
 
 ## Import
 
-When `silid` tenant configurations needs to be moved or reset, execute the following:
+When `portfolio` tenant configurations needs to be moved or reset, execute the following:
 
 ```
-a0deploy import --config_file silid-config.json --input_file /path/to/silid-infra-auth0/settings
+a0deploy import --config_file portfolio-config.json --input_file /path/to/auth0-portfolio-config/settings
 ```
 
 ### Making destructive changes
 
-The `AUTH0_ALLOW_DELETE` setting in `silid-config.json` is set to `false` as a safeguard. If a configuration file is removed from `settings/`, the corresponding configuration will not be removed from Auth0. Set this value to `true`:
+The `AUTH0_ALLOW_DELETE` setting in `portfolio-config.json` is set to `false` as a safeguard. If a configuration file is removed from `settings/`, the corresponding configuration will not be removed from Auth0. Set this value to `true`:
 
 ```
   "AUTH0_ALLOW_DELETE": true,
