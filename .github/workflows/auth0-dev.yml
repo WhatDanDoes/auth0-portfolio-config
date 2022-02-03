@@ -18,5 +18,4 @@ jobs:
       - name: Import changes to the Auth0 staging account
         env:
           AUTH0_CLIENT_SECRET: ${{ secrets.DEV_AUTH0_CLIENT_SECRET }}
-          AUTH0_ALLOW_DELETE: true
         run: npm run import:dev
