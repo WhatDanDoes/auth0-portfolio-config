@@ -16,13 +16,13 @@
   },
   "allowed_clients": [],
   "allowed_logout_urls": [
-    "https://0yy.ca",
     "https://paraat.app",
+    "https://ipa.paraat.app",
     "http://localhost:3001"
   ],
   "callbacks": [
-    "https://0yy.ca/callback",
     "https://paraat.app/callback",
+    "https://ipa.paraat.app/callback",
     "http://localhost:3001/callback"
   ],
   "native_social_login": {
