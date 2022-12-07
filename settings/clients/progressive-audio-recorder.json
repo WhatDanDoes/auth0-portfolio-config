@@ -18,11 +18,13 @@
   "allowed_logout_urls": [
     "https://paraat.app",
     "https://ipa.paraat.app",
+    "https://flash.paraat.app",
     "http://localhost:3001"
   ],
   "callbacks": [
     "https://paraat.app/callback",
     "https://ipa.paraat.app/callback",
+    "https://flash.paraat.app",
     "http://localhost:3001/callback"
   ],
   "native_social_login": {
