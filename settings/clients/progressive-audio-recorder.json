@@ -24,7 +24,7 @@
   "callbacks": [
     "https://paraat.app/callback",
     "https://ipa.paraat.app/callback",
-    "https://flash.paraat.app",
+    "https://flash.paraat.app/callback",
     "http://localhost:3001/callback"
   ],
   "native_social_login": {
