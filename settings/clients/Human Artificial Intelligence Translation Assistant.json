@@ -20,8 +20,8 @@
     "https://rockyvalley.ca"
   ],
   "callbacks": [
-    "http://localhost:3000/callback",
-    "https://rockyvalley.ca/callback"
+    "http://localhost:3000",
+    "https://rockyvalley.ca"
   ],
   "description": "A tool for humans to review and correct AI-produced language translations.",
   "native_social_login": {

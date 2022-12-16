@@ -20,8 +20,8 @@
     "https://rockyvalley.ca"
   ],
   "callbacks": [
-    "http://localhost:3001",
-    "https://rockyvalley.ca"
+    "http://localhost:3001/callback",
+    "https://rockyvalley.ca/callback"
   ],
   "native_social_login": {
     "apple": {
