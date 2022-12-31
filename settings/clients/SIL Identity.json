@@ -5,23 +5,17 @@
   "allowed_logout_urls": [
     "http://localhost:3001",
     "https://id.whatdandoes.info",
-    "https://id.languagetechnology.org",
-    "https://id-dev.languagetechnology.org",
-    "https://id.languagetechnology.org/cheerio",
-    "https://id-dev.languagetechnology.org/cheerio",
     "https://id.whatdandoes.info/cheerio",
     "http://localhost:3001/cheerio"
   ],
   "callbacks": [
-    "https://id.languagetechnology.org/callback",
-    "https://id-dev.languagetechnology.org/callback",
     "http://localhost:3001/callback",
     "https://id.whatdandoes.info/callback",
     "https://auth.whatdandoes.info/login/callback"
   ],
   "cross_origin_auth": false,
   "is_first_party": true,
-  "logo_uri": "https://id.languagetechnology.org/favicons/apple-icon-152x152.png",
+  "logo_uri": "https://id.whatdandoes.info/favicons/apple-icon-152x152.png",
   "native_social_login": {
     "apple": {
       "enabled": false

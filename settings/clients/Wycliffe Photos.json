@@ -16,11 +16,10 @@
   },
   "allowed_clients": [],
   "allowed_logout_urls": [
-    "https://wycliffe.photos",
+    "https://photos.whatdandoes.info",
     "https://merman.whatdandoes.info"
   ],
   "callbacks": [
-    "https://wycliffe.photos/callback",
     "http://localhost:3001/callback",
     "https://merman.whatdandoes.info/callback",
     "https://photos.whatdandoes.info/callback"
@@ -33,7 +32,7 @@
       "enabled": false
     }
   },
-  "logo_uri": "https://wycliffe.photos/images/bpe-logo.png",
+  "logo_uri": "https://photos.whatdandoes.info/images/bpe-logo.png",
   "description": "Social PWA with image capture, upload, and viewing.",
   "jwt_configuration": {
     "alg": "RS256",
