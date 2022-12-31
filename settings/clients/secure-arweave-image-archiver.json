@@ -31,8 +31,8 @@
       "enabled": false
     }
   },
-  "logo_uri": "https://paraat.app/images/mic-logo.png",
-  "description": "Easy interface for permanently story digital files on Arweave",
+  "logo_uri": "https://rockyvalley.ca/images/camera-logo.svg",
+  "description": "Easy interface for permanently storing image files on Arweave",
   "jwt_configuration": {
     "alg": "RS256",
     "lifetime_in_seconds": 36000,
