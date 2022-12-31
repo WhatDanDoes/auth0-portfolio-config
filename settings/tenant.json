@@ -21,9 +21,9 @@
     "revoke_refresh_token_grant": false,
     "disable_clickjack_protection_headers": true
   },
-  "friendly_name": "whatdandoes.info",
-  "picture_url": "https://whatdandoes.info/favicons/android-chrome-192x192.png",
-  "support_email": "dan@whatdandoes.info",
+  "friendly_name": "bscc.dev",
+  "picture_url": "https://bscc.dev/images/logo-no-margins.png",
+  "support_email": "daniel@bscc.dev",
   "support_url": "",
   "universal_login": {
     "colors": {
