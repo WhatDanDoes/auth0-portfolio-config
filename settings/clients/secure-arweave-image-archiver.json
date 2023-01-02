@@ -17,11 +17,11 @@
   "allowed_clients": [],
   "allowed_logout_urls": [
     "http://localhost:3001",
-    "https://rockyvalley.ca"
+    "https://heirloom.photos"
   ],
   "callbacks": [
     "http://localhost:3001/callback",
-    "https://rockyvalley.ca/callback"
+    "https://heirloom.photos/callback"
   ],
   "native_social_login": {
     "apple": {
@@ -31,7 +31,7 @@
       "enabled": false
     }
   },
-  "logo_uri": "https://rockyvalley.ca/images/camera-logo.svg",
+  "logo_uri": "https://heirloom.photos/images/camera-logo.svg",
   "description": "Easy interface for permanently storing image files on Arweave",
   "jwt_configuration": {
     "alg": "RS256",
